@@ -1,0 +1,10 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+## [Unreleased]
+
+## [0.5.5] - 2020-06-02 - Logging Pitch
+- Improvement: Added logging Log4J2 support via SLF4J.
+- Improvement: Added additional logging calls.
+- Started maintaining change log
+- Update: build and run on Java11

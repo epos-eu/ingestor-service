@@ -1,0 +1,4 @@
+[submodule "src/main/java/org/epos/eposdatamodel"]
+	path = src/main/java/org/epos/eposdatamodel
+	url = ../../epos/epos_data_model_beans.git
+	branch = no-versioning-approval
