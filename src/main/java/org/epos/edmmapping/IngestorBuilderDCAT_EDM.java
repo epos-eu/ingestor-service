@@ -33,7 +33,6 @@ public class IngestorBuilderDCAT_EDM extends IngestorBuilderGenericDCAT_EDM impl
         proprietyMap.get("Category").put("skos:inScheme", new AbstractMap.SimpleEntry<>("InScheme", "Literal"));
         proprietyMap.get("Category").put("skos:broader", new AbstractMap.SimpleEntry<>("Broader", "Literal"));
         proprietyMap.get("Category").put("skos:narrower", new AbstractMap.SimpleEntry<>("Narrower", "Literal"));
-        System.out.println(proprietyMap.get("Category").toString());
         //------------
 
         return new StandardIngestor()

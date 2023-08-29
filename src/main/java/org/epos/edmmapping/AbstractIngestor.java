@@ -32,7 +32,6 @@ import org.epos.handler.dbapi.dbapiimplementation.ContactPointDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.ContractDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.DataProductDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.DistributionDBAPI;
-import org.epos.handler.dbapi.dbapiimplementation.EPOSDataModelDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.EquipmentDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.FacilityDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.OperationDBAPI;
@@ -43,8 +42,6 @@ import org.epos.handler.dbapi.dbapiimplementation.ServiceDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.SoftwareApplicationDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.SoftwareSourceCodeDBAPI;
 import org.epos.handler.dbapi.dbapiimplementation.WebServiceDBAPI;
-
-import com.google.gson.Gson;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileWriter;

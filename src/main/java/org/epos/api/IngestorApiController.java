@@ -68,8 +68,11 @@ public class IngestorApiController implements IngestorApi {
 		this.request = request;
 	}
 
-	public ResponseEntity<ApiResponseMessage> ingestorPost(@Parameter(in = ParameterIn.HEADER, description = "path of the element to ingest" ,required=true,schema=@Schema(allowableValues={ "single", "multiple" }
-			)) @RequestHeader(value="type", required=true) String type,@Parameter(in = ParameterIn.HEADER, description = "path of the element to ingest" ,required=true,schema=@Schema()) @RequestHeader(value="path", required=true) String path,@Parameter(in = ParameterIn.HEADER, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestHeader(value="securityCode", required=true) String securityCode) {
+	public ResponseEntity<ApiResponseMessage> ingestorPost(
+			@Parameter(in = ParameterIn.HEADER, description = "ingestion type (single file or multiple lines file)" ,required=true,schema=@Schema(allowableValues={ "single", "multiple" })) @RequestHeader(value="type", required=true) String type, 
+			@Parameter(in = ParameterIn.HEADER, description = "path of the file to ingest" ,required=true,schema=@Schema()) @RequestHeader(value="path", required=true) String path,  
+			@Parameter(in = ParameterIn.HEADER, description = "metadata model" ,required=true,schema=@Schema(allowableValues={ "EPOS-DCAT-AP-V1", "EPOS-DCAT-AP-V2"})) @RequestHeader(value="model", required=true) String model, 
+			@Parameter(in = ParameterIn.HEADER, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestHeader(value="securityCode", required=true) String securityCode) {
 
 
 		if( !validSecurityPhrase(securityCode) )
@@ -83,8 +86,20 @@ public class IngestorApiController implements IngestorApi {
 				String url = path;
 
 				boolean multiline = type.equals("single") ? false : true;
+				IngestorBuilder ingestorBuilder = null;
 
-				IngestorBuilder ingestorBuilder = new IngestorBuilderDCAT_EDM();
+				switch(model) {
+				case "EPOS-DCAT-AP-V1":
+					ingestorBuilder = new IngestorBuilderDCAT_EDM();
+					break;
+				case "EPOS-DCAT-AP-V2":
+					ingestorBuilder = new IngestorBuilderDCAT2_EDM();
+					break;
+				default:
+					ingestorBuilder = new IngestorBuilderDCAT_EDM();
+					break;
+				}
+
 				Ingestor ingestor = ingestorBuilder.build();
 
 				HashMap<String, Object> headers = new HashMap<>();
@@ -119,7 +134,7 @@ public class IngestorApiController implements IngestorApi {
 
 	private void ingestUrl(Ingestor ingestor, HashMap<String, Object> headers, String urlsingle) throws IOException {
 		List<EPOSDataModelEntity> ingestedObject = ingestor.prepareIngest(urlsingle);
-		
+
 		ingestor.ingest(ingestedObject);
 
 		System.out.println("ingested " + ingestedObject.size() + " entities");
@@ -134,7 +149,7 @@ public class IngestorApiController implements IngestorApi {
 				.collect(Collectors.toList());
 
 		String payload = gsonSingleton.toJson(ingestedObjectSerialized);
-		
+
 		String requestType = request.getRequestURI()
 				.replaceAll("^\\/+", "")
 				.replaceAll("\\/+$", "")
