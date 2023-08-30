@@ -50,6 +50,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -58,7 +59,6 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.util.*;
-
 import static org.epos.edmmapping.EPOSDataModelMainEntity.EPOSDataModelMainEntityList;
 
 import static org.epos.edmmapping.IngestorUtil.*;
@@ -198,10 +198,10 @@ public abstract class AbstractIngestor implements Ingestor{
 
 		return toIngestObject;
 	}
-	
+
 	@Override
 	public String ingest(List<EPOSDataModelEntity> entities) {
-		
+
 		for(EPOSDataModelEntity entity : entities) {
 			entity.setState(State.PUBLISHED);
 			entity.setEditorId("ingestor");
@@ -305,7 +305,7 @@ public abstract class AbstractIngestor implements Ingestor{
 				} catch (NoSuchMethodException ignored) {}
 			});
 		}
-		
+
 		Queue<String> keysQueue = new LinkedList<>(objectMap.keySet());
 		ArrayList<String> controlQueue = new ArrayList<>(objectMap.keySet());
 		while (!keysQueue.isEmpty()) {
@@ -399,12 +399,13 @@ public abstract class AbstractIngestor implements Ingestor{
 				//System.out.println(value);
 			} catch (DateTimeParseException ignored){}
 		}
-
+		
 		//iterate to try to get the correct method prefix, "add" or "set"
 		try {
 			for (String elem : methodPrefix) {
 				String methodName = elem + proprietyMap.get(className).get(attributeNameDCAT).getKey().replace(" ", "");
 				try {
+					//System.out.println(object.getClass()+" "+methodName+" "+value.getClass());
 					Method method = object.getClass().getMethod(methodName, value.getClass());
 					if (methodName.equals("setHasQualityAnnotation") &&
 							value.getClass().equals(String.class) &&
@@ -466,6 +467,7 @@ public abstract class AbstractIngestor implements Ingestor{
 				boolean isMap = fatherSubMap.getClass().equals(HashMap.class);
 
 				if(key.equals(keyToSearch)){
+
 					if (isMap) {
 						methodPut.invoke(fatherSubMap, key, son);
 					} else {
@@ -476,7 +478,6 @@ public abstract class AbstractIngestor implements Ingestor{
 						if(!son.containsKey("#father#"))
 							son.put("#father#", new LinkedList<>());
 						((List)son.get("#father#")).add(new TripleDataStruct(fatherKey, ((List<String>) fatherSubMap).get(0), fatherType));
-
 
 						methodPut.invoke(father, key + "#relation#" + ((List<String>)fatherSubMap).get(0), son);
 						return true;

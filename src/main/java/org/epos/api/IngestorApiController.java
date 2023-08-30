@@ -134,6 +134,11 @@ public class IngestorApiController implements IngestorApi {
 
 	private void ingestUrl(Ingestor ingestor, HashMap<String, Object> headers, String urlsingle) throws IOException {
 		List<EPOSDataModelEntity> ingestedObject = ingestor.prepareIngest(urlsingle);
+		
+
+		for(EPOSDataModelEntity entity : ingestedObject) {
+			System.out.println(entity);
+		}
 
 		ingestor.ingest(ingestedObject);
 
