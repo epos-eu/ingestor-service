@@ -41,7 +41,7 @@ public class RoutingConfiguration {
     {
         Optional<RpcRouter> router = RpcRouterBuilder.instance(Actor.getInstance(BuiltInActorType.INGESTOR.verbLabel()).get())
     			.addServiceSupport(ServiceType.INGESTOR, Actor.getInstance(BuiltInActorType.DB_CONNECTOR.verbLabel()).get())
-				.setNumberOfPublishers(numOfPublishers)
+    			.setNumberOfPublishers(numOfPublishers)
     			.setNumberOfConsumers(numOfConsumers)
     			.setRoutingKeyPrefix("ingestor")
     			.build();

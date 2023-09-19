@@ -186,6 +186,8 @@ public abstract class AbstractIngestor implements Ingestor{
 						System.out.println(objectEposDataModel);
 					if(objectName.equals("CategoryScheme"))
 						System.out.println(objectEposDataModel);
+					if(objectName.equals("WebService"))
+						System.out.println(objectEposDataModel);
 
 					toIngestObject.add((EPOSDataModelEntity) objectEposDataModel);
 				}
@@ -268,6 +270,7 @@ public abstract class AbstractIngestor implements Ingestor{
 				break;
 			case "WebService":
 				WebServiceDBAPI webserviceApi = new WebServiceDBAPI();
+				System.out.println((WebService)entity);
 				webserviceApi.save((WebService) entity);
 				break;
 			default:
@@ -551,6 +554,8 @@ public abstract class AbstractIngestor implements Ingestor{
 				entity.put(subject, tmpMap);
 			}
 		}
+		
+		System.out.println(entity.toString());
 	}
 
 	class TripleDataStruct{

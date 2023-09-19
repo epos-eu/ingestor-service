@@ -23,6 +23,7 @@ public class IngestorBuilderDCAT_EDM extends IngestorBuilderGenericDCAT_EDM impl
         proprietyMap.get("WebService").put("hydra:entrypoint", new AbstractMap.SimpleEntry<>("EntryPoint", "Literal"));
         proprietyMap.get("WebService").put("dcat:keyword", new AbstractMap.SimpleEntry<>("Keywords", "Literal"));
         proprietyMap.get("WebService").put("schema:identifier", new AbstractMap.SimpleEntry<>("Identifier", "Identifier"));
+        proprietyMap.get("WebService").put("dct:relation", new AbstractMap.SimpleEntry<>("Relation", "WebService"));
         proprietyMap.get("DataProduct").put("dct:identifier", new AbstractMap.SimpleEntry<>("DctIdentifier", "Literal"));
         proprietyMap.get("DataProduct").put("dqv:hasQualityAnnotation", new AbstractMap.SimpleEntry<>("HasQualityAnnotation", "Literal"));
         proprietyMap.get("Mapping").put("schema:multipleValues", new AbstractMap.SimpleEntry<>("MultipleValues", "Literal"));
@@ -39,6 +40,8 @@ public class IngestorBuilderDCAT_EDM extends IngestorBuilderGenericDCAT_EDM impl
         proprietyMap.get("Category").put("skos:narrower", new AbstractMap.SimpleEntry<>("Narrower", "Literal"));
         //------------
 
+        System.out.println(proprietyMap.get("WebService").toString());
+        System.out.println(proprietyMap.get("SoftwareApplication").toString());
         return new StandardIngestor()
                 .vocabularyMap(vocabularyMap)
                 .proprietyMap(proprietyMap)
