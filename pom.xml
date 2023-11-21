@@ -131,19 +131,6 @@
 			<artifactId>junit-jupiter</artifactId>
 			<version>5.8.2</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.epos-eu.ics-c</groupId>
-			<artifactId>router-framework</artifactId>
-			<version>0.1.7</version>
-			<!-- epos used log4j2 via slf4j -->
-			<exclusions>
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-classic</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
