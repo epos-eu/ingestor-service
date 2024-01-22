@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,42 +16,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IngestorTest {
 
-    @BeforeEach
-    void setUp() throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-
-        IngestorBuilder ingestorBuilder = new IngestorBuilderDCAT_EDM();
-        Ingestor ingestor = ingestorBuilder.build();
-
-
-        /*
-        List<Object> ingest = ingestor.ingest("http://localhost:4998/AHEpisodesPlugin.ttl");
-        EPOSDataModelDBAPI.saveAll(ingest);
-        System.out.println(1);
+	public static void main(String[] args) throws IOException {
+		String url = "http://192.168.1.28:4200/WP08-AHEAD_historical_earthquakes.ttl";
+		IngestorBuilder ingestorBuilder = new IngestorBuilderDCAT_EDM();
+		Ingestor ingestor = ingestorBuilder.build();
 
 
-        URL urlMultiline = new URL("http://localhost:4998/index.txt");
-        Scanner s = new Scanner(urlMultiline.openStream());
+		HashMap<String, Object> headers = new HashMap<>();
 
-        DBAPIClient client = new DBAPIClient(false);
-        while (s.hasNextLine()) {
-            String urlsingle = s.nextLine();
-            System.out.println(urlsingle);
-            List<EPOSDataModelEntity> ingest = ingestor.ingest(urlsingle);
-            client.startTransaction();
-            ingest.forEach(x -> {
-                x.setState(State.PUBLISHED);
-                x.setEditorId("ingestor");
-                client.create(x);
-            });
-            client.closeTransaction(true);
-            //EPOSDataModelDBAPI.saveAll(ingest);
-            System.out.println("");
-        }
-*/
+		headers.put("kind", "ingestor.post.eposdatamodel");
+		List<EPOSDataModelEntity> ingestedObject = ingestor.prepareIngest(url);
 
-    }
 
-    @Test
-    void ingest() {
-    }
+		for(EPOSDataModelEntity entity : ingestedObject) {
+			System.out.println(entity);
+		}
+
+		ingestor.ingest(ingestedObject);
+
+		System.out.println("ingested " + ingestedObject.size() + " entities");
+	}
 }
