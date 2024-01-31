@@ -33,6 +33,7 @@ public class IngestorBuilderDCAT_EDM extends IngestorBuilderGenericDCAT_EDM impl
         proprietyMap.get("Category").remove("skos:inScheme");
         proprietyMap.get("Category").remove("skos:definition");
         proprietyMap.get("Category").remove("skos:prefLabel");
+        proprietyMap.get("CategoryScheme").put("skos:prefLabel", new AbstractMap.SimpleEntry<>("Code", "Literal"));
         proprietyMap.get("Category").put("skos:definition", new AbstractMap.SimpleEntry<>("Description", "Literal"));
         proprietyMap.get("Category").put("skos:prefLabel", new AbstractMap.SimpleEntry<>("Name", "Literal"));
         proprietyMap.get("Category").put("skos:inScheme", new AbstractMap.SimpleEntry<>("InScheme", "Literal"));
@@ -40,8 +41,7 @@ public class IngestorBuilderDCAT_EDM extends IngestorBuilderGenericDCAT_EDM impl
         proprietyMap.get("Category").put("skos:narrower", new AbstractMap.SimpleEntry<>("Narrower", "Literal"));
         //------------
 
-        System.out.println(proprietyMap.get("WebService").toString());
-        System.out.println(proprietyMap.get("SoftwareApplication").toString());
+        System.out.println(proprietyMap.get("CategoryScheme").toString());
         return new StandardIngestor()
                 .vocabularyMap(vocabularyMap)
                 .proprietyMap(proprietyMap)
