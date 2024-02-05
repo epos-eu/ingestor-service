@@ -12,7 +12,7 @@ import org.epos.eposdatamodel.EPOSDataModelEntity;
 public class TestIngestion {
 	
 	public static void main(String[] args) throws IOException {
-		String url = "http://192.168.252.173:4200/SUPERPROCESSING.ttl";
+		String url = "http://10.101.10.44:4200/facets-ANTH.ttl";
 
 		IngestorBuilder ingestorBuilder = new IngestorBuilderDCAT_EDM();
 

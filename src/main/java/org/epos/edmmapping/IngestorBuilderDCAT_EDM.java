@@ -34,6 +34,11 @@ public class IngestorBuilderDCAT_EDM extends IngestorBuilderGenericDCAT_EDM impl
         proprietyMap.get("Category").remove("skos:definition");
         proprietyMap.get("Category").remove("skos:prefLabel");
         proprietyMap.get("CategoryScheme").put("skos:prefLabel", new AbstractMap.SimpleEntry<>("Code", "Literal"));
+        proprietyMap.get("CategoryScheme").put("foaf:logo", new AbstractMap.SimpleEntry<>("Logo", "Literal"));
+        proprietyMap.get("CategoryScheme").put("foaf:homepage", new AbstractMap.SimpleEntry<>("Homepage", "Literal"));
+        proprietyMap.get("CategoryScheme").put("schema:color", new AbstractMap.SimpleEntry<>("Color", "Literal"));
+        proprietyMap.get("CategoryScheme").put("schema:orderItemNumber", new AbstractMap.SimpleEntry<>("Orderitemnumber", "Literal"));
+        proprietyMap.get("CategoryScheme").put("skos:hasTopConcept", new AbstractMap.SimpleEntry<>("TopConcepts", "Literal"));
         proprietyMap.get("Category").put("skos:definition", new AbstractMap.SimpleEntry<>("Description", "Literal"));
         proprietyMap.get("Category").put("skos:prefLabel", new AbstractMap.SimpleEntry<>("Name", "Literal"));
         proprietyMap.get("Category").put("skos:inScheme", new AbstractMap.SimpleEntry<>("InScheme", "Literal"));
