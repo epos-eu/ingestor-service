@@ -180,14 +180,6 @@ public abstract class AbstractIngestor implements Ingestor{
 					continue;
 
 				if(EPOSDataModelMainEntityList.contains(objectName)) {
-
-					if(objectName.equals("Category"))
-						System.out.println(objectEposDataModel);
-					if(objectName.equals("CategoryScheme"))
-						System.out.println(objectEposDataModel);
-					if(objectName.equals("WebService"))
-						System.out.println(objectEposDataModel);
-
 					toIngestObject.add((EPOSDataModelEntity) objectEposDataModel);
 				}
 
@@ -269,7 +261,6 @@ public abstract class AbstractIngestor implements Ingestor{
 				break;
 			case "WebService":
 				WebServiceDBAPI webserviceApi = new WebServiceDBAPI();
-				System.out.println((WebService)entity);
 				webserviceApi.save((WebService) entity);
 				break;
 			default:
@@ -289,9 +280,8 @@ public abstract class AbstractIngestor implements Ingestor{
 				return customMapperResults;
 		}
 		//--------------------------
-
+		
 		String className = findEposDataModelClass(objectMap, classMap);
-
 		if(className==null) return null;
 		Class<?> classObject = Class.forName("org.epos.eposdatamodel." + className);
 		Object objectEposDataModel = createObjectFromClass(classObject);
@@ -313,9 +303,10 @@ public abstract class AbstractIngestor implements Ingestor{
 		while (!keysQueue.isEmpty()) {
 			String propertyValue = keysQueue.remove();
 			Object predicateNameOrMap = objectMap.get(propertyValue);
+			
 			boolean isMap = predicateNameOrMap.getClass().equals(HashMap.class);
 			boolean isArrayList = predicateNameOrMap.getClass().equals(ArrayList.class);
-
+			
 			if (isMap) {
 				Map<String, Object> predicateMap = (Map<String, Object>) predicateNameOrMap;
 				String relation = propertyValue.split("#relation#")[1];//getRelation(predicateMap);
@@ -357,7 +348,6 @@ public abstract class AbstractIngestor implements Ingestor{
 
 			} else if (isArrayList) {
 				for (String predicateTmp : ((ArrayList<String>) predicateNameOrMap)) {
-
 					try {
 						setPropertyObject(className, objectEposDataModel, propertyValue, predicateTmp);
 					} catch (NoSuchMethodException ignored) {
@@ -398,7 +388,6 @@ public abstract class AbstractIngestor implements Ingestor{
 						.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
 						.toFormatter();
 				value = LocalDateTime.parse((String)value, formatter);
-				//System.out.println(value);
 			} catch (DateTimeParseException ignored){}
 		}
 		
@@ -407,7 +396,6 @@ public abstract class AbstractIngestor implements Ingestor{
 			for (String elem : methodPrefix) {
 				String methodName = elem + proprietyMap.get(className).get(attributeNameDCAT).getKey().replace(" ", "");
 				try {
-					//System.out.println(object.getClass()+" "+methodName+" "+value.getClass());
 					Method method = object.getClass().getMethod(methodName, value.getClass());
 					if (methodName.equals("setHasQualityAnnotation") &&
 							value.getClass().equals(String.class) &&
@@ -456,7 +444,6 @@ public abstract class AbstractIngestor implements Ingestor{
 
 	private boolean addToSubject(Object father, String keyToSearch, Map<String, Object> son, String fatherKey, List<String> stack, int depth){
 		try {
-
 			@SuppressWarnings("unchecked")
 			Set<String> keyset = new HashSet<> ((Set<String>) ((Map)father).keySet());
 
@@ -553,8 +540,6 @@ public abstract class AbstractIngestor implements Ingestor{
 				entity.put(subject, tmpMap);
 			}
 		}
-		
-		System.out.println(entity.toString());
 	}
 
 	class TripleDataStruct{
@@ -613,9 +598,7 @@ public abstract class AbstractIngestor implements Ingestor{
 			FileWriter myWriter = new FileWriter("testout.json");
 			myWriter.write(thing);
 			myWriter.close();
-			System.out.println("Successfully wrote to the file.");
 		} catch (IOException e) {
-			System.out.println("An error occurred.");
 			e.printStackTrace();
 		}
 	}

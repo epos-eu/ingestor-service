@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class IngestorTest {
 
 	public static void main(String[] args) throws IOException {
-		String url = "http://192.168.1.28:4200/WP08-AHEAD_historical_earthquakes.ttl";
+		String url = "http://10.101.10.44:4200/test.ttl";
 		IngestorBuilder ingestorBuilder = new IngestorBuilderDCAT_EDM();
 		Ingestor ingestor = ingestorBuilder.build();
 
