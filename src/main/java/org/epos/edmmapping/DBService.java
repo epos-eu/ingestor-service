@@ -1,9 +1,6 @@
 package org.epos.edmmapping;
 
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;

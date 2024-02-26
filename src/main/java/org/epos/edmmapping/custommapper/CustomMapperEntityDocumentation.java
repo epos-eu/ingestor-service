@@ -19,7 +19,7 @@ public class CustomMapperEntityDocumentation implements CustomMapperEntity {
                     d.setDescription(property);
                 }
                 if (objectMap.get(property).getClass().equals(ArrayList.class) && ((List) objectMap.get(property)).get(0).equals("hydra:entrypoint")) {
-                    d.setURI(property);
+                    d.setUri(property);
                 }
                 if (objectMap.get(property).getClass().equals(ArrayList.class) && ((List) objectMap.get(property)).get(0).equals("hydra:title")) {
                     d.setTitle(property);

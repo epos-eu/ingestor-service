@@ -2,22 +2,14 @@ package org.epos.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.epos.configuration.GsonByteArrayToBase64;
-import org.epos.configuration.GsonLocalDateTime;
 import org.epos.edmmapping.*;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
-import org.epos.router_framework.RpcRouter;
-import org.epos.router_framework.domain.Request;
-import org.epos.router_framework.domain.RequestBuilder;
-import org.epos.router_framework.domain.Response;
-import org.epos.router_framework.types.ServiceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestHeader;
 import javax.servlet.http.HttpServletRequest;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Modifier;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-10-12T08:15:11.660Z[GMT]")
 @RestController
@@ -55,9 +39,6 @@ public class IngestorApiController implements IngestorApi {
 	private final ObjectMapper objectMapper;
 
 	private final HttpServletRequest request;
-
-	@Autowired
-	private RpcRouter router;
 
 	@Autowired
 	private Gson gsonSingleton;
@@ -143,29 +124,6 @@ public class IngestorApiController implements IngestorApi {
 		ingestor.ingest(ingestedObject);
 
 		System.out.println("ingested " + ingestedObject.size() + " entities");
-
-		/*List<MessageEDMWrap> ingestedObjectSerialized = ingestedObject.stream()
-				.map( eposDataModelObject -> {
-					MessageEDMWrap wrap = new MessageEDMWrap();
-					wrap.setObjectName(eposDataModelObject.getClass().getSimpleName());
-					wrap.setObject(gsonSingleton.toJson(eposDataModelObject));
-					return wrap;
-				})
-				.collect(Collectors.toList());
-
-		String payload = gsonSingleton.toJson(ingestedObjectSerialized);
-
-		String requestType = request.getRequestURI()
-				.replaceAll("^\\/+", "")
-				.replaceAll("\\/+$", "")
-				.replaceAll("\\/", "\\.");
-
-		Request request = RequestBuilder.instance(ServiceType.INGESTOR, "post", requestType)//
-				.addPayloadPlainText(payload)
-				.addHeaders(headers)//
-				.build();
-
-		Response response = router.makeRequest(request);*/
 
 	}
 
