@@ -26,10 +26,12 @@ public class CustomMapperPropertyOrganizationOwns extends CustomMapperPropertyAb
 
 	@Override
 	public void toImplementMap(Object object, Object propertyValue) throws InvocationTargetException, IllegalAccessException {
+		System.out.println(object.toString());
+		System.out.println(propertyValue.toString());
 		LinkedEntity le = new LinkedEntity();
 		le.setUid(propertyValue.toString());
 		le.setEntityType("facility");
-		method.invoke(object, le);
+		method.invoke(object, propertyValue);
 	}
 
 

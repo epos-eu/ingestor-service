@@ -12,7 +12,7 @@ import org.epos.eposdatamodel.EPOSDataModelEntity;
 public class TestIngestion {
 	
 	public static void main(String[] args) throws IOException {
-		String url = "http://192.168.1.18:4200/NEWNEAM.ttl";
+		String url = "http://192.168.93.2:4200/VO-TCS_TNA_Lidar.ttl";
 
 		IngestorBuilder ingestorBuilder = new IngestorBuilderDCAT_EDM();
 

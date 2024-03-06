@@ -46,10 +46,10 @@ public class IngestorBuilderDCAT_EDM extends IngestorBuilderGenericDCAT_EDM impl
         proprietyMap.get("Category").put("skos:broader", new AbstractMap.SimpleEntry<>("Broader", "Literal"));
         proprietyMap.get("Category").put("skos:narrower", new AbstractMap.SimpleEntry<>("Narrower", "Literal"));
         proprietyMap.get("Organization").remove("schema:owns");
-        proprietyMap.get("Organization").put("schema:owns", new AbstractMap.SimpleEntry<>("Owns", "Facility"));
+        proprietyMap.get("Organization").put("schema:owns", new AbstractMap.SimpleEntry<>("Owns", "Literal"));
         //------------
 
-        System.out.println(proprietyMap.get("DataProduct").toString());
+        System.out.println(proprietyMap.get("Organization").toString());
         return new StandardIngestor()
                 .vocabularyMap(vocabularyMap)
                 .proprietyMap(proprietyMap)
