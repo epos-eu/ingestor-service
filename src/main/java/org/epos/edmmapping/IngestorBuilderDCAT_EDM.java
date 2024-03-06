@@ -58,7 +58,6 @@ public class IngestorBuilderDCAT_EDM extends IngestorBuilderGenericDCAT_EDM impl
                 .addCustomMapperEntities(new CustomMapperEntityDocumentation())
                 .addCustomMapperEntities(new CustomMapperEntityPotentialAction())
                 .addCustomMapperEntities(new CustomMapperEntityHasQualityAnnotation())
-                .addCustomMapperProperties(new CustomMapperPropertyOrganizationOwns())
                 .addCustomMapperProperties(new CustomMapperPropertyWebserviceIdentifier());
     }
 }
