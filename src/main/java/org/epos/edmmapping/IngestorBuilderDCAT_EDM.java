@@ -47,9 +47,16 @@ public class IngestorBuilderDCAT_EDM extends IngestorBuilderGenericDCAT_EDM impl
         proprietyMap.get("Category").put("skos:narrower", new AbstractMap.SimpleEntry<>("Narrower", "Literal"));
         proprietyMap.get("Organization").remove("schema:owns");
         proprietyMap.get("Organization").put("schema:owns", new AbstractMap.SimpleEntry<>("Owns", "Literal"));
+        proprietyMap.get("Facility").put("dcat:keyword", new AbstractMap.SimpleEntry<>("Keywords", "Literal"));
+        proprietyMap.get("Facility").put("dct:identifier", new AbstractMap.SimpleEntry<>("Identifier", "Literal"));
+        proprietyMap.get("Equipment").put("dcat:keyword", new AbstractMap.SimpleEntry<>("Keywords", "Literal"));
+        proprietyMap.get("Equipment").put("dct:identifier", new AbstractMap.SimpleEntry<>("Identifier", "Literal"));
+        proprietyMap.get("Equipment").put("dct:title", new AbstractMap.SimpleEntry<>("Name", "Literal"));
+        proprietyMap.get("Equipment").put("dct:description", new AbstractMap.SimpleEntry<>("Description", "Literal"));
+        proprietyMap.get("Equipment").put("dcat:landingPage", new AbstractMap.SimpleEntry<>("PageURL", "Literal"));
         //------------
 
-        System.out.println(proprietyMap.get("Organization").toString());
+        System.out.println(proprietyMap.get("Equipment").toString());
         return new StandardIngestor()
                 .vocabularyMap(vocabularyMap)
                 .proprietyMap(proprietyMap)
