@@ -1,8 +1,9 @@
 package org.epos.core;
 
 import metadataapis.EntityNames;
+import model.StatusType;
+import org.apache.jena.datatypes.BaseDatatype;
 import org.apache.jena.datatypes.xsd.XSDDateTime;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 import org.epos.eposdatamodel.*;
 
 import java.lang.reflect.Constructor;
@@ -25,7 +26,9 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             object.setInstanceId(UUID.randomUUID().toString());
             object.setMetaId(UUID.randomUUID().toString());
             object.setUid(uid);
-            System.out.println(className+" "+uid+" "+object.getUid());
+            object.setStatus(StatusType.PUBLISHED);
+            object.setEditorId("ingestor");
+            object.setFileProvenance("ingestor");
             return object;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
@@ -33,13 +36,11 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         }
     }
 
-    public void getEPOSDataModelPropertiesLiteral(EPOSDataModelEntity classObject, Map<String,String> property, Object propertyValue){
-
-        System.out.println("MANAGE LITERAL");
+    public void getEPOSDataModelPropertiesLiteral(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, String subject, Map<String,String> property, Object propertyValue){
 
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        System.out.println("PRE DEBUG: "+propertyValueClass+" "+propertyValue.getClass()+" "+propertyName);
+        System.out.println("PRE DEBUG: "+classObject.getClass().getName()+" "+propertyValueClass+" "+propertyValue.getClass()+" "+propertyName);
 
 
         if(propertyValueClass.getName().equals("org.apache.jena.datatypes.xsd.XSDDateTime")){
@@ -79,9 +80,8 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             propertyValue = Long.toString((Long) propertyValue);
         }
         if(propertyValue.getClass().getName().contains("org.apache.jena.datatypes.BaseDatatype")){
-            System.err.println("WARNING BASE DATATYPE "+propertyValue+" "+propertyName);
             propertyValueClass = java.lang.String.class;
-            propertyValue = propertyValue.toString();
+            propertyValue = ((BaseDatatype.TypedValue)propertyValue).lexicalValue;
         }
         if(propertyName.equals("LegalName")){
             propertyValueClass = LegalName.class;
@@ -95,37 +95,6 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             method = classObject.getClass().getMethod("add"+propertyName, propertyValueClass);
         } catch (NoSuchMethodException e) {
             System.err.println(e.getLocalizedMessage());
-        }
-
-        if(method==null) {
-            try {
-                method = classObject.getClass().getMethod("set" + propertyName, propertyValueClass);
-            } catch (NoSuchMethodException e) {
-                System.err.println(e.getLocalizedMessage());
-            }
-        }
-
-        if(method==null){
-            if(propertyName.equals("Identifier")) {
-                Identifier le = new Identifier();
-                le.setType("plain");
-                le.setIdentifier(propertyValue.toString());
-                propertyValue = le;
-                propertyValueClass = Identifier.class;
-            }else {
-                LinkedEntity le = new LinkedEntity();
-                le.setUid(propertyValue.toString());
-                propertyValue = le;
-                propertyValueClass = LinkedEntity.class;
-            }
-        }
-
-        if(method==null) {
-            try {
-                method = classObject.getClass().getMethod("add" + propertyName, propertyValueClass);
-            } catch (NoSuchMethodException e) {
-                System.err.println(e.getLocalizedMessage());
-            }
         }
 
         if(method==null) {
@@ -157,14 +126,12 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                 System.exit(0);
             }
         }
+
+        System.out.println(classObject);
     }
 
     public void getEPOSDataModelPropertiesURI(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, String subject, Map<String,String> property, String propertyValue){
 
-        System.out.println("MANAGE URI");
-
-        System.out.println(subject);
-        System.out.println(property.toString());
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
         System.out.println("PRE DEBUG: "+propertyValueClass+" "+propertyValue.getClass()+" "+propertyName);
@@ -193,8 +160,6 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             }
             if(entity!=null) propertyValueClass = entity.getClass();
             else propertyValueClass = LinkedEntity.class;
-
-            System.out.println("CLASS: "+propertyValueClass);
         }
 
         if(entity!=null) propertyValueClass = entity.getClass();
@@ -214,7 +179,6 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         }
 
         if(method==null){
-            System.out.println("CHANGE TO LINKED ENTITY");
             propertyValueClass = LinkedEntity.class;
         }
 
@@ -239,7 +203,10 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             try {
                 if(propertyValueClass.equals(String.class)) method.invoke(classObject, propertyValue);
                 else{
-                    if(propertyValueClass!=LinkedEntity.class) method.invoke(classObject, entity);
+                    if(propertyValueClass!=LinkedEntity.class) {
+                        System.out.println("ADDING "+entity+" to "+ classObject);
+                        method.invoke(classObject, entity);
+                    }
                     else method.invoke(classObject, le);
                 }
             } catch (IllegalArgumentException |IllegalAccessException | InvocationTargetException e) {
@@ -258,9 +225,6 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
 
     public void getEPOSDataModelPropertiesBlank(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, String subject, Map<String,String> property, String propertyValue){
 
-        System.out.println("MANAGE BLANK");
-
-        System.out.println(property.toString());
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
         System.out.println("PRE DEBUG: "+propertyValueClass+" "+propertyValue.getClass()+" "+propertyName);
@@ -270,7 +234,6 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         EPOSDataModelEntity entity = null;
 
         for(EPOSDataModelEntity eposDataModelEntity : classes){
-            if(eposDataModelEntity!=null) System.out.println(eposDataModelEntity.getUid() +" "+ propertyValue);
             if(eposDataModelEntity!=null && eposDataModelEntity.getUid().equals(propertyValue)) {
                 entity = eposDataModelEntity;
                 break;
@@ -290,8 +253,6 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             }
             if(entity!=null) propertyValueClass = entity.getClass();
             else propertyValueClass = LinkedEntity.class;
-
-            System.out.println("CLASS: "+propertyValueClass);
         }
 
         if(entity!=null) propertyValueClass = entity.getClass();
@@ -311,7 +272,6 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         }
 
         if(method==null){
-            System.out.println("CHANGE TO LINKED ENTITY");
             propertyValueClass = LinkedEntity.class;
         }
 
@@ -333,10 +293,14 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
 
 
         if(method!=null){
+            System.out.println("METHOD NOT NULL "+propertyValue+" "+classObject.getClass()+ " "+ entity );
             try {
                 if(propertyValueClass.equals(String.class)) method.invoke(classObject, propertyValue);
                 else{
-                    if(propertyValueClass!=LinkedEntity.class) method.invoke(classObject, entity);
+                    if(propertyValueClass!=LinkedEntity.class)  {
+                        System.out.println("ADDING "+entity+" "+entity.getUid()+" to "+ classObject);
+                        method.invoke(classObject, entity);
+                    }
                     else method.invoke(classObject, le);
                 }
             } catch (IllegalArgumentException |IllegalAccessException | InvocationTargetException e) {
