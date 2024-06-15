@@ -25,8 +25,8 @@ class IngestorTest {
 
 	public static void main(String[] args){
 
-		Boolean multiline = false;
-		final String path = "http://10.101.10.44:4200/WP11_IMO_DDSS-067_GNSS_stations_corrected.ttl";
+		Boolean multiline = true;
+		final String path = "http://192.168.1.38:4200/index.txt";
 		final String mapping = "EDM-TO-DCAT-AP";
 
 		try {
@@ -34,6 +34,7 @@ class IngestorTest {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+
 		if (multiline) {
 			URL urlMultiline = null;
 			try {

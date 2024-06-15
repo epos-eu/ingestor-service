@@ -6,28 +6,38 @@ import org.apache.jena.rdf.model.Model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItemRetriever {
+public class SPARQLRetriever {
 
-    public static Map<String,String> retrieveAllClasses(Model model){
+    public static Map<String,Map<String,String>> retrieveAllClasses(Model model){
 
         Map<String,String> prefixes = model.getNsPrefixMap();
         String queryString = "";
         for(String key : prefixes.keySet()){
             queryString+="PREFIX "+key+": <"+prefixes.get(key)+">\n";
         }
-        queryString += "SELECT ?uid ?class { ?uid a ?class . }";
-        Map<String,String> mapUidClassName = new HashMap<>();
+        queryString += "SELECT ?class ?uid ?superclass ?relationto WHERE { \n" +
+                "  ?uid a ?class .\n" +
+                "  OPTIONAL { ?superclass ?relationto ?uid }\n" +
+                "}";
+        Map<String,Map<String,String>> mapUidItems = new HashMap<>();
         Query query = QueryFactory.create(queryString);
         QueryExecution qexec = QueryExecutionFactory.create(query, model);
         try {
             ResultSet results = qexec.execSelect();
             while(results.hasNext()) {
+                Map<String,String> mapItems = new HashMap<>();
                 QuerySolution soln = results.nextSolution();
-                String classUid = soln.get("uid").toString();
                 String className = soln.get("class").toString();
-                mapUidClassName.put(classUid,className);
+                String classUid = soln.get("uid").toString();
+                String superClassName = soln.get("superclass")!=null? soln.get("superclass").toString() : null;
+                String relationClassToSuperClass = soln.get("relationto")!=null? soln.get("relationto").toString() : null;
+                mapItems.put("class",className);
+                mapItems.put("uid",classUid);
+                mapItems.put("superclass",superClassName);
+                mapItems.put("relationto",relationClassToSuperClass);
+                mapUidItems.put(classUid, mapItems);
             }
-            return mapUidClassName;
+            return mapUidItems;
         } finally {
             qexec.close();
         }
@@ -51,17 +61,23 @@ public class ItemRetriever {
                         "?property rdfs:range  ?range .\n" +
                         "}";*/
         queryString +=
-                "SELECT ?property ?range ?subproperty ?rangeprop \n" +
+                "SELECT ?property ?range ?prop ?rangeprop \n" +
                         "WHERE {\n" +
                         "  ?property rdfs:domain edm:"+className+" .\n" +
                         "  ?property (owl:equivalentProperty|^owl:equivalentProperty)* "+value+" .\n" +
                         "  ?property rdfs:range  ?range .\n" +
-                        "  OPTIONAL { ?prop rdfs:domain ?range } .\n" +
-                        "  OPTIONAL { ?prop (owl:equivalentProperty|^owl:equivalentProperty)* ?subproperty } . \n" +
+                        "  OPTIONAL { ?range a owl:Class } .\n" +
+                        "  OPTIONAL { ?prop rdfs:domain ?range } . \n" +
                         "  OPTIONAL { ?prop rdfs:range ?rangeprop } .\n" +
                         "}";
-        System.out.println(queryString);
-        Query query = QueryFactory.create(queryString);
+        Query query = null;
+        try {
+            query = QueryFactory.create(queryString);
+        }catch(Exception e){
+            System.out.println(queryString);
+            System.out.println(e.getLocalizedMessage());
+            System.exit(0);
+        }
         QueryExecution qexec = QueryExecutionFactory.create(query, model);
         prefixes.put("edm","http://www.epos-eu.org/epos-data-model#");
         try {
@@ -72,8 +88,8 @@ public class ItemRetriever {
                     //String clazz = soln.get("class").toString();
                     String property = soln.get("property").toString();
                     String range = soln.get("range").toString();
-                    String subproperty = soln.get("subproperty").toString();
-                    String rangeprop = soln.get("rangeprop").toString();
+                    String subproperty = soln.get("prop")!=null? soln.get("prop").toString() : "";
+                    String rangeprop = soln.get("rangeprop")!=null? soln.get("rangeprop").toString() : "";
                     for(String val : prefixes.values()){
                         //if(clazz.contains(val)) clazz = clazz.replaceAll(val,"");
                         if(property.contains(val)) property = property.replaceAll(val,"");
@@ -84,9 +100,8 @@ public class ItemRetriever {
                     //returnMapQueryProperty.put("class", clazz);
                     returnMapQueryProperty.put("property", property);
                     returnMapQueryProperty.put("range", range);
-                    returnMapQueryProperty.put("subproperty", subproperty);
+                    returnMapQueryProperty.put("prop", subproperty);
                     returnMapQueryProperty.put("rangeprop", rangeprop);
-                    System.out.println(returnMapQueryProperty);
                     return returnMapQueryProperty;
 
                 }
@@ -98,16 +113,17 @@ public class ItemRetriever {
         return null;
     }
 
-    public static String executeSPARQLQueryClass(String value, Model model){
+    public static String executeSPARQLQueryClass(Map<String,String> value, Model model){
 
         Map<String,String> prefixes = model.getNsPrefixMap();
         String queryString = "";
+        String itemValue = value.get("class");
         for(String key : prefixes.keySet()){
             queryString+="PREFIX "+key+": <"+prefixes.get(key)+">\n";
-            if(value.contains(prefixes.get(key))) value = value.replaceAll(prefixes.get(key),key+":");
+            if(itemValue.contains(prefixes.get(key))) itemValue = itemValue.replaceAll(prefixes.get(key),key+":");
         }
         queryString +=
-                "SELECT ?x WHERE { ?x (owl:equivalentClass|^owl:equivalentClass)* "+value+" . }";
+                "SELECT ?x WHERE { ?x (owl:equivalentClass|^owl:equivalentClass)* "+itemValue+" . }";
         Query query = QueryFactory.create(queryString);
         QueryExecution qexec = QueryExecutionFactory.create(query, model);
         try {

@@ -42,7 +42,6 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
         System.out.println("PRE DEBUG: "+classObject.getClass().getName()+" "+propertyValueClass+" "+propertyValue.getClass()+" "+propertyName);
 
-
         if(propertyValueClass.getName().equals("org.apache.jena.datatypes.xsd.XSDDateTime")){
             Calendar calendar = ((XSDDateTime) propertyValue).asCalendar();
             LocalDateTime localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
@@ -150,7 +149,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         if(property.get("range").toLowerCase().equals("string")){
             propertyValueClass = String.class;
         }else {
-            if(entity!=null) entity = getEPOSDataModelClass(property.get("range").toString(), propertyValue);
+            if(entity==null) entity = getEPOSDataModelClass(property.get("range").toString(), propertyValue);
             try {
                 le = new LinkedEntity();
                 le.setUid(propertyValue.toString());
@@ -225,9 +224,10 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
 
     public void getEPOSDataModelPropertiesBlank(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, String subject, Map<String,String> property, String propertyValue){
 
+        System.out.println(property);
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        System.out.println("PRE DEBUG: "+propertyValueClass+" "+propertyValue.getClass()+" "+propertyName);
+        System.out.println("PRE DEBUG: "+subject+" "+propertyValueClass+" "+propertyValue.getClass()+" "+propertyName);
 
         Method method = null;
         LinkedEntity le = null;
@@ -243,7 +243,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         if(property.get("range").toLowerCase().equals("string")){
             propertyValueClass = String.class;
         }else {
-            if(entity!=null) entity = getEPOSDataModelClass(property.get("range").toString(), propertyValue);
+            if(entity==null) entity = getEPOSDataModelClass(property.get("range").toString(), propertyValue);
             try {
                 le = new LinkedEntity();
                 le.setUid(propertyValue.toString());
@@ -299,6 +299,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                 else{
                     if(propertyValueClass!=LinkedEntity.class)  {
                         System.out.println("ADDING "+entity+" "+entity.getUid()+" to "+ classObject);
+                        System.out.println("USING "+method.getName());
                         method.invoke(classObject, entity);
                     }
                     else method.invoke(classObject, le);

@@ -24,7 +24,12 @@ public class MetadataPopulator {
 
 
     public static Map<String,String> startMetadataPopulation(String url, String inputMappingModel){
+
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
+
+        /**
+         * GET ALL ONTOLOGIES FROM DB AND POPULATE MODEL AND MODEL MAPPING
+         **/
         List<Ontologies> ontologiesList = eposDataModelDAO.getAllFromDB(Ontologies.class);
 
         String triples = null;
@@ -39,17 +44,21 @@ public class MetadataPopulator {
                     .read(IOUtils.toInputStream(triples, StandardCharsets.UTF_8), null, "TURTLE");
         }
 
+        /** READ TTL FILE FROM URL **/
+
         final Model model = ModelFactory.createDefaultModel();
         model.read(url, null, "TURTLE");
         Graph graph = model.getGraph();
+
+        /** PREPARE CLASSES **/
 
         List<EPOSDataModelEntity> classes = new ArrayList<>();
         EPOSDataModelEntity activeClass = null;
         BeansCreation beansCreation = new BeansCreation();
 
-        Map<String,String> classesMap = ItemRetriever.retrieveAllClasses(model);
+        Map<String,Map<String,String>> classesMap = SPARQLRetriever.retrieveAllClasses(model);
         for(String uid : classesMap.keySet()){
-            String className = ItemRetriever.executeSPARQLQueryClass(classesMap.get(uid), modelmapping);
+            String className = SPARQLRetriever.executeSPARQLQueryClass(classesMap.get(uid), modelmapping);
             classes.add(beansCreation.getEPOSDataModelClass(className,uid));
         }
 
@@ -75,8 +84,7 @@ public class MetadataPopulator {
                 }
 
                 if(!value.equals("rdf:type") && activeClass!=null) {
-                    System.out.println(triple.getSubject().toString()+" "+triple.getPredicate().toString()+" "+triple.getObject().toString());
-                    itemValue = ItemRetriever.executeSPARQLQueryProperty(value, activeClass.getClass().getSimpleName(), modelmapping);
+                    itemValue = SPARQLRetriever.executeSPARQLQueryProperty(value, activeClass.getClass().getSimpleName(), modelmapping);
                 }
 
                 if(itemValue!=null) {
