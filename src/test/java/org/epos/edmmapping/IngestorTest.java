@@ -26,7 +26,7 @@ class IngestorTest {
 	public static void main(String[] args){
 
 		Boolean multiline = true;
-		final String path = "http://192.168.1.38:4200/index.txt";
+		final String path = "http://10.101.10.44:4200/index.txt";
 		final String mapping = "EDM-TO-DCAT-AP";
 
 		try {

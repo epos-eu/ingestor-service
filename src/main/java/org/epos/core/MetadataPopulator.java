@@ -230,6 +230,13 @@ public class MetadataPopulator {
                 edmClass = Element.class;
                 api = new DocumentationAPI(entityType, edmClass);
                 break;
+            case PARAMETER:
+                edmClass = SoftwareapplicationParameters.class;
+                api = new ParameterAPI(entityType, edmClass);
+                break;
+            case RELATION:
+                System.out.println("Relation empty case");
+                break;
         }
         return api;
     }
