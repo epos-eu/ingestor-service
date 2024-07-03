@@ -24,7 +24,7 @@ public class OntologiesManager {
         Ontologies existingOntology = null;
 
         for(Ontologies ontologies : ontologiesList){
-            if(ontologies.getOntologyname().equals(name)) existingOntology = ontologies;
+            if(ontologies.getName().equals(name)) existingOntology = ontologies;
         }
 
         URL url = new URL(ontologyURL);
@@ -39,10 +39,9 @@ public class OntologiesManager {
 
         Ontologies ont = new Ontologies();
         ont.setId(existingOntology!=null? existingOntology.getId() :UUID.randomUUID().toString());
-        ont.setOntologyname(name);
-        ont.setOntologybase64(encoded);
+        ont.setName(name);
+        ont.setContent(encoded);
 
-        if(existingOntology!=null) eposDataModelDAO.updateObject(ont);
-        else eposDataModelDAO.createObject(ont);
+        eposDataModelDAO.updateObject(ont);
     }
 }

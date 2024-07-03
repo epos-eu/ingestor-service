@@ -15,16 +15,11 @@ import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MetadataPopulator {
 
-
-    public static Map<String,String> startMetadataPopulation(String url, String inputMappingModel){
-
+    public static Model retrieveModelMapping(String inputMappingModel){
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
 
         /**
@@ -34,8 +29,8 @@ public class MetadataPopulator {
 
         String triples = null;
         for(Ontologies ontologies : ontologiesList){
-            if(ontologies.getOntologyname().equals(inputMappingModel)){
-                triples = new String(Base64.getDecoder().decode(ontologies.getOntologybase64()));
+            if(ontologies.getName().equals(inputMappingModel)){
+                triples = new String(Base64.getDecoder().decode(ontologies.getContent()));
             }
         }
         Model modelmapping = null;
@@ -43,95 +38,164 @@ public class MetadataPopulator {
             modelmapping = ModelFactory.createDefaultModel()
                     .read(IOUtils.toInputStream(triples, StandardCharsets.UTF_8), null, "TURTLE");
         }
+        return modelmapping;
+    }
 
-        /** READ TTL FILE FROM URL **/
+    public static Model retrieveMetadataModelFromTTL(String url){
 
         final Model model = ModelFactory.createDefaultModel();
         model.read(url, null, "TURTLE");
-        Graph graph = model.getGraph();
 
-        /** PREPARE CLASSES **/
+        return model;
+    }
 
-        List<EPOSDataModelEntity> classes = new ArrayList<>();
-        EPOSDataModelEntity activeClass = null;
-        BeansCreation beansCreation = new BeansCreation();
 
-        Map<String,Map<String,String>> classesMap = SPARQLRetriever.retrieveAllClasses(model);
-        for(String uid : classesMap.keySet()){
-            String className = SPARQLRetriever.executeSPARQLQueryClass(classesMap.get(uid), modelmapping);
-            classes.add(beansCreation.getEPOSDataModelClass(className,uid));
-        }
 
-        for(EPOSDataModelEntity clazz : classes){
-            if(clazz!=null)
-                System.out.println(clazz.getClass().getName()+" -----> "+clazz.getUid());
-        }
-
+    public static Map<String, Object> retrievePlainValueFromInnerMethods(Model modelmapping,Graph graph, String subject, EPOSDataModelEntity activeClass){
+        Map<String, String> prefixes = modelmapping.getNsPrefixMap();
+        Map<String, String> itemValue = null;
+        Map<String, Object> innerValue = new HashMap<>();
         for (ExtendedIterator<Triple> it = graph.find(); it.hasNext(); ) {
             Triple triple = it.next();
-            if(modelmapping!=null){
-                Map<String,String> prefixes = modelmapping.getNsPrefixMap();
+            if(subject.equals(triple.getSubject().toString())) {
+                /** Get predicate value of triple and replace long prefix with short one **/
                 String value = triple.getPredicate().toString();
-                for(String key : prefixes.keySet()){
-                    if(value.contains(prefixes.get(key))) value = value.replaceAll(prefixes.get(key),key+":");
+                for (String key : prefixes.keySet()) {
+                    if (value.contains(prefixes.get(key))) value = value.replaceAll(prefixes.get(key), key + ":");
                 }
-                Map<String,String> itemValue = null;
-                boolean isClass = false;
-                for(EPOSDataModelEntity eposDataModelEntity : classes){
-                    if(eposDataModelEntity!=null && eposDataModelEntity.getUid().equals(triple.getSubject().toString())){
-                        activeClass = eposDataModelEntity;
-                    }
-                }
-
-                if(!value.equals("rdf:type") && activeClass!=null) {
-                    itemValue = SPARQLRetriever.executeSPARQLQueryProperty(value, activeClass.getClass().getSimpleName(), modelmapping);
-                }
-
-                if(itemValue!=null) {
-                    if(!isClass) {
-                        if(activeClass!=null) {
-                            if(triple.getObject().isURI()){
-                                System.out.println("MANAGE URI");
-                                beansCreation.getEPOSDataModelPropertiesURI(activeClass, classes, triple.getSubject().toString(), itemValue, triple.getObject().toString());
-                            }
-                            else if(triple.getObject().isBlank()){
-                                System.out.println("MANAGE BLANK");
-                                beansCreation.getEPOSDataModelPropertiesBlank(activeClass, classes, triple.getSubject().toString(), itemValue, triple.getObject().toString());
-                            }
-                            else if(triple.getObject().isLiteral()){
-                                System.out.println("MANAGE LITERAL");
-                                beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, triple.getSubject().toString(), itemValue, triple.getObject().getLiteralValue());
-                            }
-                            else if(triple.getObject().isNodeGraph()){
-                                System.out.println("IS NODEGRAPH TODO "+triple.getObject().toString());
-                            }
-                            else if(triple.getObject().isConcrete()){
-                                System.out.println("MANAGE CONCRETE");
-                                beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, triple.getSubject().toString(), itemValue, triple.getObject().getLiteral().getValue());
-                            }
-                            else if(triple.getObject().isNodeTriple()){
-                                System.out.println("IS NODETRIPLE TODO "+triple.getObject().toString());
-                            }
-                            else if(triple.getObject().isExt()){
-                                System.out.println("IS EXT TODO "+triple.getObject().toString());
-                            }
-                            else if(triple.getObject().isVariable()){
-                                System.out.println("IS VARIABLE TODO "+triple.getObject().toString());
-                            }
-                        }
-                    }
-                    else {
-                        activeClass = beansCreation.getEPOSDataModelClass(itemValue.get("property"), triple.getSubject().toString());
-                        if(activeClass!=null) classes.add(activeClass);
+                if (!value.equals("rdf:type")) {
+                    itemValue = SPARQLManager.retrievePropertyValueInEDM(value, activeClass.getClass().getSimpleName(), modelmapping);
+                    /** TODO: add recursive gathering of the element **/
+                    if ((triple.getObject().isBlank()) && itemValue == null) {
+                        innerValue = retrievePlainValueFromInnerMethods(modelmapping,graph, triple.getObject().toString(), activeClass);
+                    }else{
+                        innerValue.put("itemValue",itemValue);
+                        innerValue.put("plain",triple.getObject().toString());
                     }
                 }
             }
         }
+        return innerValue;
+    }
+
+
+    public static void innerMethodToTest(Model modelmapping, BeansCreation beansCreation, Graph graph, EPOSDataModelEntity activeClass, List<EPOSDataModelEntity> classes,List<EPOSDataModelEntity> missingClasses) {
+        /** SET PREFIXES **/
+        Map<String, String> prefixes = modelmapping.getNsPrefixMap();
+
+        if(activeClass==null) {
+            for (ExtendedIterator<Triple> it = graph.find(); it.hasNext(); ) {
+                Triple triple = it.next();
+                /** Get predicate value of triple and replace long prefix with short one **/
+                String value = triple.getPredicate().toString();
+                for (String key : prefixes.keySet()) {
+                    if (value.contains(prefixes.get(key))) value = value.replaceAll(prefixes.get(key), key + ":");
+                }
+
+                /** Retrieve Active Class **/
+                ListIterator<EPOSDataModelEntity> iter = missingClasses.listIterator();
+                while(iter.hasNext()){
+                    activeClass = iter.next();
+                    if (activeClass != null && activeClass.getUid().equals(triple.getSubject().toString())) {
+                        iter.remove();
+                        innerMethodToTest(modelmapping, beansCreation, graph, activeClass, classes, missingClasses);
+                    }
+                }
+            }
+        } else {
+            for (ExtendedIterator<Triple> it = graph.find(); it.hasNext(); ) {
+                Triple triple = it.next();
+                if(triple.getSubject().toString().equals(activeClass.getUid())) {
+                    System.out.println("Active class: "+activeClass.getUid());
+                    /** Get predicate value of triple and replace long prefix with short one **/
+                    String value = triple.getPredicate().toString();
+                    for (String key : prefixes.keySet()) {
+                        if (value.contains(prefixes.get(key))) value = value.replaceAll(prefixes.get(key), key + ":");
+                    }
+                    /** Manage Properties of Active Class **/
+                    Map<String, String> itemValue = null;
+                    Map<String,Object> innerValue = null;
+                    if (!value.equals("rdf:type")) {
+                        itemValue = SPARQLManager.retrievePropertyValueInEDM(value, activeClass.getClass().getSimpleName(), modelmapping);
+                        /*System.out.println(activeClass.getClass().getSimpleName() + " " + value);
+                        System.out.println(itemValue);
+                        System.out.println(triple.getObject().toString());*/
+                        /** TODO: add recursive gathering of the element **/
+                        if((triple.getObject().isBlank()) && itemValue==null){
+                            innerValue = retrievePlainValueFromInnerMethods(modelmapping,graph, triple.getObject().toString(), activeClass);
+                            System.out.println("FOUND: "+innerValue);
+                        }
+                    }
+                    if(itemValue == null && innerValue!=null){
+                        System.out.println("MANAGE RECURSIVE ITEM");
+                        beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, triple.getSubject().toString(), (Map<String, String>) innerValue.get("itemValue"), innerValue.get("plain").toString());
+
+                    }
+                    if(itemValue != null){
+                        if (triple.getObject().isURI()) {
+                            System.out.println("MANAGE URI");
+                            beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, triple.getSubject().toString(), itemValue, triple.getObject().toString());
+                        } else if (triple.getObject().isBlank()) {
+                            System.out.println("MANAGE BLANK");
+                            beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, triple.getSubject().toString(), itemValue, triple.getObject().toString());
+                        }else if (triple.getObject().isLiteral()) {
+                            System.out.println("MANAGE LITERAL");
+                            beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, triple.getSubject().toString(), itemValue, triple.getObject().getLiteralValue());
+                        } else if (triple.getObject().isConcrete()) {
+                            System.out.println("MANAGE CONCRETE");
+                            beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, triple.getSubject().toString(), itemValue, triple.getObject().getLiteral().getValue());
+                        } else if (triple.getObject().isVariable()
+                                || triple.getObject().isExt()
+                                || triple.getObject().isNodeTriple()
+                                || triple.getObject().isNodeGraph()) {
+                            /** NOT USED ATM **/
+                            System.out.println("MANAGE OTHER??");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static Map<String,Object> startMetadataPopulation(String url, String inputMappingModel){
+
+        Map<String, Object> returnMap = new HashMap<>();
+
+        Model modelmapping = retrieveModelMapping(inputMappingModel);
+
+        Model model = retrieveMetadataModelFromTTL(url);
+        Graph graph = model.getGraph();
+
+
+        /** PREPARE CLASSES **/
+
+        List<EPOSDataModelEntity> classes = new ArrayList<>();
+        List<EPOSDataModelEntity> missingClasses = new ArrayList<>();
+        EPOSDataModelEntity activeClass = null;
+        BeansCreation beansCreation = new BeansCreation();
+
+        Map<String,Map<String,String>> classesMap = SPARQLManager.retrieveMainEntities(model);
+        for(String uid : classesMap.keySet()){
+            String className = SPARQLManager.retrieveEDMMappedClass(classesMap.get(uid).get("class").toString(), modelmapping);
+            EPOSDataModelEntity entity = beansCreation.getEPOSDataModelClass(className,uid);
+            classes.add(entity);
+            missingClasses.add(entity);
+        }
+
+
+        innerMethodToTest(modelmapping,beansCreation,graph,activeClass,classes, missingClasses);
+        System.out.println("ADDING TO DATABASE "+classes.size());
+
         for(EPOSDataModelEntity eposDataModelEntity : classes){
+            System.out.println("ADDING TO DATABASE "+eposDataModelEntity);
             if(eposDataModelEntity!=null) {
                 try {
-                    AbstractAPI api = retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase(), eposDataModelEntity.getClass());
+                    AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
+                    System.out.println(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
+                    System.out.println(eposDataModelEntity);
+                    System.out.println(api);
                     LinkedEntity le = api.create(eposDataModelEntity);
+                    returnMap.put(le.getUid(), le);
                 }catch(Exception apiCreationException){
                     apiCreationException.printStackTrace();
                     System.err.println("ERROR ON: "+ eposDataModelEntity.toString()+" "+apiCreationException.getLocalizedMessage());
@@ -139,107 +203,7 @@ public class MetadataPopulator {
             }
         }
 
-        return null;
+        return returnMap;
     }
-
-    private static AbstractAPI retrieveAPI(String entityType, Class<?> edmClass){
-        AbstractAPI api = null;
-
-        switch(EntityNames.valueOf(entityType)){
-            case PERSON:
-                edmClass = Person.class;
-                api = new PersonAPI(entityType, edmClass);
-                break;
-            case MAPPING:
-                edmClass = Mapping.class;
-                api = new MappingAPI(entityType, edmClass);
-                break;
-            case CATEGORY:
-                edmClass = Category.class;
-                api = new CategoryAPI(entityType, edmClass);
-                break;
-            case FACILITY:
-                edmClass = Facility.class;
-                api = new FacilityAPI(entityType, edmClass);
-                break;
-            case EQUIPMENT:
-                edmClass = Equipment.class;
-                api = new EquipmentAPI(entityType, edmClass);
-                break;
-            case OPERATION:
-                edmClass = Operation.class;
-                api = new OperationAPI(entityType, edmClass);
-                break;
-            case WEBSERVICE:
-                edmClass = Webservice.class;
-                api = new WebServiceAPI(entityType, edmClass);
-                break;
-            case DATAPRODUCT:
-                edmClass = Dataproduct.class;
-                api = new DataProductAPI(entityType, edmClass);
-                break;
-            case CONTACTPOINT:
-                edmClass = Contactpoint.class;
-                api = new ContactPointAPI(entityType, edmClass);
-                break;
-            case DISTRIBUTION:
-                edmClass = Distribution.class;
-                api = new DistributionAPI(entityType, edmClass);
-                break;
-            case ORGANIZATION:
-                edmClass = Organization.class;
-                api = new OrganizationAPI(entityType, edmClass);
-                break;
-            case CATEGORYSCHEME:
-                edmClass = CategoryScheme.class;
-                api = new CategorySchemeAPI(entityType, edmClass);
-                break;
-            case SOFTWARESOURCECODE:
-                edmClass = SoftwareSourceCode.class;
-                api = new SoftwareSourceCodeAPI(entityType, edmClass);
-                break;
-            case SOFTWAREAPPLICATION:
-                edmClass = SoftwareApplication.class;
-                api = new SoftwareApplicationAPI(entityType, edmClass);
-                break;
-            case ADDRESS:
-                edmClass = Address.class;
-                api = new AddressAPI(entityType, edmClass);
-                break;
-            case ELEMENT:
-                edmClass = Element.class;
-                api = new ElementAPI(entityType, edmClass);
-                break;
-            case LOCATION:
-                edmClass = Spatial.class;
-                api = new SpatialAPI(entityType, edmClass);
-                break;
-            case PERIODOFTIME:
-                edmClass = Temporal.class;
-                api = new TemporalAPI(entityType, edmClass);
-                break;
-            case IDENTIFIER:
-                edmClass = Identifier.class;
-                api = new IdentifierAPI(entityType, edmClass);
-                break;
-            case QUANTITATIVEVALUE:
-                edmClass = QuantitativeValue.class;
-                api = new QuantitativeValueAPI(entityType, edmClass);
-                break;
-            case DOCUMENTATION:
-                edmClass = Element.class;
-                api = new DocumentationAPI(entityType, edmClass);
-                break;
-            case PARAMETER:
-                edmClass = SoftwareapplicationParameters.class;
-                api = new ParameterAPI(entityType, edmClass);
-                break;
-            case RELATION:
-                System.out.println("Relation empty case");
-                break;
-        }
-        return api;
-    }
-
 
 }

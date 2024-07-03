@@ -47,8 +47,8 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 	public ResponseEntity<ApiResponseMessage> metadataPopulate(
 			@Parameter(in = ParameterIn.HEADER, description = "population type (single file or multiple lines file)" ,required=true,schema=@Schema(allowableValues={ "single", "multiple" })) @RequestHeader(value="type", required=true) String type,
 			@Parameter(in = ParameterIn.HEADER, description = "path of the file to use" ,required=true,schema=@Schema()) @RequestHeader(value="path", required=true) String path,
-			@Parameter(in = ParameterIn.HEADER, description = "metadata model" ,required=true,schema=@Schema(allowableValues={ "EPOS-DCAT-AP-V1", "EPOS-DCAT-AP-V3"})) @RequestHeader(value="path", required=true) String model,
-			@Parameter(in = ParameterIn.HEADER, description = "metadata mapping model" ,required=true,schema=@Schema(allowableValues={ "EDM-TO-DCAT-AP"})) @RequestHeader(value="path", required=true) String mapping,
+			@Parameter(in = ParameterIn.HEADER, description = "metadata model" ,required=true,schema=@Schema(allowableValues={ "EPOS-DCAT-AP-V1", "EPOS-DCAT-AP-V3"})) @RequestHeader(value="model", required=true) String model,
+			@Parameter(in = ParameterIn.HEADER, description = "metadata mapping model" ,required=true,schema=@Schema(allowableValues={ "EDM-TO-DCAT-AP"})) @RequestHeader(value="mapping", required=true) String mapping,
 			@Parameter(in = ParameterIn.HEADER, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestHeader(value="securityCode", required=true) String securityCode) {
 
 

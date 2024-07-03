@@ -1,5 +1,3 @@
-package org.epos.edmmapping;
-
 import org.epos.api.ApiResponseMessage;
 import org.epos.core.MetadataPopulator;
 import org.epos.core.OntologiesManager;
