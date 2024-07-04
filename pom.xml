@@ -157,7 +157,7 @@
 		<dependency>
 			<groupId>org.epos-eu.ics-c</groupId>
 			<artifactId>db-api</artifactId>
-			<version>ref.0.0.68</version>
+			<version>ref.0.0.69</version>
 		</dependency>
 
 

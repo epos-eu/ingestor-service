@@ -37,9 +37,9 @@ public class IngestionMetadataTest extends TestcontainersLifecycle {
     @Order(1)
     public void testCreateOntologies() throws IOException {
 
-        OntologiesManager.createOntology("EPOS-DCAT-AP-V1", metadataOntologyDCATAPIV1);
-        OntologiesManager.createOntology("EPOS-DCAT-AP-V3", metadataOntologyDCATAPIV3);
-        OntologiesManager.createOntology("EDM-TO-DCAT-AP", metadataMappingEPOSDataModel);
+        OntologiesManager.createOntology("EPOS-DCAT-AP-V1", "BASE", metadataOntologyDCATAPIV1);
+        OntologiesManager.createOntology("EPOS-DCAT-AP-V3", "BASE", metadataOntologyDCATAPIV3);
+        OntologiesManager.createOntology("EDM-TO-DCAT-AP", "MAPPING", metadataMappingEPOSDataModel);
 
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
         List<Ontologies> ontologiesList = eposDataModelDAO.getAllFromDB(Ontologies.class);

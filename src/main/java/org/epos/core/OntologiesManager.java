@@ -6,7 +6,6 @@ import model.Ontologies;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -15,7 +14,7 @@ import java.util.UUID;
 
 public class OntologiesManager {
 
-    public static void createOntology(String name, String ontologyURL) throws IOException {
+    public static void createOntology(String name, String type, String ontologyURL) throws IOException {
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
 
         List<Ontologies> ontologiesList = eposDataModelDAO.getAllFromDB(Ontologies.class);
@@ -40,8 +39,15 @@ public class OntologiesManager {
         Ontologies ont = new Ontologies();
         ont.setId(existingOntology!=null? existingOntology.getId() :UUID.randomUUID().toString());
         ont.setName(name);
+        ont.setType(type);
         ont.setContent(encoded);
 
         eposDataModelDAO.updateObject(ont);
+    }
+
+    public static List retrieveOntologies() {
+        EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
+
+        return eposDataModelDAO.getAllFromDB(Ontologies.class);
     }
 }
