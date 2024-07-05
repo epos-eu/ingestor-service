@@ -15,8 +15,8 @@ public class SwaggerDocumentationConfig {
     public OpenAPI openApi() {
         return new OpenAPI()
             .info(new Info()
-                .title("Backoffice RESTful APIs")
-                .description("This is the Backoffice RESTful APIs Swagger page.")
+                .title("Ingestor RESTful APIs")
+                .description("This is the Ingestor RESTful APIs Swagger page.")
                 .termsOfService("")
                 .version(System.getenv("VERSION"))
                 .license(new License()
