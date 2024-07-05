@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-10-12T08:15:11.660Z[GMT]")
 @Validated
@@ -38,11 +39,11 @@ public interface MetadataPopulationApi {
         produces = { "*/*" }, 
         method = RequestMethod.POST)
     ResponseEntity<ApiResponseMessage> metadataPopulate(
-    		@Parameter(in = ParameterIn.QUERY, description = "population type (single file or multiple lines file)" ,required=true,schema=@Schema(allowableValues={ "single", "multiple" })) @RequestHeader(value="type", required=true) String type,
-    		@Parameter(in = ParameterIn.QUERY, description = "path of the file to use" ,required=true,schema=@Schema()) @RequestHeader(value="path", required=true) String path,
-    		@Parameter(in = ParameterIn.QUERY, description = "metadata model" ,required=true,schema=@Schema()) @RequestHeader(value="model", required=true) String model,
-            @Parameter(in = ParameterIn.QUERY, description = "metadata mapping model" ,required=true,schema=@Schema()) @RequestHeader(value="mapping", required=true) String mapping,
-    		@Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestHeader(value="securityCode", required=true) String securityCode);
+    		@Parameter(in = ParameterIn.QUERY, description = "population type (single file or multiple lines file)" ,required=true,schema=@Schema(allowableValues={ "single", "multiple" })) @RequestParam(value="type", required=true) String type,
+    		@Parameter(in = ParameterIn.QUERY, description = "path of the file to use" ,required=true,schema=@Schema()) @RequestParam(value="path", required=true) String path,
+    		@Parameter(in = ParameterIn.QUERY, description = "metadata model" ,required=true,schema=@Schema()) @RequestParam(value="model", required=true) String model,
+            @Parameter(in = ParameterIn.QUERY, description = "metadata mapping model" ,required=true,schema=@Schema()) @RequestParam(value="mapping", required=true) String mapping,
+    		@Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode);
 
 }
 
