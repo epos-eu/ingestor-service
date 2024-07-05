@@ -1,10 +1,10 @@
 package org.epos.configuration;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonTokenId;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.datatype.threetenbp.DecimalUtils;
 import com.fasterxml.jackson.datatype.threetenbp.deser.ThreeTenDateTimeDeserializerBase;
 import com.fasterxml.jackson.datatype.threetenbp.function.BiFunction;
@@ -147,21 +147,11 @@ public class CustomInstantDeserializer<T extends Temporal>
   }
 
   @Override
-  protected ThreeTenDateTimeDeserializerBase<T> withDateFormat(DateTimeFormatter dtf) {
+  protected JsonDeserializer<T> withDateFormat(DateTimeFormatter dtf) {
     if (dtf == _formatter) {
       return this;
     }
     return new CustomInstantDeserializer<T>(this, dtf);
-  }
-
-  @Override
-  protected ThreeTenDateTimeDeserializerBase<T> withLeniency(Boolean aBoolean) {
-    return null;
-  }
-
-  @Override
-  protected ThreeTenDateTimeDeserializerBase<T> withShape(JsonFormat.Shape shape) {
-    return null;
   }
 
   @Override
@@ -210,7 +200,7 @@ public class CustomInstantDeserializer<T extends Temporal>
         return value;
       }
     }
-    return null;
+    throw new IOException();
   }
 
   private ZoneId getZone(DeserializationContext context) {
