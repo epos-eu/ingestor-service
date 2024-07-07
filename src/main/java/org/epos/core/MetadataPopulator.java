@@ -186,16 +186,21 @@ public class MetadataPopulator {
         innerMethodToTest(modelmapping,beansCreation,graph,activeClass,classes, missingClasses);
         System.out.println("ADDING TO DATABASE "+classes.size());
 
+        EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
+
         for(EPOSDataModelEntity eposDataModelEntity : classes){
             System.out.println("ADDING TO DATABASE "+eposDataModelEntity);
             if(eposDataModelEntity!=null) {
                 try {
                     AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
-                    System.out.println(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
-                    System.out.println(eposDataModelEntity);
-                    System.out.println(api);
-                    LinkedEntity le = api.create(eposDataModelEntity);
-                    returnMap.put(le.getUid(), le);
+                    List<Object> list = eposDataModelDAO.getOneFromDBByUID(eposDataModelEntity.getUid(), eposDataModelEntity.getClass());
+                    if(list.isEmpty()) {
+                        System.out.println(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
+                        System.out.println(eposDataModelEntity);
+                        System.out.println(api);
+                        LinkedEntity le = api.create(eposDataModelEntity);
+                        returnMap.put(le.getUid(), le);
+                    }
                 }catch(Exception apiCreationException){
                     apiCreationException.printStackTrace();
                     System.err.println("ERROR ON: "+ eposDataModelEntity.toString()+" "+apiCreationException.getLocalizedMessage());
