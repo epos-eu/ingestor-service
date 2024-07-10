@@ -32,6 +32,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             object.setUid(uid);
             object.setEditorId("ingestor");
             object.setFileProvenance("ingestor");
+            object.setStatus(StatusType.PUBLISHED);
 
             return object;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
