@@ -5,17 +5,14 @@ import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import java.util.logging.Logger;
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestcontainersLifecycle {
-
-    protected static Logger LOG = Logger.getGlobal();
     public static PostgreSQLContainer<?> METADATA_CATALOGUE = new PostgreSQLContainer<>(
             DockerImageName.parse("epos/metadata-database-deploy:refactoring")
                     .asCompatibleSubstituteFor("postgres")
 
     ).withDatabaseName("cerif").withUsername("postgres").withPassword("changeme").withExposedPorts(5432);
+
 
     @BeforeAll
     static void startContainers()  {

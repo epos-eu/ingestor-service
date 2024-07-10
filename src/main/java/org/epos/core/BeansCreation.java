@@ -1,5 +1,7 @@
 package org.epos.core;
 
+import abstractapis.AbstractAPI;
+import commonapis.LinkedEntityAPI;
 import model.StatusType;
 import org.apache.jena.datatypes.BaseDatatype;
 import org.apache.jena.datatypes.xsd.XSDDateTime;
@@ -9,6 +11,8 @@ import org.epos.eposdatamodel.LinkedEntity;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -23,12 +27,12 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             Class clazz = Class.forName("org.epos.eposdatamodel."+className);
             Constructor[] ctor = clazz.getConstructors();
             T object = (T) ctor[0].newInstance();
-            object.setInstanceId(UUID.randomUUID().toString());
-            object.setMetaId(UUID.randomUUID().toString());
+            //object.setInstanceId(UUID.randomUUID().toString());
+            //object.setMetaId(UUID.randomUUID().toString());
             object.setUid(uid);
-            object.setStatus(StatusType.PUBLISHED);
             object.setEditorId("ingestor");
             object.setFileProvenance("ingestor");
+
             return object;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
@@ -37,7 +41,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         }
     }
 
-    public void getEPOSDataModelPropertiesLiteral(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, String subject, Map<String, String> property, Object propertyValue) {
+    public void getEPOSDataModelPropertiesLiteral(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, Map<String, String> property, Object propertyValue) {
 
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
@@ -53,6 +57,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                 break;
             }
         }
+
         if (entity != null) {
             try {
                 le = new LinkedEntity();
@@ -67,8 +72,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             System.out.println("Is not a linked entity class " + propertyValue);
 
             if (propertyValueClass.getName().equals("org.apache.jena.datatypes.xsd.XSDDateTime")) {
-                Calendar calendar = ((XSDDateTime) propertyValue).asCalendar();
-                LocalDateTime localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
+                LocalDateTime localDateTime = LocalDateTime.parse(propertyValue.toString().replaceAll("Z",""));
                 propertyValueClass = String.class;
                 try {
                     DateTimeFormatter formatter = new DateTimeFormatterBuilder()
@@ -84,7 +88,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             }
             if (propertyValueClass.getName().equals("java.lang.Boolean")) {
                 propertyValueClass = java.lang.String.class;
-                propertyValue = propertyValue.toString();
+                propertyValue = Boolean.toString((Boolean)propertyValue);
             }
             if (propertyValueClass.getName().equals("java.lang.Double")) {
                 propertyValueClass = java.lang.String.class;
@@ -128,7 +132,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             System.out.println("DEBUG: "+propertyName+" "+classObject.getClass().getName()+" "+propertyValueClass+" "+propertyValue.getClass());
         }
 
-        if(method!=null){
+        if(method != null && propertyValue != null){
             try {
                 System.out.println("Invoking: "+propertyName+" "+propertyValue);
                 method.invoke(classObject, propertyValue);
@@ -140,18 +144,16 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                         "\nMethod Name:" + method.getName() +
                         "\nExpected Parameters: " + Arrays.asList(method.getParameterTypes()).toString() + "\n]");
                 System.err.println(e.getLocalizedMessage());
-                System.exit(0);
+                //System.exit(0);
             }
         }
-
-        System.out.println(classObject);
     }
 
-    public void getEPOSDataModelPropertiesNode(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, String subject, Map<String, String> property, String propertyValue) {
+    public void getEPOSDataModelPropertiesNode(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, Map<String, String> property, String propertyValue) {
 
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        System.out.println("PRE DEBUG: " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName);
+        System.out.println("PRE DEBUG: " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName + " "+ propertyValue);
 
         Method method = null;
         LinkedEntity le = null;
@@ -163,8 +165,10 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                 break;
             }
         }
+
         if (entity != null) {
             try {
+
                 le = new LinkedEntity();
                 le.setUid(entity.getUid());
                 le.setEntityType(entity.getClass().getSimpleName().toUpperCase());
@@ -199,7 +203,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                             "\nMethod Name:" + method.getName() +
                             "\nExpected Parameters: " + Arrays.asList(method.getParameterTypes()).toString() + "\n]");
                     System.err.println(e.getLocalizedMessage());
-                    System.exit(0);
+                    //System.exit(0);
                 }
             }
         }

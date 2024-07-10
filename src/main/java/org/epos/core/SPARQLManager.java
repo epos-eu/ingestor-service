@@ -55,7 +55,7 @@ public class SPARQLManager {
         }
 
         queryString +=
-                "SELECT ?mapped WHERE { ?mapped (owl:equivalentClass|^owl:equivalentClass)* "+value+" . }";
+                "SELECT ?mapped WHERE { ?mapped owl:equivalentClass "+value+" . }";
         Query query = QueryFactory.create(queryString);
 
         QueryExecution qexec = QueryExecutionFactory.create(query, modelmapping);
@@ -87,7 +87,7 @@ public class SPARQLManager {
                 "SELECT ?property ?range\n" +
                         "WHERE {\n" +
                         "  ?property rdfs:domain edm:"+className+" .\n" +
-                        "  ?property (owl:equivalentProperty|^owl:equivalentProperty)* "+value+" .\n" +
+                        "  ?property owl:equivalentProperty "+value+" .\n" +
                         "  ?property rdfs:range  ?range .\n" +
                         "}";
         Query query = null;

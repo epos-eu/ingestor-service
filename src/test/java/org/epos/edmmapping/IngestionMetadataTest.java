@@ -1,6 +1,10 @@
 package org.epos.edmmapping;
 
+import abstractapis.AbstractAPI;
 import dao.EposDataModelDAO;
+import metadataapis.EntityNames;
+import model.Category;
+import model.CategoryScheme;
 import model.Ontologies;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
@@ -9,15 +13,18 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.epos.core.*;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
+import org.epos.eposdatamodel.Mapping;
 import org.epos.eposdatamodel.User;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class IngestionMetadataTest extends TestcontainersLifecycle {
 
@@ -87,17 +94,41 @@ public class IngestionMetadataTest extends TestcontainersLifecycle {
     }
 
 
+
+
     @Test
     @Order(4)
     public void testRetrievePropertiesFromClasses() throws IOException {
 
         String metadataURL = "https://raw.githubusercontent.com/epos-eu/EPOS-DCAT-AP/EPOS-DCAT-AP-shapes/examples/EPOS-DCAT-AP_metadata_template.ttl";
+        //String metadataURL = "http://10.101.10.44:4200/WP14-metadata.ttl"; // //EMTC-v2.ttl
 
         Map<String, Object> returnMap = MetadataPopulator.startMetadataPopulation(metadataURL, "EDM-TO-DCAT-AP");
 
         System.out.println(returnMap);
 
-    }
+        AbstractAPI api = AbstractAPI.retrieveAPI(EntityNames.WEBSERVICE.name());
 
+        List<org.epos.eposdatamodel.WebService> webServiceList = api.retrieveAll();
+
+        AbstractAPI api2 = AbstractAPI.retrieveAPI(EntityNames.OPERATION.name());
+
+        List<org.epos.eposdatamodel.Operation> operationList = api2.retrieveAll();
+
+        AbstractAPI api3 = AbstractAPI.retrieveAPI(EntityNames.MAPPING.name());
+
+        List<org.epos.eposdatamodel.Mapping> mappingList = api3.retrieveAll();
+
+        for(org.epos.eposdatamodel.Mapping mapping : mappingList){
+            System.out.println(mapping);
+        }
+
+        assertAll(
+                () -> assertEquals(1, webServiceList.size()),
+                () -> assertEquals(1, operationList.size()),
+                () -> assertEquals(2, mappingList.size())
+        );
+
+    }
 
 }
