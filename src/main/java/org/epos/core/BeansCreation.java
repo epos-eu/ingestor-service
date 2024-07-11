@@ -73,16 +73,11 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             System.out.println("Is not a linked entity class " + propertyValue);
 
             if (propertyValueClass.getName().equals("org.apache.jena.datatypes.xsd.XSDDateTime")) {
-                LocalDateTime localDateTime = LocalDateTime.parse(propertyValue.toString().replaceAll("Z",""));
-                propertyValueClass = String.class;
+                propertyValueClass = LocalDateTime.class;
                 try {
-                    DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                            .appendPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                            .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                            .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                            .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                            .toFormatter();
-                    propertyValue = localDateTime.format(formatter);
+                    propertyValue = ParseLocalDateTime.parse((String) propertyValue);//LocalDateTime.parse((String)propertyValue,  DateTimeFormatter.ofPattern("yyyy-MM-dd['T'HH:mm:ss'Z']"));
+                    System.out.println("DATE: "+propertyValue);
+
                 } catch (DateTimeParseException ignored) {
                     System.err.println(ignored.getLocalizedMessage());
                 }
