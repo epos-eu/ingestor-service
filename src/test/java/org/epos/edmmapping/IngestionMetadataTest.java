@@ -119,8 +119,17 @@ public class IngestionMetadataTest extends TestcontainersLifecycle {
 
         List<org.epos.eposdatamodel.Mapping> mappingList = api3.retrieveAll();
 
+        AbstractAPI api4 = AbstractAPI.retrieveAPI(EntityNames.DISTRIBUTION.name());
+
+        List<org.epos.eposdatamodel.Distribution> distributionList = api4.retrieveAll();
+
+
         for(org.epos.eposdatamodel.Mapping mapping : mappingList){
             System.out.println(mapping);
+        }
+
+        for(org.epos.eposdatamodel.Distribution distribution : distributionList){
+            System.out.println(distribution);
         }
 
         assertAll(

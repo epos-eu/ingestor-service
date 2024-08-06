@@ -60,9 +60,11 @@ public class IngestionFromFileMetadataTest extends TestcontainersLifecycle {
 
         AbstractAPI categorySchemeApi = AbstractAPI.retrieveAPI(EntityNames.CATEGORYSCHEME.name());
         AbstractAPI categoryApi = AbstractAPI.retrieveAPI(EntityNames.CATEGORY.name());
+        AbstractAPI dataProductApi = AbstractAPI.retrieveAPI(EntityNames.DATAPRODUCT.name());
 
         List<org.epos.eposdatamodel.Category> categoryList = categoryApi.retrieveAll();
         List<org.epos.eposdatamodel.CategoryScheme> categorySchemeList = categorySchemeApi.retrieveAll();
+        List<org.epos.eposdatamodel.DataProduct> dataProductList = dataProductApi.retrieveAll();
 
         for(org.epos.eposdatamodel.Category category : categoryList){
             System.out.println(category.getInstanceId()+" "+category.getMetaId()+" "+category.getUid()+" "+category.getStatus());
@@ -70,6 +72,10 @@ public class IngestionFromFileMetadataTest extends TestcontainersLifecycle {
 
         for(org.epos.eposdatamodel.CategoryScheme categoryScheme : categorySchemeList){
             System.out.println(categoryScheme.getInstanceId()+" "+categoryScheme.getMetaId()+" "+categoryScheme.getUid()+" "+categoryScheme.getStatus());
+        }
+
+        for(org.epos.eposdatamodel.DataProduct dataProduct : dataProductList){
+            System.out.println(dataProduct);
         }
 
 
