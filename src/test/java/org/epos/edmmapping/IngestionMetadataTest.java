@@ -132,6 +132,10 @@ public class IngestionMetadataTest extends TestcontainersLifecycle {
             System.out.println(distribution);
         }
 
+        for(org.epos.eposdatamodel.Operation operation : operationList){
+            System.out.println(operation);
+        }
+
         assertAll(
                 () -> assertEquals(1, webServiceList.size()),
                 () -> assertEquals(1, operationList.size()),
