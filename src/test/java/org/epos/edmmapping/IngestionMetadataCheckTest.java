@@ -91,7 +91,7 @@ public class IngestionMetadataCheckTest extends TestcontainersLifecycle {
 
         System.out.println(dataProduct);
 
-        /** GENERAL ASSERTS **/
+        /** GENERAL ASSETS **/
         assertAll(
                 () -> assertNotNull(dataProduct.getIdentifier()),
                 () -> assertEquals(1, dataProduct.getIdentifier().size()),
@@ -109,7 +109,7 @@ public class IngestionMetadataCheckTest extends TestcontainersLifecycle {
                 //() -> assertEquals("https://www.epos-eu.org/epos-dcat-ap/Seismology/Dataset/001/Distribution/001", dataProduct.getDistribution().get(0).getUid())
         );
 
-        /** IDENTIFIER ASSERTS **/
+        /** IDENTIFIER ASSETS **/
         AbstractAPI identifierAPI = AbstractAPI.retrieveAPI(EntityNames.IDENTIFIER.name());
         List<org.epos.eposdatamodel.Identifier> identifierList = identifierAPI.retrieveAll();
 
@@ -127,7 +127,7 @@ public class IngestionMetadataCheckTest extends TestcontainersLifecycle {
                 () -> assertEquals("WP08-DDSS-001", finalIdentifier.getIdentifier())
         );
 
-        /** SPATIAL ASSERTS **/
+        /** SPATIAL ASSETS **/
 
         AbstractAPI spatialAPI = AbstractAPI.retrieveAPI(EntityNames.LOCATION.name());
         List<org.epos.eposdatamodel.Location> locationList = spatialAPI.retrieveAll();
@@ -145,7 +145,7 @@ public class IngestionMetadataCheckTest extends TestcontainersLifecycle {
                 () -> assertEquals("POLYGON((180.0 -90.0 , -180.0 -90.0, -180.0 90.0 , 180.0 90.0,180.0 -90.0))", finalLocation.getLocation())
         );
 
-        /** TEMPORAL ASSERTS **/
+        /** TEMPORAL ASSETS **/
 
         AbstractAPI temporalAPI = AbstractAPI.retrieveAPI(EntityNames.PERIODOFTIME.name());
         List<org.epos.eposdatamodel.PeriodOfTime> periodOfTimeList = temporalAPI.retrieveAll();
@@ -163,7 +163,6 @@ public class IngestionMetadataCheckTest extends TestcontainersLifecycle {
                 //() -> assertEquals("1988-01-01T00:00:00Z", finalPeriodOfTime.getStartDate()),
                 () -> assertEquals(null, finalPeriodOfTime.getEndDate())
         );
-
 
     }
 
