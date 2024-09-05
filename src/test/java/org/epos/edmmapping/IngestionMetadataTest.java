@@ -101,8 +101,7 @@ public class IngestionMetadataTest extends TestcontainersLifecycle {
     public void testRetrievePropertiesFromClasses() throws IOException {
 
         String metadataURL = "https://raw.githubusercontent.com/epos-eu/EPOS-DCAT-AP/EPOS-DCAT-AP-shapes/examples/EPOS-DCAT-AP_metadata_template.ttl";
-        //String metadataURL = "http://10.101.10.44:4200/WP14-metadata.ttl"; // //EMTC-v2.ttl
-
+        
         Map<String, Object> returnMap = MetadataPopulator.startMetadataPopulation(metadataURL, "EDM-TO-DCAT-AP");
 
         System.out.println(returnMap);
