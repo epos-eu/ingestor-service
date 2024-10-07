@@ -8,7 +8,7 @@ import org.testcontainers.utility.DockerImageName;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestcontainersLifecycle {
     public static PostgreSQLContainer<?> METADATA_CATALOGUE = new PostgreSQLContainer<>(
-            DockerImageName.parse("epos/metadata-database-deploy:refactoring")
+            DockerImageName.parse("epos/metadata-database-deploy-test:latest")
                     .asCompatibleSubstituteFor("postgres")
 
     ).withDatabaseName("cerif").withUsername("postgres").withPassword("changeme").withExposedPorts(5432);
