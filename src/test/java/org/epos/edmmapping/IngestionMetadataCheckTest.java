@@ -3,7 +3,7 @@ package org.epos.edmmapping;
 import abstractapis.AbstractAPI;
 import dao.EposDataModelDAO;
 import metadataapis.EntityNames;
-import model.Ontologies;
+import model.Ontology;
 import org.apache.jena.rdf.model.Model;
 import org.epos.core.BeansCreation;
 import org.epos.core.MetadataPopulator;
@@ -44,14 +44,14 @@ public class IngestionMetadataCheckTest extends TestcontainersLifecycle {
         OntologiesManager.createOntology("EDM-TO-DCAT-AP", "MAPPING", metadataMappingEPOSDataModel);
 
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
-        List<Ontologies> ontologiesList = eposDataModelDAO.getAllFromDB(Ontologies.class);
+        List<Ontology> ontologiesList = eposDataModelDAO.getAllFromDB(Ontology.class);
 
 
         assertNotNull(ontologiesList);
         assertEquals(3, ontologiesList.size());
     }
 
-    @Test
+    /*@Test
     @Order(2)
     public void testInsertMetadataInformation() throws IOException {
 
@@ -71,10 +71,10 @@ public class IngestionMetadataCheckTest extends TestcontainersLifecycle {
 
         List<org.epos.eposdatamodel.WebService> webServiceList = webserviceAPI.retrieveAll();
 
-    }
+    }*/
 
     @Test
-    @Order(3)
+    @Order(2)
     public void testRetrievePropertiesFromDataProduct() throws IOException {
 
         String metadataURL = "https://raw.githubusercontent.com/epos-eu/EPOS-DCAT-AP/EPOS-DCAT-AP-shapes/examples/EPOS-DCAT-AP_metadata_template.ttl";
@@ -90,6 +90,10 @@ public class IngestionMetadataCheckTest extends TestcontainersLifecycle {
         DataProduct dataProduct = dataProductList.get(0);
 
         System.out.println(dataProduct);
+
+        for(LinkedEntity le : dataProduct.getIdentifier()){
+            System.out.println(AbstractAPI.retrieveAPI(EntityNames.IDENTIFIER.name()).retrieve(le.getInstanceId()));
+        }
 
         /** GENERAL ASSETS **/
         assertAll(

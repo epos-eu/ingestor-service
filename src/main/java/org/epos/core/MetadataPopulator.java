@@ -27,10 +27,10 @@ public class MetadataPopulator {
         /**
          * GET ALL ONTOLOGIES FROM DB AND POPULATE MODEL AND MODEL MAPPING
          **/
-        List<Ontologies> ontologiesList = eposDataModelDAO.getAllFromDB(Ontologies.class);
+        List<Ontology> ontologiesList = eposDataModelDAO.getAllFromDB(Ontology.class);
 
         String triples = null;
-        for(Ontologies ontologies : ontologiesList){
+        for(Ontology ontologies : ontologiesList){
             if(ontologies.getName().equals(inputMappingModel)){
                 triples = new String(Base64.getDecoder().decode(ontologies.getContent()));
             }
@@ -196,7 +196,7 @@ public class MetadataPopulator {
             System.out.println("[ADDING TO DATABASE] "+eposDataModelEntity);
             try {
                 AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
-                LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED);
+                LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED, null, null);
                 returnMap.put(le.getUid(), le);
             }catch(Exception apiCreationException){
                 apiCreationException.printStackTrace();

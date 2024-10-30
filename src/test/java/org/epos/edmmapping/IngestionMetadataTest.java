@@ -5,7 +5,7 @@ import dao.EposDataModelDAO;
 import metadataapis.EntityNames;
 import model.Category;
 import model.CategoryScheme;
-import model.Ontologies;
+import model.Ontology;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
@@ -49,7 +49,7 @@ public class IngestionMetadataTest extends TestcontainersLifecycle {
         OntologiesManager.createOntology("EDM-TO-DCAT-AP", "MAPPING", metadataMappingEPOSDataModel);
 
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
-        List<Ontologies> ontologiesList = eposDataModelDAO.getAllFromDB(Ontologies.class);
+        List<Ontology> ontologiesList = eposDataModelDAO.getAllFromDB(Ontology.class);
 
 
         assertNotNull(ontologiesList);

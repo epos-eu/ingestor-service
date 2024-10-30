@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
-import model.Ontologies;
+import model.Ontology;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.epos.core.OntologiesManager;
 import org.slf4j.Logger;
@@ -62,14 +62,14 @@ public class OntologiesManagementApiController implements OntologiesManagementAp
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(new ApiResponseMessage(ApiResponseMessage.OK,"DONE, correcly added ontology from: "+path));
 	}
 
-	public ResponseEntity<List<Ontologies>> ontologyRetrieve(
+	public ResponseEntity<List<Ontology>> ontologyRetrieve(
 			@Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode) {
 
 
 		if( !validSecurityPhrase(securityCode) )
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-		List<Ontologies> ontologiesList = new ArrayList<>();
+		List<Ontology> ontologiesList = new ArrayList<>();
 		ontologiesList = OntologiesManager.retrieveOntologies();
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ontologiesList);

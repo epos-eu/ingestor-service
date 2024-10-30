@@ -1,7 +1,7 @@
 package org.epos.edmmapping;
 
 import dao.EposDataModelDAO;
-import model.Ontologies;
+import model.Ontology;
 import org.epos.core.OntologiesManager;
 import org.epos.eposdatamodel.User;
 import org.junit.jupiter.api.Order;
@@ -28,7 +28,7 @@ public class IngestionMetadataOntologiesTest extends TestcontainersLifecycle {
         OntologiesManager.createOntology("EDM-TO-DCAT-AP", "MAPPING", metadataMappingEPOSDataModel);
 
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
-        List<Ontologies> ontologiesList = eposDataModelDAO.getAllFromDB(Ontologies.class);
+        List<Ontology> ontologiesList = eposDataModelDAO.getAllFromDB(Ontology.class);
 
 
         assertNotNull(ontologiesList);

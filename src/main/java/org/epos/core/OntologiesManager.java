@@ -1,7 +1,7 @@
 package org.epos.core;
 
 import dao.EposDataModelDAO;
-import model.Ontologies;
+import model.Ontology;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,12 +17,12 @@ public class OntologiesManager {
     public static void createOntology(String name, String type, String ontologyURL) throws IOException {
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
 
-        List<Ontologies> ontologiesList = eposDataModelDAO.getAllFromDB(Ontologies.class);
+        List<Ontology> ontologiesList = eposDataModelDAO.getAllFromDB(Ontology.class);
 
 
-        Ontologies existingOntology = null;
+        Ontology existingOntology = null;
 
-        for(Ontologies ontologies : ontologiesList){
+        for(Ontology ontologies : ontologiesList){
             if(ontologies.getName().equals(name)) existingOntology = ontologies;
         }
 
@@ -36,7 +36,7 @@ public class OntologiesManager {
         }
         String encoded = Base64.getEncoder().encodeToString(resultStringBuilder.toString().getBytes(StandardCharsets.UTF_8));
 
-        Ontologies ont = new Ontologies();
+        Ontology ont = new Ontology();
         ont.setId(existingOntology!=null? existingOntology.getId() :UUID.randomUUID().toString());
         ont.setName(name);
         ont.setType(type);
@@ -48,6 +48,6 @@ public class OntologiesManager {
     public static List retrieveOntologies() {
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
 
-        return eposDataModelDAO.getAllFromDB(Ontologies.class);
+        return eposDataModelDAO.getAllFromDB(Ontology.class);
     }
 }

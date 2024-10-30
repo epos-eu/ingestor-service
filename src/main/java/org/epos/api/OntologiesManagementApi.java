@@ -7,10 +7,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import model.Ontologies;
+import model.Ontology;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,7 +66,7 @@ public interface OntologiesManagementApi {
     @RequestMapping(value = "/ontology",
             produces = { "*/*" },
             method = RequestMethod.GET)
-    ResponseEntity<List<Ontologies>> ontologyRetrieve(
+    ResponseEntity<List<Ontology>> ontologyRetrieve(
             @Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode);
 
 }

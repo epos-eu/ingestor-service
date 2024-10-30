@@ -3,7 +3,7 @@ package org.epos.edmmapping;
 import abstractapis.AbstractAPI;
 import dao.EposDataModelDAO;
 import metadataapis.EntityNames;
-import model.Ontologies;
+import model.Ontology;
 import org.epos.core.MetadataPopulator;
 import org.epos.core.OntologiesManager;
 import org.epos.eposdatamodel.User;
@@ -34,7 +34,7 @@ public class IngestionComplexFromFileMetadataTest extends TestcontainersLifecycl
         OntologiesManager.createOntology("EDM-TO-DCAT-AP", "MAPPING", metadataMappingEPOSDataModel);
 
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
-        List<Ontologies> ontologiesList = eposDataModelDAO.getAllFromDB(Ontologies.class);
+        List<Ontology> ontologiesList = eposDataModelDAO.getAllFromDB(Ontology.class);
 
 
         assertNotNull(ontologiesList);
