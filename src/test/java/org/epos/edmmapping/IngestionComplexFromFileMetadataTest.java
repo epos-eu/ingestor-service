@@ -121,6 +121,9 @@ public class IngestionComplexFromFileMetadataTest extends TestcontainersLifecycl
         for(org.epos.eposdatamodel.DataProduct dataProduct : dataProductList){
             System.out.println(dataProduct.getInstanceId()+" "+dataProduct.getMetaId()+" "+dataProduct.getUid()+" "+dataProduct.getStatus());
         }
+        for(org.epos.eposdatamodel.DataProduct dataProduct : dataProductList){
+            System.out.println(dataProduct);
+        }
 
         assertAll(
                 () -> assertEquals(1, dataProductList.size())

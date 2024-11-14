@@ -162,6 +162,10 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             }
         }
 
+        if(entity==null){
+            entity = getEPOSDataModelClass(propertyName,propertyValue);
+        }
+
         if (entity != null) {
             try {
 
