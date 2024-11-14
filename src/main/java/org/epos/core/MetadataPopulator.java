@@ -118,6 +118,7 @@ public class MetadataPopulator {
 
                             /** Manage Properties of Active Class **/
                             if (!predicate.equals("rdf:type")) {
+                                System.out.println("PREDICATE: "+predicate);
                                 itemValue = SPARQLManager.retrievePropertyValueInEDM(predicate, activeClass.getClass().getSimpleName(), modelmapping);
                                 if(!triple1.getSubject().isBlank() && triple1.getObject().isBlank() && itemValue==null){
                                     retrievePlainValueFromInnerMethods(modelmapping, beansCreation, classes, graph, triple1.getObject().toString(), activeClass);
