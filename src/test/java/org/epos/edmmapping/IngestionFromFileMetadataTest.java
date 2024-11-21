@@ -67,11 +67,11 @@ public class IngestionFromFileMetadataTest extends TestcontainersLifecycle {
         List<org.epos.eposdatamodel.DataProduct> dataProductList = dataProductApi.retrieveAll();
 
         for(org.epos.eposdatamodel.Category category : categoryList){
-            System.out.println(category.getInstanceId()+" "+category.getMetaId()+" "+category.getUid()+" "+category.getStatus());
+            System.out.println(category);
         }
 
         for(org.epos.eposdatamodel.CategoryScheme categoryScheme : categorySchemeList){
-            System.out.println(categoryScheme.getInstanceId()+" "+categoryScheme.getMetaId()+" "+categoryScheme.getUid()+" "+categoryScheme.getStatus());
+            System.out.println(categoryScheme);
         }
 
         for(org.epos.eposdatamodel.DataProduct dataProduct : dataProductList){
