@@ -47,11 +47,11 @@
 
   schema:potentialAction [ a schema:ControlAction ;
       #Description of Payload schema and format
-      schema:object [ a schema:CreativeWork ;
+      schema:object [ a schema:DataDownload ;
         schema:encodingFormat "application/json" ;
         schema:schemaVersion "" ;
       ] ;
-      schema:result [ a schema:CreativeWork ;
+      schema:result [ a schema:TextObject ;
         schema:encodingFormat "application/epos.geo+json" ;
         schema:schemaVersion "" ;
       ] ;

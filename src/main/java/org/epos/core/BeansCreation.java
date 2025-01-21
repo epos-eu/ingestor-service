@@ -23,6 +23,7 @@ import java.util.*;
 public class BeansCreation <T extends EPOSDataModelEntity> {
 
     public T getEPOSDataModelClass(String className, String uid){
+        System.out.println("GET EDM class: "+className+" "+uid);
         try {
             Class clazz = Class.forName("org.epos.eposdatamodel."+className);
             Constructor[] ctor = clazz.getConstructors();
@@ -33,6 +34,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             object.setEditorId("ingestor");
             object.setFileProvenance("ingestor");
             object.setStatus(StatusType.PUBLISHED);
+            System.out.println("RESUTL CLASS: "+object+" "+uid);
 
             return object;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |

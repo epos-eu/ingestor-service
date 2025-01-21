@@ -54,15 +54,21 @@ public class IngestionFromFileMetadataPluginTest extends TestcontainersLifecycle
 
         AbstractAPI softwareApplicationAPI = AbstractAPI.retrieveAPI(EntityNames.SOFTWAREAPPLICATION.name());
         AbstractAPI softwareSourceCodeAPI = AbstractAPI.retrieveAPI(EntityNames.SOFTWARESOURCECODE.name());
+        AbstractAPI softwareApplicationParameterAPI = AbstractAPI.retrieveAPI(EntityNames.SOFTWAREAPPLICATIONINPUTPARAMETER.name());
 
         List<org.epos.eposdatamodel.SoftwareApplication> categoryList = softwareApplicationAPI.retrieveAll();
         List<org.epos.eposdatamodel.SoftwareSourceCode> categorySchemeList = softwareSourceCodeAPI.retrieveAll();
+        List<org.epos.eposdatamodel.SoftwareApplicationParameter> softwareApplicationParametersList = softwareApplicationParameterAPI.retrieveAll();
 
         for(org.epos.eposdatamodel.SoftwareApplication item : categoryList){
             System.out.println(item);
         }
 
         for(org.epos.eposdatamodel.SoftwareSourceCode item : categorySchemeList){
+            System.out.println(item);
+        }
+
+        for(org.epos.eposdatamodel.SoftwareApplicationParameter item : softwareApplicationParametersList){
             System.out.println(item);
         }
 
