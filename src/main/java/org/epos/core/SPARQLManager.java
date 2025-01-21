@@ -56,7 +56,6 @@ public class SPARQLManager {
 
         queryString +=
                 "SELECT ?mapped WHERE { ?mapped owl:equivalentClass "+value+" . }";
-        System.out.println("QUERY CLASS: \n"+queryString);
         Query query = QueryFactory.create(queryString);
 
         QueryExecution qexec = QueryExecutionFactory.create(query, modelmapping);
@@ -93,7 +92,6 @@ public class SPARQLManager {
                         "  ?property owl:equivalentProperty "+value+" .\n" +
                         "  ?property rdfs:range  ?range .\n" +
                         "}";
-        System.out.println("QUERY PROPERTY: \n"+queryString);
         Query query = null;
         try {
             query = QueryFactory.create(queryString);
