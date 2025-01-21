@@ -59,6 +59,6 @@
 
   schema:softwareRequirements "Java-Reflection;target/;WP14_Episodes-file-jar-with-dependencies.jar;org.epos.ahepisodes.core.AHEpisodesInvoker" ;
 
-  dct:relation <anthropogenic_hazards/webservice/is-epos_platform/episodes> ;
+  dct:subject <anthropogenic_hazards/webservice/is-epos_platform/episodes> ;
 
 .
