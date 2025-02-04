@@ -535,7 +535,7 @@
 	foaf:page "http://facilityURL.org"^^xsd:anyURI ;
 	dcat:contactPoint <http://orcid.org//0000-0001-5805-9337/scientificContact> ;
 	dct:spatial [ a dct:Location ;
-		locn:geometry "POINT(15.085 37.525)"^^gsp:wktLiteral;ì
+		locn:geometry "POINT(15.085 37.525)"^^gsp:wktLiteral;
         ];
 	dct:relation <Dataset/Test/2> ;
 .
