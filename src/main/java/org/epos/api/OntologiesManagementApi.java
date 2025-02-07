@@ -67,7 +67,9 @@ public interface OntologiesManagementApi {
             produces = { "*/*" },
             method = RequestMethod.GET)
     ResponseEntity<List<Ontology>> ontologyRetrieve(
-            @Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode);
+            @Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode,
+                    @Parameter(in = ParameterIn.QUERY, description = "plain content, not encoded" ,required=false,schema=@Schema()) @RequestParam(value="encoded", required=false) Boolean encoded,
+                    @Parameter(in = ParameterIn.QUERY, description = "retrieve only name and type, without schema" ,required=false,schema=@Schema()) @RequestParam(value="nobody", required=false) Boolean nobody);
 
 }
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-10-12T08:15:11.660Z[GMT]")
@@ -63,14 +64,23 @@ public class OntologiesManagementApiController implements OntologiesManagementAp
 	}
 
 	public ResponseEntity<List<Ontology>> ontologyRetrieve(
-			@Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode) {
+			@Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode,
+			@Parameter(in = ParameterIn.QUERY, description = "plain content, not encoded" ,required=false,schema=@Schema()) @RequestParam(value="encoded", required=false) Boolean encoded,
+			@Parameter(in = ParameterIn.QUERY, description = "retrieve only name and type, without schema" ,required=false,schema=@Schema()) @RequestParam(value="nobody", required=false) Boolean nobody) {
 
 
 		if( !validSecurityPhrase(securityCode) )
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
+
 		List<Ontology> ontologiesList = new ArrayList<>();
 		ontologiesList = OntologiesManager.retrieveOntologies();
+		if(nobody.booleanValue()){
+			ontologiesList.stream().map(Ontology::getContent).forEach(content -> {content = null;});
+		}
+		if(encoded.booleanValue()){
+			ontologiesList.stream().map(Ontology::getContent).filter(content -> content!=null).forEach(content -> {content = Base64.getDecoder().decode(content).toString();});
+		}
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ontologiesList);
 	}
