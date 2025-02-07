@@ -72,13 +72,16 @@ public class OntologiesManagementApiController implements OntologiesManagementAp
 		if( !validSecurityPhrase(securityCode) )
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
+		if(nobody == null) nobody = false;
+		if(encoded == null) encoded = true;
+
 
 		List<Ontology> ontologiesList = new ArrayList<>();
 		ontologiesList = OntologiesManager.retrieveOntologies();
 		if(nobody.booleanValue()){
 			ontologiesList.stream().map(Ontology::getContent).forEach(content -> {content = null;});
 		}
-		if(encoded.booleanValue()){
+		if(!encoded.booleanValue()){
 			ontologiesList.stream().map(Ontology::getContent).filter(content -> content!=null).forEach(content -> {content = Base64.getDecoder().decode(content).toString();});
 		}
 
