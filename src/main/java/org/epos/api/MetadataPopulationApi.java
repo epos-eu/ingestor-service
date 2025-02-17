@@ -44,7 +44,7 @@ public interface MetadataPopulationApi {
     		@Parameter(in = ParameterIn.QUERY, description = "metadata model" ,required=true,schema=@Schema()) @RequestParam(value="model", required=true) String model,
             @Parameter(in = ParameterIn.QUERY, description = "metadata mapping model" ,required=true,schema=@Schema()) @RequestParam(value="mapping", required=true) String mapping,
     		@Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode,
-            @Parameter(in = ParameterIn.QUERY, description = "metadata group where the resource should be placed" ,required=true,schema=@Schema()) @RequestParam(value="metadataGroup", required=true) String metadataGroup);
+            @Parameter(in = ParameterIn.QUERY, description = "metadata group where the resource should be placed" ,required=true,schema=@Schema()) @RequestParam(value="metadataGroup", required=false) String metadataGroup);
 
 }
 
