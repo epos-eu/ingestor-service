@@ -50,7 +50,7 @@ public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycl
             throw new IllegalArgumentException("file not found!");
         }
 
-        MetadataPopulator.startMetadataPopulation(resource.toURI().toString(), "EDM-TO-DCAT-AP");
+        MetadataPopulator.startMetadataPopulation(resource.toURI().toString(), "EDM-TO-DCAT-AP", null);
 
         // Assert Categories and schemes
         AbstractAPI categorySchemeApi = AbstractAPI.retrieveAPI(EntityNames.CATEGORYSCHEME.name());

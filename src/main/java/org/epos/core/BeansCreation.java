@@ -6,6 +6,7 @@ import model.StatusType;
 import org.apache.jena.datatypes.BaseDatatype;
 import org.apache.jena.datatypes.xsd.XSDDateTime;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
+import org.epos.eposdatamodel.Group;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.lang.reflect.Constructor;
@@ -22,7 +23,7 @@ import java.util.*;
 
 public class BeansCreation <T extends EPOSDataModelEntity> {
 
-    public T getEPOSDataModelClass(String className, String uid){
+    public T getEPOSDataModelClass(String className, String uid, Group selectedGroup){
         System.out.println("GET EDM class: "+className+" "+uid);
         try {
             Class clazz = Class.forName("org.epos.eposdatamodel."+className);
@@ -33,6 +34,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             object.setUid(uid);
             object.setEditorId("ingestor");
             object.setFileProvenance("ingestor");
+            if(selectedGroup!=null) object.setGroups(List.of(selectedGroup));
             object.setStatus(StatusType.PUBLISHED);
 
             return object;
@@ -146,7 +148,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         }
     }
 
-    public void getEPOSDataModelPropertiesNode(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, Map<String, String> property, String propertyValue) {
+    public void getEPOSDataModelPropertiesNode(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, Map<String, String> property, String propertyValue, Group selectedGroup) {
 
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
@@ -164,7 +166,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         }
 
         if(entity==null){
-            entity = getEPOSDataModelClass(property.get("range"),propertyValue);
+            entity = getEPOSDataModelClass(property.get("range"),propertyValue, selectedGroup);
         }
 
         if (entity != null) {

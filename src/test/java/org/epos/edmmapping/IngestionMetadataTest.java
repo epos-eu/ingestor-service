@@ -84,7 +84,7 @@ public class IngestionMetadataTest extends TestcontainersLifecycle {
 
         for(String uid : classesMap.keySet()){
             String className = SPARQLManager.retrieveEDMMappedClass(classesMap.get(uid).get("class").toString(), modelmapping);
-            classes.add(beansCreation.getEPOSDataModelClass(className,uid));
+            classes.add(beansCreation.getEPOSDataModelClass(className,uid, null));
         }
 
         System.out.println(classes);
@@ -102,7 +102,7 @@ public class IngestionMetadataTest extends TestcontainersLifecycle {
 
         String metadataURL = "https://raw.githubusercontent.com/epos-eu/EPOS-DCAT-AP/EPOS-DCAT-AP-shapes/examples/EPOS-DCAT-AP_metadata_template.ttl";
 
-        Map<String, Object> returnMap = MetadataPopulator.startMetadataPopulation(metadataURL, "EDM-TO-DCAT-AP");
+        Map<String, Object> returnMap = MetadataPopulator.startMetadataPopulation(metadataURL, "EDM-TO-DCAT-AP", null);
 
         System.out.println(returnMap);
 

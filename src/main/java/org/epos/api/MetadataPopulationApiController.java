@@ -5,8 +5,10 @@ import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
+import model.MetadataGroup;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.epos.core.MetadataPopulator;
+import org.epos.eposdatamodel.Group;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import usermanagementapis.UserGroupManagementAPI;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -48,12 +51,24 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 			@Parameter(in = ParameterIn.QUERY, description = "path of the file to use" ,required=true,schema=@Schema()) @RequestParam(value="path", required=true) String path,
 			@Parameter(in = ParameterIn.QUERY, description = "metadata model" ,required=true,schema=@Schema()) @RequestParam(value="model", required=true) String model,
 			@Parameter(in = ParameterIn.QUERY, description = "metadata mapping model" ,required=true,schema=@Schema()) @RequestParam(value="mapping", required=true) String mapping,
-			@Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode) {
+			@Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode,
+			@Parameter(in = ParameterIn.QUERY, description = "metadata group where the resource should be placed" ,required=true,schema=@Schema()) @RequestParam(value="metadataGroup", required=true) String metadataGroup) {
 
 
 		if( !validSecurityPhrase(securityCode) )
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
+		if (metadataGroup == null || metadataGroup.isEmpty()) {
+			metadataGroup = "ALL";
+		}
+
+		Group selectedGroup = null;
+
+		for(Group group : UserGroupManagementAPI.retrieveAllGroups()){
+			if(group.getName().equals(metadataGroup)){
+				selectedGroup = group;
+			}
+		}
 		boolean multiline = type.equals("single") ? false : true;
 
 		if (multiline) {
@@ -64,7 +79,7 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 				while (s.hasNextLine()) {
 					String urlsingle = s.nextLine();
 					System.out.println(urlsingle);
-					MetadataPopulator.startMetadataPopulation(urlsingle,mapping);
+					MetadataPopulator.startMetadataPopulation(urlsingle,mapping, selectedGroup);
 				}
 				s.close();
 			} catch (IOException e) {
@@ -72,7 +87,7 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 			}
 
 		} else {
-			MetadataPopulator.startMetadataPopulation(path,mapping);
+			MetadataPopulator.startMetadataPopulation(path,mapping, selectedGroup);
 		}
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(new ApiResponseMessage(4,"DONE, correcly ingested "+path));

@@ -79,7 +79,7 @@ public class IngestionMetadataCheckTest extends TestcontainersLifecycle {
 
         String metadataURL = "https://raw.githubusercontent.com/epos-eu/EPOS-DCAT-AP/EPOS-DCAT-AP-shapes/examples/EPOS-DCAT-AP_metadata_template.ttl";
 
-        MetadataPopulator.startMetadataPopulation(metadataURL, "EDM-TO-DCAT-AP");
+        MetadataPopulator.startMetadataPopulation(metadataURL, "EDM-TO-DCAT-AP", null);
 
         AbstractAPI dataproductAPI = AbstractAPI.retrieveAPI(EntityNames.DATAPRODUCT.name());
 

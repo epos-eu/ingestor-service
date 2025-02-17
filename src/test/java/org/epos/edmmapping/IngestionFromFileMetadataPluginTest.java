@@ -50,7 +50,7 @@ public class IngestionFromFileMetadataPluginTest extends TestcontainersLifecycle
             throw new IllegalArgumentException("file not found!");
         }
 
-        MetadataPopulator.startMetadataPopulation(resource.toURI().toString(), "EDM-TO-DCAT-AP");
+        MetadataPopulator.startMetadataPopulation(resource.toURI().toString(), "EDM-TO-DCAT-AP", null);
 
         AbstractAPI softwareApplicationAPI = AbstractAPI.retrieveAPI(EntityNames.SOFTWAREAPPLICATION.name());
         AbstractAPI softwareSourceCodeAPI = AbstractAPI.retrieveAPI(EntityNames.SOFTWARESOURCECODE.name());

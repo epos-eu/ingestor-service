@@ -13,6 +13,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
+import org.epos.eposdatamodel.Group;
 import org.epos.eposdatamodel.LinkedEntity;
 
 import java.lang.reflect.Field;
@@ -50,7 +51,7 @@ public class MetadataPopulator {
 
         return model;
     }
-    public static void retrievePlainValueFromInnerMethods(Model modelmapping,BeansCreation beansCreation, List<EPOSDataModelEntity> classes, Graph graph, String subject, EPOSDataModelEntity activeClass){
+    public static void retrievePlainValueFromInnerMethods(Model modelmapping,BeansCreation beansCreation, List<EPOSDataModelEntity> classes, Graph graph, String subject, EPOSDataModelEntity activeClass, Group selectedGroup){
         Map<String, String> prefixes = modelmapping.getNsPrefixMap();
 
         for (ExtendedIterator<Triple> it = graph.find(); it.hasNext(); ) {
@@ -67,7 +68,7 @@ public class MetadataPopulator {
                     itemValue = SPARQLManager.retrievePropertyValueInEDM(value, activeClass.getClass().getSimpleName(), modelmapping);
                     /** TODO: add recursive gathering of the element **/
                     if(itemValue == null){
-                        if(triple.getObject().isBlank()) retrievePlainValueFromInnerMethods(modelmapping, beansCreation, classes, graph, triple.getObject().toString(), activeClass);
+                        if(triple.getObject().isBlank()) retrievePlainValueFromInnerMethods(modelmapping, beansCreation, classes, graph, triple.getObject().toString(), activeClass, selectedGroup);
                     } else{
                         innerValue.put("itemValue",itemValue);
                         if(triple.getObject().isLiteral()) innerValue.put("plain",triple.getObject().getLiteralValue());
@@ -76,7 +77,7 @@ public class MetadataPopulator {
                         if(innerValue.get("plain")!=null)
                             beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, (Map<String, String>) innerValue.get("itemValue"), innerValue.get("plain").toString());
                         if(innerValue.get("node")!=null)
-                            beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, (Map<String, String>) innerValue.get("itemValue"), innerValue.get("node").toString());
+                            beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, (Map<String, String>) innerValue.get("itemValue"), innerValue.get("node").toString(), selectedGroup);
 
                     }
                 }
@@ -85,7 +86,7 @@ public class MetadataPopulator {
     }
 
 
-    public static void exploreGraphAndCreateBeans(Model modelmapping, BeansCreation beansCreation, Graph graph, EPOSDataModelEntity activeClass, List<EPOSDataModelEntity> classes, List<String> uidDone) {
+    public static void exploreGraphAndCreateBeans(Model modelmapping, BeansCreation beansCreation, Graph graph, EPOSDataModelEntity activeClass, List<EPOSDataModelEntity> classes, List<String> uidDone, Group selectedGroup) {
         /** SET PREFIXES **/
         Map<String, String> prefixes = modelmapping.getNsPrefixMap();
 
@@ -121,11 +122,11 @@ public class MetadataPopulator {
                                 System.out.println("PREDICATE: "+predicate);
                                 itemValue = SPARQLManager.retrievePropertyValueInEDM(predicate, activeClass.getClass().getSimpleName(), modelmapping);
                                 if(!triple1.getSubject().isBlank() && triple1.getObject().isBlank() && itemValue==null){
-                                    retrievePlainValueFromInnerMethods(modelmapping, beansCreation, classes, graph, triple1.getObject().toString(), activeClass);
+                                    retrievePlainValueFromInnerMethods(modelmapping, beansCreation, classes, graph, triple1.getObject().toString(), activeClass, selectedGroup);
                                 }
                             }
                             if(itemValue != null) {
-                                manageItemValue(activeClass, classes, itemValue, triple1.getObject());
+                                manageItemValue(activeClass, classes, itemValue, triple1.getObject(), selectedGroup);
                             }
                         }
                     }
@@ -134,14 +135,14 @@ public class MetadataPopulator {
         }
     }
 
-    private static void manageItemValue(EPOSDataModelEntity activeClass, List<EPOSDataModelEntity> classes, Map<String, String> itemValue, Node node) {
+    private static void manageItemValue(EPOSDataModelEntity activeClass, List<EPOSDataModelEntity> classes, Map<String, String> itemValue, Node node, Group selectedGroup) {
         BeansCreation beansCreation = new BeansCreation();
         if (node.isURI()) {
             System.out.println("MANAGE URI");
-            beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, itemValue, node.toString());
+            beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, itemValue, node.toString(), selectedGroup);
         } else if (node.isBlank()) {
             System.out.println("MANAGE BLANK");
-            beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, itemValue, node.toString());
+            beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, itemValue, node.toString(), selectedGroup);
         }else if (node.isLiteral()) {
             System.out.println("MANAGE LITERAL");
             String s = null;
@@ -162,7 +163,7 @@ public class MetadataPopulator {
         }
     }
 
-    public static Map<String,Object> startMetadataPopulation(String url, String inputMappingModel){
+    public static Map<String,Object> startMetadataPopulation(String url, String inputMappingModel, Group selectedGroup){
 
         /** RETRIEVE MAPPING MODEL AND MODEL FROM TTL **/
         Map<String, Object> returnMap = new HashMap<>();
@@ -179,13 +180,13 @@ public class MetadataPopulator {
         Map<String,Map<String,String>> classesMap = SPARQLManager.retrieveMainEntities(model);
         for(String uid : classesMap.keySet()){
             String className = SPARQLManager.retrieveEDMMappedClass(classesMap.get(uid).get("class").toString(), modelmapping);
-            EPOSDataModelEntity entity = beansCreation.getEPOSDataModelClass(className,uid);
+            EPOSDataModelEntity entity = beansCreation.getEPOSDataModelClass(className,uid, selectedGroup);
             classes.add(entity);
         }
         classes.removeIf(Objects::isNull);
 
         /** PREPARE PROPERTIES **/
-        exploreGraphAndCreateBeans(modelmapping,beansCreation,graph, null,classes, uidDone);
+        exploreGraphAndCreateBeans(modelmapping,beansCreation,graph, null,classes, uidDone, selectedGroup);
 
         /** PRINT CHECK TODO: DELETE **/
         for(EPOSDataModelEntity eposDataModelEntity : classes){
