@@ -2,11 +2,15 @@ package org.epos.core;
 
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SPARQLManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OntologiesManager.class);
 
     public static Map<String,Map<String,String>> retrieveMainEntities(Model model){
 
@@ -67,7 +71,7 @@ public class SPARQLManager {
                     return soln.get("mapped").toString().replaceAll("http://www.epos-eu.org/epos-data-model#", "");
             }
         }catch(Exception e){
-            System.err.println("Error with query "+queryString+"\n"+e.getLocalizedMessage());
+            LOGGER.error("Error with query "+queryString+"\n"+e.getLocalizedMessage());
         } finally {
             qexec.close();
         }
@@ -77,8 +81,6 @@ public class SPARQLManager {
     public static Map<String, String> retrievePropertyValueInEDM(String value, String className, Model model){
 
         Map<String, String> returnMapQueryProperty = new HashMap<>();
-
-        System.out.println("PRIPERTIES: "+value+" "+className);
 
         Map<String,String> prefixes = model.getNsPrefixMap();
         String queryString = "";
@@ -96,8 +98,7 @@ public class SPARQLManager {
         try {
             query = QueryFactory.create(queryString);
         }catch(Exception e){
-            System.err.println(queryString);
-            System.err.println(e.getLocalizedMessage());
+            LOGGER.error(e.getLocalizedMessage());
             System.exit(0);
         }
         QueryExecution qexec = QueryExecutionFactory.create(query, model);

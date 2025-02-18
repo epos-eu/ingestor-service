@@ -6,9 +6,11 @@ import metadataapis.EntityNames;
 import model.Ontology;
 import org.epos.core.MetadataPopulator;
 import org.epos.core.OntologiesManager;
+import org.epos.eposdatamodel.Group;
 import org.epos.eposdatamodel.User;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import usermanagementapis.UserGroupManagementAPI;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -50,7 +52,15 @@ public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycl
             throw new IllegalArgumentException("file not found!");
         }
 
-        MetadataPopulator.startMetadataPopulation(resource.toURI().toString(), "EDM-TO-DCAT-AP", null);
+        Group selectedGroup = null;
+
+        for(Group group : UserGroupManagementAPI.retrieveAllGroups()){
+            if(group.getName().equals("ALL")){
+                selectedGroup = group;
+            }
+        }
+
+        MetadataPopulator.startMetadataPopulation(resource.toURI().toString(), "EDM-TO-DCAT-AP", selectedGroup);
 
         // Assert Categories and schemes
         AbstractAPI categorySchemeApi = AbstractAPI.retrieveAPI(EntityNames.CATEGORYSCHEME.name());

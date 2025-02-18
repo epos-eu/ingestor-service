@@ -2,6 +2,8 @@ package org.epos.core;
 
 import dao.EposDataModelDAO;
 import model.Ontology;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +16,10 @@ import java.util.UUID;
 
 public class OntologiesManager {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(OntologiesManager.class);
+
     public static void createOntology(String name, String type, String ontologyURL) throws IOException {
+
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
 
         List<Ontology> ontologiesList = eposDataModelDAO.getAllFromDB(Ontology.class);

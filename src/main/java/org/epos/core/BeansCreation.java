@@ -5,9 +5,12 @@ import commonapis.LinkedEntityAPI;
 import model.StatusType;
 import org.apache.jena.datatypes.BaseDatatype;
 import org.apache.jena.datatypes.xsd.XSDDateTime;
+import org.epos.api.MetadataPopulationApiController;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.Group;
 import org.epos.eposdatamodel.LinkedEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -23,8 +26,10 @@ import java.util.*;
 
 public class BeansCreation <T extends EPOSDataModelEntity> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BeansCreation.class);
+
     public T getEPOSDataModelClass(String className, String uid, Group selectedGroup){
-        System.out.println("GET EDM class: "+className+" "+uid);
+        //System.out.println("GET EDM class: "+className+" "+uid);
         try {
             Class clazz = Class.forName("org.epos.eposdatamodel."+className);
             Constructor[] ctor = clazz.getConstructors();
@@ -34,13 +39,12 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             object.setUid(uid);
             object.setEditorId("ingestor");
             object.setFileProvenance("ingestor");
-            if(selectedGroup!=null) object.setGroups(List.of(selectedGroup));
             object.setStatus(StatusType.PUBLISHED);
 
             return object;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
-            System.out.println(e.getLocalizedMessage());
+            LOGGER.error(e.getLocalizedMessage());
             return null;
         }
     }
@@ -49,7 +53,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
 
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        System.out.println("PRE DEBUG: " + classObject.getClass().getName() + " " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName);
+        //System.out.println("PRE DEBUG: " + classObject.getClass().getName() + " " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName);
 
         Method method = null;
         LinkedEntity le = null;
@@ -68,21 +72,21 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                 le.setUid(entity.getUid());
                 le.setEntityType(entity.getClass().getSimpleName().toUpperCase());
             } catch (Exception skip) {
-                System.err.println(skip.getLocalizedMessage());
+                //LOGGER.error(skip.getLocalizedMessage());
             }
             propertyValueClass = LinkedEntity.class;
             propertyValue = le;
         } else {
-            System.out.println("Is not a linked entity class " + propertyValue);
+            //System.out.println("Is not a linked entity class " + propertyValue);
 
             if (propertyValueClass.getName().equals("org.apache.jena.datatypes.xsd.XSDDateTime")) {
                 propertyValueClass = LocalDateTime.class;
                 try {
                     propertyValue = ParseLocalDateTime.parse((String) propertyValue);//LocalDateTime.parse((String)propertyValue,  DateTimeFormatter.ofPattern("yyyy-MM-dd['T'HH:mm:ss'Z']"));
-                    System.out.println("DATE: "+propertyValue);
+                    //System.out.println("DATE: "+propertyValue);
 
                 } catch (DateTimeParseException ignored) {
-                    System.err.println(ignored.getLocalizedMessage());
+                    //LOGGER.error(ignored.getLocalizedMessage());
                 }
             }
             if (propertyValueClass.getName().equals("java.lang.Boolean")) {
@@ -114,36 +118,29 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
         try {
             method = classObject.getClass().getMethod("add" + propertyName, propertyValueClass);
         } catch (NoSuchMethodException e) {
-            System.err.println(e.getLocalizedMessage());
+            //LOGGER.error(e.getLocalizedMessage());
         }
 
         if (method == null) {
             try {
                 method = classObject.getClass().getMethod("set" + propertyName, propertyValueClass);
             } catch (NoSuchMethodException e) {
-                System.err.println(e.getLocalizedMessage());
+                //LOGGER.error(e.getLocalizedMessage());
             }
-        }
-
-        try {
-            System.out.println("Method " + method.getName());
-        }catch(Exception debug){
-            System.out.println("DEBUG: "+propertyName+" "+classObject.getClass().getName()+" "+propertyValueClass+" "+propertyValue.getClass());
         }
 
         if(method != null && propertyValue != null){
             try {
-                System.out.println("Invoking: "+propertyName+" "+propertyValue);
+                //System.out.println("Invoking: "+propertyName+" "+propertyValue);
                 method.invoke(classObject, propertyValue);
             } catch (IllegalArgumentException |IllegalAccessException | InvocationTargetException e) {
-                System.err.println("ERROR Invoking [\nProperty Name: " + propertyName +
+               LOGGER.error("ERROR Invoking [\nProperty Name: " + propertyName +
                         "\nPropertyValue: " + propertyValue +
                         "\nPropertyClass: " + propertyValueClass +
                         "\nClass Name:" + classObject.getClass().getName() +
                         "\nMethod Name:" + method.getName() +
-                        "\nExpected Parameters: " + Arrays.asList(method.getParameterTypes()).toString() + "\n]");
-                System.err.println(e.getLocalizedMessage());
-                //System.exit(0);
+                        "\nExpected Parameters: " + Arrays.asList(method.getParameterTypes()).toString() + "\n]"+
+                        "\nError message: " + e.getLocalizedMessage());
             }
         }
     }
@@ -152,7 +149,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
 
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        System.out.println("PRE DEBUG: " + property.get("range") +" " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName + " "+ propertyValue);
+        //System.out.println("PRE DEBUG: " + property.get("range") +" " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName + " "+ propertyValue);
 
         Method method = null;
         LinkedEntity le = null;
@@ -176,37 +173,35 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                 le.setUid(entity.getUid());
                 le.setEntityType(entity.getClass().getSimpleName().toUpperCase());
             } catch (Exception skip) {
-                System.err.println(skip.getLocalizedMessage());
+                //LOGGER.error(skip.getLocalizedMessage());
             }
             propertyValueClass = LinkedEntity.class;
 
             try {
                 method = classObject.getClass().getMethod("add" + propertyName, propertyValueClass);
             } catch (NoSuchMethodException e) {
-                System.err.println(e.getLocalizedMessage());
+                //LOGGER.error(e.getLocalizedMessage());
             }
 
             if (method == null) {
                 try {
                     method = classObject.getClass().getMethod("set" + propertyName, propertyValueClass);
                 } catch (NoSuchMethodException e) {
-                    System.err.println(e.getLocalizedMessage());
+                    //LOGGER.error(e.getLocalizedMessage());
                 }
             }
 
             if (method != null) {
                 try {
-                    System.out.println("ADDING " + le + " to " + classObject);
                     method.invoke(classObject, le);
                 } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                    System.err.println("ERROR Invoking [\nProperty Name: " + propertyName +
+                    LOGGER.error("ERROR Invoking [\nProperty Name: " + propertyName +
                             "\nPropertyValue: " + propertyValue +
                             "\nPropertyClass: " + propertyValueClass +
                             "\nClass Name:" + classObject.getClass().getName() +
                             "\nMethod Name:" + method.getName() +
-                            "\nExpected Parameters: " + Arrays.asList(method.getParameterTypes()).toString() + "\n]");
-                    System.err.println(e.getLocalizedMessage());
-                    //System.exit(0);
+                            "\nExpected Parameters: " + Arrays.asList(method.getParameterTypes()).toString() + "\n]"+
+                            "\n Error message: " + e.getLocalizedMessage());
                 }
             }
         }

@@ -24,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-10-12T08:15:11.660Z[GMT]")
 @RestController
@@ -78,8 +81,9 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 				Scanner s = new Scanner(urlMultiline.openStream());
 				while (s.hasNextLine()) {
 					String urlsingle = s.nextLine();
-					System.out.println(urlsingle);
+					LOGGER.info("[Ingestion initialized] Ingesting file {} using mapping {} in the group {}", urlsingle, mapping, selectedGroup.getName());
 					MetadataPopulator.startMetadataPopulation(urlsingle,mapping, selectedGroup);
+					LOGGER.info("[Ingestion finished] Ingested file {}", urlsingle);
 				}
 				s.close();
 			} catch (IOException e) {
@@ -87,7 +91,9 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 			}
 
 		} else {
+			LOGGER.info("[Ingestion initialized] Ingesting file {} using mapping {} in the group {}", path, mapping, selectedGroup.getName());
 			MetadataPopulator.startMetadataPopulation(path,mapping, selectedGroup);
+			LOGGER.info("[Ingestion finished] Ingested file {}", path);
 		}
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(new ApiResponseMessage(4,"DONE, correcly ingested "+path));
