@@ -13,6 +13,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.epos.core.*;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
+import org.epos.eposdatamodel.LinkedEntity;
 import org.epos.eposdatamodel.Mapping;
 import org.epos.eposdatamodel.User;
 import org.junit.jupiter.api.Order;
@@ -102,7 +103,7 @@ public class IngestionMetadataTest extends TestcontainersLifecycle {
 
         String metadataURL = "https://raw.githubusercontent.com/epos-eu/EPOS-DCAT-AP/EPOS-DCAT-AP-shapes/examples/EPOS-DCAT-AP_metadata_template.ttl";
 
-        Map<String, Object> returnMap = MetadataPopulator.startMetadataPopulation(metadataURL, "EDM-TO-DCAT-AP", null);
+        Map<String, LinkedEntity> returnMap = MetadataPopulator.startMetadataPopulation(metadataURL, "EDM-TO-DCAT-AP", null);
 
         System.out.println(returnMap);
 

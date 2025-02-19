@@ -161,10 +161,10 @@ public class MetadataPopulator {
         }
     }
 
-    public static Map<String,Object> startMetadataPopulation(String url, String inputMappingModel, Group selectedGroup){
+    public static Map<String,LinkedEntity> startMetadataPopulation(String url, String inputMappingModel, Group selectedGroup){
 
         /** RETRIEVE MAPPING MODEL AND MODEL FROM TTL **/
-        Map<String, Object> returnMap = new HashMap<>();
+        Map<String, LinkedEntity> returnMap = new HashMap<>();
         Model modelmapping = retrieveModelMapping(inputMappingModel);
         Model model = retrieveMetadataModelFromTTL(url);
         Graph graph = model.getGraph();
@@ -193,13 +193,16 @@ public class MetadataPopulator {
                 AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
                 LOGGER.debug("Ingesting -> "+eposDataModelEntity);
                 LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED, null, null);
-                //if(selectedGroup!=null){
-                 //   UserGroupManagementAPI.addMetadataElementToGroup(le.getMetaId(), selectedGroup.getId());
-                //}
                 returnMap.put(le.getUid(), le);
             }catch(Exception apiCreationException){
                 apiCreationException.printStackTrace();
                 LOGGER.error("[ERROR] ON: "+ eposDataModelEntity.toString()+"\n[EXCEPTION]: "+apiCreationException.getLocalizedMessage());
+            }
+        }
+
+        for(Map.Entry<String, LinkedEntity> uid : returnMap.entrySet()){
+            if(selectedGroup!=null){
+               UserGroupManagementAPI.addMetadataElementToGroup(uid.getValue().getMetaId(), selectedGroup.getId());
             }
         }
 
