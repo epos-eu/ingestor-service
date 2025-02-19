@@ -193,9 +193,9 @@ public class MetadataPopulator {
                 AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
                 LOGGER.debug("Ingesting -> "+eposDataModelEntity);
                 LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED, null, null);
-                if(selectedGroup!=null){
-                    UserGroupManagementAPI.addMetadataElementToGroup(le.getMetaId(), selectedGroup.getId());
-                }
+                //if(selectedGroup!=null){
+                 //   UserGroupManagementAPI.addMetadataElementToGroup(le.getMetaId(), selectedGroup.getId());
+                //}
                 returnMap.put(le.getUid(), le);
             }catch(Exception apiCreationException){
                 apiCreationException.printStackTrace();
