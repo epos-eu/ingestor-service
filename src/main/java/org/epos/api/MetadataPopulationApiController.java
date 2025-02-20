@@ -22,7 +22,9 @@ import usermanagementapis.UserGroupManagementAPI;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -65,13 +67,17 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 			metadataGroup = "ALL";
 		}
 
-		Group selectedGroup = null;
+        try {
+            metadataGroup=java.net.URLDecoder.decode(metadataGroup, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+			LOGGER.error("[Error] Error decoding groupname {}", e.getLocalizedMessage());
+        }
 
-		for(Group group : UserGroupManagementAPI.retrieveAllGroups()){
-			if(group.getName().equals(metadataGroup)){
-				selectedGroup = group;
-			}
+        Group selectedGroup = UserGroupManagementAPI.retrieveGroupByName(metadataGroup);
+		if (selectedGroup == null) {
+			selectedGroup = UserGroupManagementAPI.retrieveGroupByName("ALL");
 		}
+
 		boolean multiline = type.equals("single") ? false : true;
 
 		if (multiline) {
