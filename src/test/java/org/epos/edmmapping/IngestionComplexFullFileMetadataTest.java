@@ -99,6 +99,30 @@ public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycl
                 );
             }
         }
+
+        AbstractAPI operationsAPI = AbstractAPI.retrieveAPI(EntityNames.OPERATION.name());
+        List<org.epos.eposdatamodel.Operation> operationList = operationsAPI.retrieveAll();
+
+        for (org.epos.eposdatamodel.Operation operation : operationList) {
+
+            System.out.println(operation);
+        }
+
+        AbstractAPI payloads = AbstractAPI.retrieveAPI(EntityNames.PAYLOAD.name());
+        List<org.epos.eposdatamodel.Payload> payloadsList = payloads.retrieveAll();
+
+        for (org.epos.eposdatamodel.Payload payload : payloadsList) {
+
+            System.out.println(payload);
+        }
+
+        AbstractAPI outputapi = AbstractAPI.retrieveAPI(EntityNames.OUTPUTMAPPING.name());
+        List<org.epos.eposdatamodel.OutputMapping> outputMappings = outputapi.retrieveAll();
+
+        for (org.epos.eposdatamodel.OutputMapping mapping : outputMappings) {
+
+            System.out.println(mapping);
+        }
     }
 
 }

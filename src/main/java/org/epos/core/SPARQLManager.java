@@ -94,6 +94,8 @@ public class SPARQLManager {
                         "  ?property owl:equivalentProperty "+value+" .\n" +
                         "  ?property rdfs:range  ?range .\n" +
                         "}";
+
+        System.out.println("\n\n\n"+queryString+"\n\n\n\n\n");
         Query query = null;
         try {
             query = QueryFactory.create(queryString);

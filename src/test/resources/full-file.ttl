@@ -328,8 +328,10 @@
 .
 
 <Operation/Test/2> a hydra:Operation;
-	hydra:method "GET"^^xsd:string;
+	    hydra:method "GET"^^xsd:string;
     	hydra:returns "application/xml";
+	    hydra:expects <GlassFramework/webresources/stations/v2/station/bbox/payload>;
+
     	hydra:property[ a hydra:IriTemplate;
     		# INGV entrypoint:
     		hydra:template "https://webservices.ingv.it/fdsnws/station/1/query{?starttime, endtime, network, station, location, channel, minlatitude, maxlatitude, minlongitude, maxlongitude, level, format}"^^xsd:string;
@@ -483,6 +485,29 @@
     			];
     	];
 .
+
+<GlassFramework/webresources/stations/v2/station/bbox/payload> a hydra:Class ;
+
+	hydra:title "Payload description" ;
+    hydra:description "Payload description" ;
+
+    hydra:supportedProperty [ a hydra:SupportedProperty;
+
+        hydra:variable "GNSS Station ID"^^xsd:string;       # key - e.g., "GNSS Station ID": "GERN00ESP"
+        hydra:property "epos:gnss_station_id" ;     # semantic tag
+        hydra:description "The ID of the station" ;
+        hydra:required "true"^^xsd:boolean;
+    ];
+
+    #hydra:supportedProperty [ a hydra:SupportedProperty;
+	#
+    #    hydra:variable "name"^^xsd:string;
+    #    hydra:property "schema:name" ; #semantic tag
+    #    hydra:description "The name of parmeter" ;
+    #    hydra:required "true"^^xsd:boolean;
+    #];
+.
+
 
 
 #PLUGIN
