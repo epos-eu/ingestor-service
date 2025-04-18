@@ -12,10 +12,7 @@ import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.epos.core.*;
-import org.epos.eposdatamodel.EPOSDataModelEntity;
-import org.epos.eposdatamodel.LinkedEntity;
-import org.epos.eposdatamodel.Mapping;
-import org.epos.eposdatamodel.User;
+import org.epos.eposdatamodel.*;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
