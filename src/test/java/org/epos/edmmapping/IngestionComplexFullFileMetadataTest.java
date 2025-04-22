@@ -123,6 +123,15 @@ public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycl
 
             System.out.println(mapping);
         }
+
+        AbstractAPI webservices = AbstractAPI.retrieveAPI(EntityNames.WEBSERVICE.name());
+        List<org.epos.eposdatamodel.WebService> webServiceList = webservices.retrieveAll();
+
+        for (org.epos.eposdatamodel.WebService webService : webServiceList) {
+
+            System.out.println(webService.getWebserviceRelation());
+        }
+
     }
 
 }

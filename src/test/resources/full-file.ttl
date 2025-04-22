@@ -319,6 +319,8 @@
         schema:endDate "2025-01-01T00:00:00Z"^^xsd:dateTime ;
 	] ;
 	dct:license "http://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI ;
+
+	dct:relation <WebService/Test/2>
 .
 
 <Documentation/Test/2> a hydra:ApiDocumentation ;
