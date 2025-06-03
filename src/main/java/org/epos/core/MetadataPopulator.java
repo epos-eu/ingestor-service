@@ -63,7 +63,9 @@ public class MetadataPopulator {
             Map<String, String> itemValue = null;
             Map<String, Object> innerValue = new HashMap<>();
             Triple triple = it.next();
+
             if(subject.equals(triple.getSubject().toString())) {
+
                 /** Get predicate value of triple and replace long prefix with short one **/
                 String value = triple.getPredicate().toString();
                 for (String key : prefixes.keySet()) {
@@ -124,10 +126,12 @@ public class MetadataPopulator {
                             /** Manage Properties of Active Class **/
                             if (!predicate.equals("rdf:type")) {
                                 itemValue = SPARQLManager.retrievePropertyValueInEDM(predicate, activeClass.getClass().getSimpleName(), modelmapping);
-                                if(!triple1.getSubject().isBlank() && triple1.getObject().isBlank() && itemValue==null){
+                                //NOTE: !triple1.getSubject().isBlank() && triple1.getObject().isBlank() &&  removed
+                                if(itemValue==null){
                                     retrievePlainValueFromInnerMethods(modelmapping, beansCreation, classes, graph, triple1.getObject().toString(), activeClass, selectedGroup);
                                 }
                             }
+
                             if(itemValue != null) {
                                 manageItemValue(activeClass, classes, itemValue, triple1.getObject(), selectedGroup);
                             }
@@ -140,6 +144,7 @@ public class MetadataPopulator {
 
     private static void manageItemValue(EPOSDataModelEntity activeClass, List<EPOSDataModelEntity> classes, Map<String, String> itemValue, Node node, Group selectedGroup) {
         BeansCreation beansCreation = new BeansCreation();
+        System.out.println("["+activeClass.getClass().getSimpleName()+"] "+node.toString()+" "+itemValue);
         if (node.isURI()) {
             beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, itemValue, node.toString(), selectedGroup);
         } else if (node.isBlank()) {

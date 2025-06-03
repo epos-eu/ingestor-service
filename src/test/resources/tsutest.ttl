@@ -1,0 +1,638 @@
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix epos: <https://www.epos-eu.org/epos-dcat-ap#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix cnt: <http://www.w3.org/2011/content#> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix http: <http://www.w3.org/2006/http#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix gsp: <http://www.opengis.net/ont/geosparql#> .
+@prefix dqv: <http://www.w3.org/ns/dqv#> .
+@prefix oa: <http://www.w3.org/ns/oa#> .
+
+
+#   -------------------------------- Identifier --------------------------------
+
+<http://www.w3.org/ns/orcid_contact1_EMSS21> a schema:PropertyValue;
+	schema:propertyID "orcid";
+	schema:value "https://orcid.org/0000-0001-9438-1753";
+.
+<http://www.w3.org/ns/orcid_contact2_EMSS21> a schema:PropertyValue;
+	schema:propertyID "orcid";
+	schema:value "https://orcid.org/0000-0002-9212-4750";
+.
+
+<http://www.w3.org/ns/ICM_CSIC> a schema:PostalAddress;
+	schema:addressCountry "Spain";
+        schema:addressLocality "Barcelona";
+        schema:postalCode "08003";
+        schema:streetAddress "Passeig Marítim de la Barceloneta, 37-49 ";
+.
+
+#
+#   -------------------------------- Datasets --------------------------------
+#
+
+<https://ls3gp.icm.csic.es/?page_id=553> a dcat:Dataset;
+	dct:title "Euro-Mediterranean Submarine landSlide database (EMSS21) ";
+	dct:description "The Euro-Mediterranean Submarine landSlide database (EMSS21) displays information collected from both the literature and geophysical records. Data from the literature is collected from georeferenced map figures, from which the outline of the landslide deposit and the landslide scar have been digitized. Most information such as age, volume, typology, inferred trigger mechanism and relationship to fluid flow features and metadata is extracted from the relevant article. Area of the deposit and landslide runout is determined from the digitized polygons and polylines, volume (if not available) is determined from area and mean thickness. If the latter is not available, the volume is determined from the Area-Volume relationship for landslides where volume has already been determined. When the dat originates directly from geophysical records the outline and scars have been determined from geomorphological interpretation of swath bathymetric maps and interpretation of submarine landslides on a variety of seismic records. In such instances, age information originates from a variety of methods presenting a wide range of accuracies, from radiometric dating to well-seismic correlation as well as ages inferred from mean sedimentation rates. In many instances, landslides identified in the literature are dated with an age epoch only.";
+	dct:identifier "https://ls3gp.icm.csic.es/?page_id=553";
+	adms:identifier <http://www.w3.org/ns/Identifier_DOI>, <http://www.w3.org/ns/Identifier_DDSS-ID> ;
+	dct:type "http://purl.org/dc/dcmitype/Dataset"^^xsd:anyURI;
+	dct:created "2010-06-01"^^xsd:date;
+	dct:modified "2022-11-07"^^xsd:date;
+	dct:temporal <http://www.w3.org/ns/Period_of_Time_Webservice> ;
+	dct:spatial <http://www.w3.org/ns/Location_webservice> ;
+	dcat:theme <category:theeuromediterraneansubmarelslidedatabaseemss21>;
+	dcat:keyword "Submarine landslide" , "Geohazard" , "Landslide scar" , "Landslide deposit" , "Trigger mechanism" , "catalog" , "tsunami" , "catalogue" ;
+	dcat:contactPoint <http://www.w3.org/ns/Scientific_Contact1_EMSS21> , <http://www.w3.org/ns/technical_Contact2_EMSS21>   ;
+	dct:publisher <http://isni.org/isni/0000000120976324>;
+	dcat:distribution <http://www.w3.org/ns/Distribution-EMSS21_WFS>;
+	dcat:distribution <http://www.w3.org/ns/Distribution-EMSS21ML_WFS>;
+	dcat:distribution <http://www.w3.org/ns/Distribution-EMSS21MLS_WFS>;
+	dcat:distribution <http://www.w3.org/ns/Distribution-EMSS21_WMS>;
+	dcat:distribution <http://www.w3.org/ns/Distribution-EMSS21ML_WMS>;
+	dcat:distribution <http://www.w3.org/ns/Distribution-EMSS21MLS_WMS>;
+	dqv:hasQualityAnnotation  [a oa:Annotation ; oa:hasBody "https://tsunamidata.org/dqa/"^^xsd:anyURI ;];
+.
+<http://www.w3.org/ns/Identifier_DDSS-ID> a adms:Identifier;
+		adms:schemeAgency "DDSS-ID";
+		skos:notation "WP18-DDSS-005";
+.
+<http://www.w3.org/ns/Identifier_DOI> a adms:Identifier;
+		adms:schemeAgency "DOI";
+		skos:notation "10.20350/digitalCSIC/13970";
+.
+#
+#   -------------------------------- Distributions --------------------------------
+#
+
+<http://www.w3.org/ns/Distribution-EMSS21_WFS> a dcat:Distribution;
+	dct:title "Euro-Mediterranean Submarine landSlide database (EMSS21) - Arctic deposits (OGC WFS)";
+	dct:description "The Euro-Mediterranean Submarine landSlide database (EMSS21) displays information collected from both the literature and geophysical records. Data from the literature is collected from georeferenced map figures, from which the outline of the landslide deposit and the landslide scar have been digitized. Most information such as age, volume, typology, inferred trigger mechanism and relationship to fluid flow features and metadata is extracted from the relevant article. Area of the deposit and landslide runout is determined from the digitized polygons and polylines, volume (if not available) is determined from area and mean thickness. If the latter is not available, the volume is determined from the Area-Volume relationship for landslides where volume has already been determined. When the dat originates directly from geophysical records the outline and scars have been determined from geomorphological interpretation of swath bathymetric maps and interpretation of submarine landslides on a variety of seismic records. In such instances, age information originates from a variety of methods presenting a wide range of accuracies, from radiometric dating to well-seismic correlation as well as ages inferred from mean sedimentation rates. In many instances, landslides identified in the literature are dated with an age epoch only.";
+	dct:identifier "http://www.w3.org/ns/Distribution-EMSS21_WFS";
+	dct:issued "2021-08-11T10:44:10Z"^^xsd:dateTime;
+	dct:modified "2021-08-11T10:44:11Z"^^xsd:dateTime;
+	dct:type "http://publications.europa.eu/resource/authority/distribution-type/WEB_SERVICE"^^xsd:anyURI;
+	dct:conformsTo <http://www.w3.org/ns/Tsunami/Webservice>;
+	dcat:accessURL <http://www.w3.org/ns/Operation-EMSS21_WFS>;
+	dct:license "https://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI;
+	dct:format "http://publications.europa.eu/resource/authority/file-type/JSON"^^xsd:anyURI;
+.
+<http://www.w3.org/ns/Distribution-EMSS21ML_WFS> a dcat:Distribution;
+	dct:title "Euro-Mediterranean Submarine landSlide database (EMSS21) - Mediterranean deposits (OGC WFS)";
+	dct:description "The Euro-Mediterranean Submarine landSlide database (EMSS21) displays information collected from both the literature and geophysical records. Data from the literature is collected from georeferenced map figures, from which the outline of the landslide deposit and the landslide scar have been digitized. Most information such as age, volume, typology, inferred trigger mechanism and relationship to fluid flow features and metadata is extracted from the relevant article. Area of the deposit and landslide runout is determined from the digitized polygons and polylines, volume (if not available) is determined from area and mean thickness. If the latter is not available, the volume is determined from the Area-Volume relationship for landslides where volume has already been determined. When the dat originates directly from geophysical records the outline and scars have been determined from geomorphological interpretation of swath bathymetric maps and interpretation of submarine landslides on a variety of seismic records. In such instances, age information originates from a variety of methods presenting a wide range of accuracies, from radiometric dating to well-seismic correlation as well as ages inferred from mean sedimentation rates. In many instances, landslides identified in the literature are dated with an age epoch only.";
+	dct:identifier "http://www.w3.org/ns/Distribution-EMSS21ML_WFS";
+	dct:issued "2021-08-11T10:44:10Z"^^xsd:dateTime;
+	dct:modified "2021-08-11T10:44:11Z"^^xsd:dateTime;
+	dct:type "http://publications.europa.eu/resource/authority/distribution-type/WEB_SERVICE"^^xsd:anyURI;
+	dct:conformsTo <http://www.w3.org/ns/Tsunami/Webservice>;
+	dcat:accessURL <http://www.w3.org/ns/Operation-EMSS21ML_WFS>;
+	dct:license "https://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI;
+	dct:format "http://publications.europa.eu/resource/authority/file-type/JSON"^^xsd:anyURI;
+.
+<http://www.w3.org/ns/Distribution-EMSS21MLS_WFS> a dcat:Distribution;
+	dct:title "Euro-Mediterranean Submarine landSlide database  (EMSS21) - Mediterranean scars (OGC WFS)";
+	dct:description "The Euro-Mediterranean Submarine landSlide database (EMSS21) displays information collected from both the literature and geophysical records. Data from the literature is collected from georeferenced map figures, from which the outline of the landslide deposit and the landslide scar have been digitized. Most information such as age, volume, typology, inferred trigger mechanism and relationship to fluid flow features and metadata is extracted from the relevant article. Area of the deposit and landslide runout is determined from the digitized polygons and polylines, volume (if not available) is determined from area and mean thickness. If the latter is not available, the volume is determined from the Area-Volume relationship for landslides where volume has already been determined. When the dat originates directly from geophysical records the outline and scars have been determined from geomorphological interpretation of swath bathymetric maps and interpretation of submarine landslides on a variety of seismic records. In such instances, age information originates from a variety of methods presenting a wide range of accuracies, from radiometric dating to well-seismic correlation as well as ages inferred from mean sedimentation rates. In many instances, landslides identified in the literature are dated with an age epoch only.";
+	dct:identifier "http://www.w3.org/ns/Distribution-EMSS21MLS_WFS";
+	dct:issued "2021-08-11T10:44:10Z"^^xsd:dateTime;
+	dct:modified "2021-08-11T10:44:11Z"^^xsd:dateTime;
+	dct:type "http://publications.europa.eu/resource/authority/distribution-type/WEB_SERVICE"^^xsd:anyURI;
+	dct:conformsTo <http://www.w3.org/ns/Tsunami/Webservice>;
+	dcat:accessURL <http://www.w3.org/ns/Operation-EMSS21MLS_WFS>;
+	dct:license "https://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI;
+	dct:format "http://publications.europa.eu/resource/authority/file-type/JSON"^^xsd:anyURI;
+.
+<http://www.w3.org/ns/Distribution-EMSS21_WMS> a dcat:Distribution;
+	dct:title "Euro-Mediterranean Submarine landSlide database (EMSS21) - Arctic deposits (OGC WMS)";
+	dct:description "The Euro-Mediterranean Submarine landSlide database (EMSS21) displays information collected from both the literature and geophysical records. Data from the literature is collected from georeferenced map figures, from which the outline of the landslide deposit and the landslide scar have been digitized. Most information such as age, volume, typology, inferred trigger mechanism and relationship to fluid flow features and metadata is extracted from the relevant article. Area of the deposit and landslide runout is determined from the digitized polygons and polylines, volume (if not available) is determined from area and mean thickness. If the latter is not available, the volume is determined from the Area-Volume relationship for landslides where volume has already been determined. When the dat originates directly from geophysical records the outline and scars have been determined from geomorphological interpretation of swath bathymetric maps and interpretation of submarine landslides on a variety of seismic records. In such instances, age information originates from a variety of methods presenting a wide range of accuracies, from radiometric dating to well-seismic correlation as well as ages inferred from mean sedimentation rates. In many instances, landslides identified in the literature are dated with an age epoch only.";
+	dct:identifier "http://www.w3.org/ns/Distribution-EMSS21_WMS";
+	dct:issued "2021-08-11T10:44:10Z"^^xsd:dateTime;
+	dct:modified "2021-08-11T10:44:11Z"^^xsd:dateTime;
+	dct:type "http://publications.europa.eu/resource/authority/distribution-type/WEB_SERVICE"^^xsd:anyURI;
+	dct:conformsTo <http://www.w3.org/ns/Tsunami/Webservice>;
+	dcat:accessURL <http://www.w3.org/ns/Operation-EMSS21_WMS>;
+	dct:license "https://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI;
+	dct:format "http://publications.europa.eu/resource/authority/file-type/PNG"^^xsd:anyURI;
+.
+<http://www.w3.org/ns/Distribution-EMSS21ML_WMS> a dcat:Distribution;
+	dct:title "Euro-Mediterranean Submarine landSlide database (EMSS21) - Mediterranean deposits (OGC WMS)";
+	dct:description "The Euro-Mediterranean Submarine landSlide database (EMSS21) displays information collected from both the literature and geophysical records. Data from the literature is collected from georeferenced map figures, from which the outline of the landslide deposit and the landslide scar have been digitized. Most information such as age, volume, typology, inferred trigger mechanism and relationship to fluid flow features and metadata is extracted from the relevant article. Area of the deposit and landslide runout is determined from the digitized polygons and polylines, volume (if not available) is determined from area and mean thickness. If the latter is not available, the volume is determined from the Area-Volume relationship for landslides where volume has already been determined. When the dat originates directly from geophysical records the outline and scars have been determined from geomorphological interpretation of swath bathymetric maps and interpretation of submarine landslides on a variety of seismic records. In such instances, age information originates from a variety of methods presenting a wide range of accuracies, from radiometric dating to well-seismic correlation as well as ages inferred from mean sedimentation rates. In many instances, landslides identified in the literature are dated with an age epoch only.";
+	dct:identifier "http://www.w3.org/ns/Distribution-EMSS21ML_WMS";
+	dct:issued "2021-08-11T10:44:10Z"^^xsd:dateTime;
+	dct:modified "2021-08-11T10:44:11Z"^^xsd:dateTime;
+	dct:type "http://publications.europa.eu/resource/authority/distribution-type/WEB_SERVICE"^^xsd:anyURI;
+	dct:conformsTo <http://www.w3.org/ns/Tsunami/Webservice>;
+	dcat:accessURL <http://www.w3.org/ns/Operation-EMSS21ML_WMS>;
+	dct:license "https://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI;
+	dct:format "http://publications.europa.eu/resource/authority/file-type/PNG"^^xsd:anyURI;
+.
+<http://www.w3.org/ns/Distribution-EMSS21MLS_WMS> a dcat:Distribution;
+	dct:title "Euro-Mediterranean Submarine landSlide database (EMSS21) - Mediterranean scars (OGC WMS)";
+	dct:description "The Euro-Mediterranean Submarine landSlide database (EMSS21) displays information collected from both the literature and geophysical records. Data from the literature is collected from georeferenced map figures, from which the outline of the landslide deposit and the landslide scar have been digitized. Most information such as age, volume, typology, inferred trigger mechanism and relationship to fluid flow features and metadata is extracted from the relevant article. Area of the deposit and landslide runout is determined from the digitized polygons and polylines, volume (if not available) is determined from area and mean thickness. If the latter is not available, the volume is determined from the Area-Volume relationship for landslides where volume has already been determined. When the dat originates directly from geophysical records the outline and scars have been determined from geomorphological interpretation of swath bathymetric maps and interpretation of submarine landslides on a variety of seismic records. In such instances, age information originates from a variety of methods presenting a wide range of accuracies, from radiometric dating to well-seismic correlation as well as ages inferred from mean sedimentation rates. In many instances, landslides identified in the literature are dated with an age epoch only.";
+	dct:identifier "http://www.w3.org/ns/Distribution-EMSS21MLS_WMS";
+	dct:issued "2021-08-11T10:44:10Z"^^xsd:dateTime;
+	dct:modified "2021-08-11T10:44:11Z"^^xsd:dateTime;
+	dct:type "http://publications.europa.eu/resource/authority/distribution-type/WEB_SERVICE"^^xsd:anyURI;
+	dct:conformsTo <http://www.w3.org/ns/Tsunami/Webservice>;
+	dcat:accessURL <http://www.w3.org/ns/Operation-EMSS21MLS_WMS>;
+	dct:license "https://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI;
+	dct:format "http://publications.europa.eu/resource/authority/file-type/PNG"^^xsd:anyURI;
+.
+
+#
+#   -------------------------------- Web Services and their documentation --------------------------------
+#
+
+<http://www.w3.org/ns/Tsunami/Webservice> a epos:WebService;
+	schema:identifier "http://www.w3.org/ns/Tsunami/Webservice" ;
+	schema:description "These web services provide both map layers and vectorial data of the Euro-Mediterranean Submarine landSlide database (EMSS21). They are implemented according to the OGC (Open Geospatial Consortium) standard Web Map Service - WMS (1.1.1, 1.3.0)";
+	schema:name "Euro-Mediterranean Submarine landSlide database (OGC WFS)" ;
+	hydra:entrypoint "https://ls3gp.icm.csic.es/?page_id=553"^^xsd:anyURI ;
+	schema:provider <http://isni.org/isni/0000000120976324> ;
+	schema:datePublished "2021-08-11T10:08:53Z"^^xsd:dateTime ;
+	dct:spatial <http://www.w3.org/ns/Location_webservice> ;
+	hydra:supportedOperation <http://www.w3.org/ns/Operation-EMSS21_WFS>;
+	hydra:supportedOperation <http://www.w3.org/ns/Operation-EMSS21ML_WFS>;
+	hydra:supportedOperation <http://www.w3.org/ns/Operation-EMSS21MLS_WFS>;
+	hydra:supportedOperation <http://www.w3.org/ns/Operation-EMSS21_WMS>;
+	hydra:supportedOperation <http://www.w3.org/ns/Operation-EMSS21ML_WMS>;
+	hydra:supportedOperation <http://www.w3.org/ns/Operation-EMSS21MLS_WMS>;
+	schema:keywords "Submarine landslide" , "Geohazard" , "Landslide scar" , "Landslide deposit" , "Trigger mechanism" , "catalog" , "tsunami" , "catalogue" ;
+	dct:license "https://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI;
+	dct:temporal <http://www.w3.org/ns/Period_of_Time_Webservice> ;
+	dcat:contactPoint <http://www.w3.org/ns/technical_Contact2_EMSS21> ;
+	dcat:contactPoint <http://www.w3.org/ns/Scientific_Contact1_EMSS21> ;
+	dct:conformsTo <http://www.w3.org/ns/APIDocumentation>;
+.
+
+<http://www.w3.org/ns/Location_webservice> a dct:Location;
+	locn:geometry "POLYGON((-15.266339085 30.503636095,38.818270851 30.503636095,38.818270851 83.992406567,-15.266339085 83.992406567,-15.266339085 30.503636095))"^^gsp:wktLiteral;
+.
+<http://www.w3.org/ns/Period_of_Time_Webservice> a dct:PeriodOfTime;
+	schema:startDate "2021-08-11T10:25:40Z"^^xsd:dateTime;
+.
+<http://www.w3.org/ns/APIDocumentation> a hydra:ApiDocumentation;
+      	hydra:title "The Euro-Mediterranean Submarine landSlide database (EMSS21)" ;
+      	hydra:description "Documentation for the fdsnws-event webservice" ;
+      	hydra:entrypoint "https://ls3gp.icm.csic.es/?page_id=553"^^xsd:anyURI ;
+.
+
+#
+#   -------------------------------- Operations --------------------------------
+#
+
+# EMSS21_WFS
+
+<http://www.w3.org/ns/Operation-EMSS21_WFS> a hydra:Operation;
+	hydra:method "GET"^^xsd:string;
+	hydra:returns "application/json";
+	hydra:property <http://www.w3.org/ns/IriTemplate-EMSS21_WFS> ;
+.
+
+<http://www.w3.org/ns/Operation-EMSS21ML_WFS> a hydra:Operation;
+	hydra:method "GET"^^xsd:string;
+	hydra:returns "application/json";
+	hydra:property <http://www.w3.org/ns/IriTemplate-EMSS21ML_WFS> ;
+.
+
+<http://www.w3.org/ns/Operation-EMSS21MLS_WFS> a hydra:Operation;
+	hydra:method "GET"^^xsd:string;
+	hydra:returns "application/json";
+	hydra:property <http://www.w3.org/ns/IriTemplate-EMSS21MLS_WFS> ;
+.
+
+<http://www.w3.org/ns/IriTemplate-EMSS21_WFS> a hydra:IriTemplate;
+	hydra:template "http://geoserver.icm.csic.es/geoserver/epos/wfs{?service, version, request, typeNames, outputFormat, srsName}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+	#hydra:template "http://geoserver.icm.csic.es:8600/geoserver/wfs{?service, version, request, typeNames, outputFormat, srsName}"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat, srsName}"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat, srsName}&cql_filter={cql_filter_year_between_EMSS}{startingyear_EMSS}{and_var}{endingyear_EMSS}{and_var}bbox{geom_field_emss}{minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+#	hydra:mapping <http://www.w3.org/ns/service_WFS> , <http://www.w3.org/ns/version_WFS> , <http://www.w3.org/ns/request_WFS>, <http://www.w3.org/ns/typeName_EMSS21_WFS> , <http://www.w3.org/ns/output_format_WFS>, <http://www.w3.org/ns/srs_WFS>, <http://www.w3.org/ns/cql_filter_year_between_EMSS>,<http://www.w3.org/ns/ending_year_EMSS>, <http://www.w3.org/ns/starting_year_EMSS>,<http://www.w3.org/ns/and_var>,<http://www.w3.org/ns/minlatitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlatitude_EMSS21_WMS>, <http://www.w3.org/ns/minlongitude_EMSS21_WMS>,<http://www.w3.org/ns/maxlongitude_EMSS21_WMS>,<http://www.w3.org/ns/geom_field_emss>;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat, srsName}&cql_filter=bbox({geom_field_emss},{minlatitude, minlongitude, maxlatitude, maxlongitude})"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat, srsName}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+	hydra:mapping <http://www.w3.org/ns/service_WFS> , <http://www.w3.org/ns/version_WFS> , <http://www.w3.org/ns/request_WFS>, <http://www.w3.org/ns/typeName_EMSS21_WFS> , <http://www.w3.org/ns/output_format_WFS>, <http://www.w3.org/ns/srs_WFS>,<http://www.w3.org/ns/minlatitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlatitude_EMSS21_WMS>, <http://www.w3.org/ns/minlongitude_EMSS21_WMS>,<http://www.w3.org/ns/maxlongitude_EMSS21_WMS>,<http://www.w3.org/ns/geom_field_emss>;
+.
+
+<http://www.w3.org/ns/IriTemplate-EMSS21ML_WFS> a hydra:IriTemplate;
+	hydra:template "http://geoserver.icm.csic.es/geoserver/epos/wfs{?service, version, request, typeNames, outputFormat, srsName}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+	#hydra:template "http://geoserver.icm.csic.es:8600/geoserver/wfs{?service, version, request, typeNames, outputFormat}"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat}&cql_filter={cql_filter_year_between_EMSS}{startingyear_EMSS}{and_var}{endingyear_EMSS}{and_var}bbox{geom_field_emss}{minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+#	hydra:mapping <http://www.w3.org/ns/service_WFS> , <http://www.w3.org/ns/version_WFS> , <http://www.w3.org/ns/request_WFS>, <http://www.w3.org/ns/typeName_EMSS21ML_WFS> , <http://www.w3.org/ns/output_format_WFS>, <http://www.w3.org/ns/cql_filter_year_between_EMSS>,<http://www.w3.org/ns/ending_year_EMSS>, <http://www.w3.org/ns/starting_year_EMSS>,<http://www.w3.org/ns/and_var>,<http://www.w3.org/ns/minlatitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlatitude_EMSS21_WMS>, <http://www.w3.org/ns/minlongitude_EMSS21_WMS>,<http://www.w3.org/ns/maxlongitude_EMSS21_WMS>,<http://www.w3.org/ns/geom_field_emss>;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat}&cql_filter=bbox({geom_field_emss},{minlatitude, minlongitude, maxlatitude, maxlongitude})"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+	hydra:mapping <http://www.w3.org/ns/service_WFS> , <http://www.w3.org/ns/version_WFS> , <http://www.w3.org/ns/request_WFS>, <http://www.w3.org/ns/typeName_EMSS21ML_WFS> , <http://www.w3.org/ns/output_format_WFS>,<http://www.w3.org/ns/minlatitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlatitude_EMSS21_WMS>, <http://www.w3.org/ns/minlongitude_EMSS21_WMS>,<http://www.w3.org/ns/maxlongitude_EMSS21_WMS>,<http://www.w3.org/ns/geom_field_emss>;
+.
+
+<http://www.w3.org/ns/IriTemplate-EMSS21MLS_WFS> a hydra:IriTemplate;
+	hydra:template "http://geoserver.icm.csic.es/geoserver/epos/wfs{?service, version, request, typeNames, outputFormat, srsName}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+	#hydra:template "http://geoserver.icm.csic.es:8600/geoserver/wfs{?service, version, request, typeNames, outputFormat}"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat}&cql_filter={cql_filter_year_between_EMSS}{startingyear_EMSS}{and_var}{endingyear_EMSS}{and_var}bbox{geom_field_emss}{minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+#	hydra:mapping <http://www.w3.org/ns/service_WFS> , <http://www.w3.org/ns/version_WFS> , <http://www.w3.org/ns/request_WFS>, <http://www.w3.org/ns/typeName_EMSS21MLS_WFS> , <http://www.w3.org/ns/output_format_WFS>, <http://www.w3.org/ns/cql_filter_year_between_EMSS>,<http://www.w3.org/ns/ending_year_EMSS>, <http://www.w3.org/ns/starting_year_EMSS>,<http://www.w3.org/ns/and_var>,<http://www.w3.org/ns/minlatitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlatitude_EMSS21_WMS>, <http://www.w3.org/ns/minlongitude_EMSS21_WMS>,<http://www.w3.org/ns/maxlongitude_EMSS21_WMS>,<http://www.w3.org/ns/geom_field_emss>;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat}&cql_filter=bbox({geom_field_emss},{minlatitude, minlongitude, maxlatitude, maxlongitude})"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wfs/{?service, version, request, typeNames, outputFormat}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+	hydra:mapping <http://www.w3.org/ns/service_WFS> , <http://www.w3.org/ns/version_WFS> , <http://www.w3.org/ns/request_WFS>, <http://www.w3.org/ns/typeName_EMSS21MLS_WFS> , <http://www.w3.org/ns/output_format_WFS>,<http://www.w3.org/ns/minlatitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlatitude_EMSS21_WMS>, <http://www.w3.org/ns/minlongitude_EMSS21_WMS>,<http://www.w3.org/ns/maxlongitude_EMSS21_WMS>,<http://www.w3.org/ns/geom_field_emss>;
+.
+
+# EMSS21_WMS
+
+<http://www.w3.org/ns/Operation-EMSS21_WMS> a hydra:Operation;
+	hydra:method "GET"^^xsd:string;
+	hydra:returns "image/png";
+	hydra:property <http://www.w3.org/ns/IriTemplate-EMSS21_WMS> ;
+.
+<http://www.w3.org/ns/Operation-EMSS21ML_WMS> a hydra:Operation;
+	hydra:method "GET"^^xsd:string;
+	hydra:returns "image/png";
+	hydra:property <http://www.w3.org/ns/IriTemplate-EMSS21ML_WMS> ;
+.
+<http://www.w3.org/ns/Operation-EMSS21MLS_WMS> a hydra:Operation;
+	hydra:method "GET"^^xsd:string;
+	hydra:returns "image/png";
+	hydra:property <http://www.w3.org/ns/IriTemplate-EMSS21MLS_WMS> ;
+.
+<http://www.w3.org/ns/IriTemplate-EMSS21_WMS> a hydra:IriTemplate;
+#	hydra:template "http://geoserver.icm.csic.es/geoserver/ows{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlongitude, minlatitude, maxlongitude, maxlatitude}"^^xsd:string;
+	hydra:template "http://geoserver.icm.csic.es/geoserver/ows{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+#	hydra:template "http://geoserver.icm.csic.es:8600/geoserver/ows{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wms/{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+	hydra:mapping <http://www.w3.org/ns/service_WMS> , <http://www.w3.org/ns/version_WMS> ,<http://www.w3.org/ns/request_WMS>, <http://www.w3.org/ns/layers_EMSS21_WMS>, <http://www.w3.org/ns/styles_EMSS21_WMS>, <http://www.w3.org/ns/width_WMS>, <http://www.w3.org/ns/height_WMS>, <http://www.w3.org/ns/srs_WMS>,<http://www.w3.org/ns/format_WMS>, <http://www.w3.org/ns/minlatitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlatitude_EMSS21_WMS>, <http://www.w3.org/ns/minlongitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlongitude_EMSS21_WMS>;
+.
+<http://www.w3.org/ns/IriTemplate-EMSS21ML_WMS> a hydra:IriTemplate;
+#	hydra:template "http://geoserver.icm.csic.es/geoserver/ows{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlongitude, minlatitude, maxlongitude, maxlatitude}"^^xsd:string;
+	hydra:template "http://geoserver.icm.csic.es/geoserver/ows{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+#	hydra:template "http://geoserver.icm.csic.es:8600/geoserver/ows{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wms/{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+	hydra:mapping <http://www.w3.org/ns/service_WMS> , <http://www.w3.org/ns/version_WMS> ,<http://www.w3.org/ns/request_WMS>, <http://www.w3.org/ns/layers_EMSS21ML_WMS>, <http://www.w3.org/ns/styles_EMSS21ML_WMS>, <http://www.w3.org/ns/width_WMS>, <http://www.w3.org/ns/height_WMS>, <http://www.w3.org/ns/srs_WMS>,<http://www.w3.org/ns/format_WMS>, <http://www.w3.org/ns/minlatitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlatitude_EMSS21_WMS>, <http://www.w3.org/ns/minlongitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlongitude_EMSS21_WMS>;
+.
+<http://www.w3.org/ns/IriTemplate-EMSS21MLS_WMS> a hydra:IriTemplate;
+#	hydra:template "http://geoserver.icm.csic.es/geoserver/ows{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlongitude, minlatitude, maxlongitude, maxlatitude}"^^xsd:string;
+	hydra:template "http://geoserver.icm.csic.es/geoserver/ows{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+#	hydra:template "http://geoserver.icm.csic.es:8600/geoserver/ows{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+#	hydra:template "https://tsunami-webgis.rm.ingv.it/geoserver/emss21/wms/{?service, version, request, layers, styles, width, height, srs, format}&bbox={minlatitude, minlongitude, maxlatitude, maxlongitude}"^^xsd:string;
+	hydra:mapping <http://www.w3.org/ns/service_WMS> , <http://www.w3.org/ns/version_WMS> ,<http://www.w3.org/ns/request_WMS>, <http://www.w3.org/ns/layers_EMSS21MLS_WMS>, <http://www.w3.org/ns/styles_EMSS21MLS_WMS>, <http://www.w3.org/ns/width_WMS>, <http://www.w3.org/ns/height_WMS>, <http://www.w3.org/ns/srs_WMS>,<http://www.w3.org/ns/format_WMS>, <http://www.w3.org/ns/minlatitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlatitude_EMSS21_WMS>, <http://www.w3.org/ns/minlongitude_EMSS21_WMS>, <http://www.w3.org/ns/maxlongitude_EMSS21_WMS>;
+.
+
+#
+#   -------------------------------- IriTemplateMapping --------------------------------
+#
+
+<http://www.w3.org/ns/service_WFS> a hydra:IriTemplateMapping;
+	hydra:variable "service";
+	rdfs:range "xsd:string";
+	rdfs:label "Service";
+	http:paramValue "WFS" ;
+	schema:defaultValue "WFS";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+
+
+<http://www.w3.org/ns/version_WFS> a hydra:IriTemplateMapping;
+	hydra:variable "version"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Service version";
+	schema:defaultValue "2.0.0" ;
+	#schema:multipleValues "true"^^xsd:boolean ;
+		http:paramValue "2.0.0" ;
+		http:paramValue "1.0.0" ;
+		http:paramValue "1.1.0" ;
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+
+<http://www.w3.org/ns/request_WFS> a hydra:IriTemplateMapping;
+	hydra:variable "request"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Request Type";
+	schema:defaultValue "getFeature" ;
+	http:paramValue "getFeature" ;
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/typeName_EMSS21_WFS> a hydra:IriTemplateMapping;
+	hydra:variable "typeNames"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Feature layer to load";
+	#schema:defaultValue "epos:EMSS21 - Arctic submarine landslides" ;
+	#http:paramValue "epos:EMSS21 - Arctic submarine landslides" ;
+	#schema:defaultValue "emss21:Arctic_deposits_WGS84" ;
+	#http:paramValue "emss21:Arctic_deposits_WGS84" ;
+	schema:defaultValue "epos:Arctic_deposits_WGS84" ;
+	http:paramValue "epos:Arctic_deposits_WGS84" ;
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/typeName_EMSS21ML_WFS> a hydra:IriTemplateMapping;
+	hydra:variable "typeNames"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Feature layer to load";
+	#schema:defaultValue "epos:EMSS21 - Mediterranean submarine landslides" ;
+	#http:paramValue "epos:EMSS21 - Mediterranean submarine landslides" ;
+	#schema:defaultValue "emss21:Med_deposits" ;
+	#http:paramValue "emss21:Med_deposits" ;
+	schema:defaultValue "epos:Med_deposits" ;
+	http:paramValue "epos:Med_deposits" ;
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/typeName_EMSS21MLS_WFS> a hydra:IriTemplateMapping;
+	hydra:variable "typeNames"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Feature layer to load";
+	#schema:defaultValue "epos:Mediterranean submarine landslide Scars" ;
+	#http:paramValue "epos:Mediterranean submarine landslides Scars" ;
+	#schema:defaultValue "emss21:Med_scars" ;
+	#http:paramValue "emss21:Med_scars" ;
+	schema:defaultValue "epos:Med_scars" ;
+	http:paramValue "epos:Med_scars" ;
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/srs_WFS> a hydra:IriTemplateMapping;
+	hydra:variable "srsName";
+	rdfs:range "xsd:string";
+	rdfs:label "SRS to use";
+	schema:defaultValue "EPSG:4326";
+	http:paramValue "EPSG:4326";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/output_format_WFS> a hydra:IriTemplateMapping;
+	hydra:variable "outputFormat"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Output format";
+	schema:defaultValue "json" ;
+	hydra:property "schema:encodingFormat";
+	#schema:multipleValues "true"^^xsd:boolean ;
+		http:paramValue "SHAPE-ZIP" ;
+		#http:paramValue "gml3" ;
+		#http:paramValue "gml32";
+		#http:paramValue "csv";
+		#http:paramValue "excel";
+		#http:paramValue "excel2007";
+		http:paramValue "json" ;
+		http:paramValue "KML" ;
+	hydra:required "true"^^xsd:boolean;
+.
+#<http://www.w3.org/ns/cql_filter_year_between_EMSS> a hydra:IriTemplateMapping;
+#	hydra:variable "cql_filter_year_between_EMSS"^^xsd:string;
+#	rdfs:range "xsd:string";
+#	rdfs:label "cql_filter_year_between_EMSS";
+#	schema:defaultValue "Age_C14%20between%20" ;
+#	schema:readonlyValue "true"^^xsd:boolean;
+#	http:paramValue "Age_C14%20between%20" ;
+#	hydra:required "true"^^xsd:boolean;
+#.
+#<http://www.w3.org/ns/ending_year_EMSS> a hydra:IriTemplateMapping;
+#	hydra:variable "endingyear_EMSS"^^xsd:string;
+#	rdfs:label "Input the ending year";
+#	rdfs:range "xsd:string";
+#	hydra:required "true"^^xsd:boolean;
+#	schema:defaultValue "" ;
+#.
+#<http://www.w3.org/ns/starting_year_EMSS> a hydra:IriTemplateMapping;
+#	hydra:variable "startingyear_EMSS"^^xsd:string;
+#	rdfs:label "Input the starting year";
+#	rdfs:range "xsd:string";
+#	hydra:required "true"^^xsd:boolean;
+#	schema:defaultValue "" ;
+#.
+#<http://www.w3.org/ns/and_var> a hydra:IriTemplateMapping;
+#	hydra:variable "and_var"^^xsd:string;
+#	rdfs:range "xsd:string";
+#	rdfs:label "and";
+#	schema:defaultValue "%20and%20" ;
+#	schema:readonlyValue "true"^^xsd:boolean;
+#	http:paramValue "%20and%20" ;
+#	hydra:required "true"^^xsd:boolean;
+#.
+#<http://www.w3.org/ns/parentesis> a hydra:IriTemplateMapping;
+#	hydra:variable "parentesis"^^xsd:string;
+#	rdfs:range "xsd:string";
+#	rdfs:label "parentesis";
+#	schema:defaultValue ")" ;
+#	schema:readonlyValue "true"^^xsd:boolean;
+#	http:paramValue ")" ;
+#	hydra:required "true"^^xsd:boolean;
+#.
+<http://www.w3.org/ns/geom_field_emss> a hydra:IriTemplateMapping;
+	hydra:variable "geom_field_emss"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Geometry field";
+	schema:defaultValue "the_geom" ;
+	schema:readonlyValue "true"^^xsd:boolean;
+	http:paramValue "the_geom" ;
+	hydra:required "true"^^xsd:boolean;
+.
+# WMS
+<http://www.w3.org/ns/service_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "service";
+	rdfs:range "xsd:string";
+	rdfs:label "Service";
+	http:paramValue "WMS" ;
+	schema:defaultValue "WMS";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/version_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "version"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Service version";
+	schema:defaultValue "1.3.0" ;
+	http:paramValue "2.0.0" ;
+#	http:paramValue "1.0.0" ;
+#	http:paramValue "1.1.0" ;
+	http:paramValue "1.3.0" ;
+	hydra:required "true"^^xsd:boolean;
+#	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/request_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "request"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Request type";
+	schema:defaultValue "GetMap";
+	http:paramValue "GetMap";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/layers_EMSS21_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "layers"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Layer to load";
+	#schema:defaultValue "epos:EMSS21 - Arctic submarine landslides";
+	#http:paramValue "epos:EMSS21 - Arctic submarine landslides";
+	#schema:defaultValue "emss21:Arctic_deposits_WGS84";
+	#http:paramValue "emss21:Arctic_deposits_WGS84";
+	schema:defaultValue "epos:Arctic_deposits_WGS84";
+	http:paramValue "epos:Arctic_deposits_WGS84";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/layers_EMSS21ML_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "layers"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Layer to load";
+	#schema:defaultValue "epos:EMSS21 - Mediterranean submarine landslides";
+	#http:paramValue "epos:EMSS21 - Mediterranean submarine landslides";
+	#schema:defaultValue "emss21:Med_deposits";
+	#http:paramValue "emss21:Med_deposits";
+	schema:defaultValue "epos:Med_deposits";
+	http:paramValue "epos:Med_deposits";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/layers_EMSS21MLS_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "layers"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Layer to load";
+	#schema:defaultValue "epos:EMSS21 - Mediterranean submarine landslide Scars";
+	#http:paramValue "epos:EMSS21 - Mediterranean submarine landslides Scars";
+	#schema:defaultValue "emss21:Med_scars";
+	#http:paramValue "emss21:Med_scars";
+	schema:defaultValue "epos:Med_scars";
+	http:paramValue "epos:Med_scars";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/styles_EMSS21_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "styles"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Styles to load";
+	schema:defaultValue "epos:deposits";
+	http:paramValue "epos:deposits";
+	#schema:defaultValue "artic_deposits";
+	#http:paramValue "artic_deposits";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/styles_EMSS21ML_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "styles"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Styles to load";
+	schema:defaultValue "epos:deposits";
+	http:paramValue "epos:deposits";
+	#schema:defaultValue "deposits";
+	#http:paramValue "deposits";
+	#schema:defaultValue "Med_deposits";
+	#http:paramValue "Med_deposits";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/styles_EMSS21MLS_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "styles"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Styles to load";
+	schema:defaultValue "epos:scars";
+	http:paramValue "epos:scars";
+	#schema:defaultValue "Med_scars";
+	#http:paramValue "Med_scars";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/width_WMS>  a hydra:IriTemplateMapping;
+	hydra:variable "width"^^xsd:string;
+	rdfs:range "xsd:integer";
+	rdfs:label "Image width";
+	schema:defaultValue "768";
+	http:paramValue "768";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/height_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "height"^^xsd:string;
+	rdfs:range "xsd:integer";
+	rdfs:label "Image height";
+	schema:defaultValue "330";
+	http:paramValue "330";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/srs_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "srs";
+	rdfs:range "xsd:string";
+	rdfs:label "SRS to use";
+#	schema:defaultValue "CRS:84";
+#	http:paramValue "CRS:84";
+	schema:defaultValue "EPSG:4326";
+	http:paramValue "EPSG:4326";
+	hydra:required "true"^^xsd:boolean;
+	schema:readonlyValue "true"^^xsd:boolean ; # true = hidden
+.
+<http://www.w3.org/ns/format_WMS> a hydra:IriTemplateMapping;
+    hydra:variable "format"^^xsd:string;
+	rdfs:range "xsd:string";
+	rdfs:label "Output format";
+	schema:defaultValue "image/png" ;
+	hydra:property "schema:encodingFormat";
+	#schema:multipleValues "true"^^xsd:boolean ;
+		http:paramValue "image/png" ;
+		#http:paramValue "application/atom+xml" ;
+		#http:paramValue "application/json;type=utfgrid" ;
+		#http:paramValue "application/pdf" ;
+		#http:paramValue "application/rss+xml" ;
+		#http:paramValue "application/vnd.google-earth.kml+xml" ;
+		#http:paramValue "application/vnd.google-earth.kml+xml;mode=networklink" ;
+		#http:paramValue "application/vnd.google-earth.kmz" ;
+		#http:paramValue "image/geotiff" ;
+		#http:paramValue "image/geotiff8" ;
+		http:paramValue "image/gif" ;
+		#http:paramValue "image/jpeg" ;
+		#http:paramValue "image/png; mode=8bit" ;
+		#http:paramValue "image/svg+xml" ;
+		#http:paramValue "image/tiff" ;
+		#http:paramValue "image/tiff8" ;
+		http:paramValue "image/vnd.jpeg-png" ;
+		#http:paramValue "image/vnd.jpeg-png8" ;
+		#http:paramValue "text/html; subtype=openlayers" ;
+		#http:paramValue "text/html; subtype=openlayers2" ;
+		#http:paramValue "text/html; subtype=openlayers3" ;
+	hydra:required "true"^^xsd:boolean;
+.
+<http://www.w3.org/ns/minlatitude_EMSS21_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "minlatitude"^^xsd:string;
+	hydra:property "epos:southernmostLatitude";
+	rdfs:label "Minimum Latitude";
+	schema:minValue "-90.0";
+	schema:maxValue "90.0";
+	rdfs:range "xsd:float";
+	hydra:required "true"^^xsd:boolean;
+	schema:defaultValue "30.503636095" ;
+.
+<http://www.w3.org/ns/maxlatitude_EMSS21_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "maxlatitude"^^xsd:string;
+	hydra:property "epos:northernmostLatitude";
+	rdfs:label "Maximum Latitude";
+	schema:minValue "-90.0";
+	schema:maxValue "90.0";
+	rdfs:range "xsd:float";
+	hydra:required "true"^^xsd:boolean;
+	schema:defaultValue "83.992406567" ;
+.
+<http://www.w3.org/ns/minlongitude_EMSS21_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "minlongitude"^^xsd:string;
+	hydra:property "epos:westernmostLongitude";
+	rdfs:label "Minimum Longitude";
+	schema:minValue "-180.0";
+	schema:maxValue "180.0";
+	rdfs:range "xsd:float";
+	hydra:required "true"^^xsd:boolean;
+	schema:defaultValue "-15.266339085" ;
+.
+<http://www.w3.org/ns/maxlongitude_EMSS21_WMS> a hydra:IriTemplateMapping;
+	hydra:variable "maxlongitude"^^xsd:string;
+	hydra:property "epos:easternmostLongitude";
+	rdfs:label "Maximum Longitude";
+	schema:minValue "-180.0";
+	schema:maxValue "180.0";
+	rdfs:range "xsd:float";
+	hydra:required "true"^^xsd:boolean;
+	schema:defaultValue "38.818270851" ;
+.

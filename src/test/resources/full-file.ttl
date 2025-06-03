@@ -551,7 +551,7 @@
 	dct:identifier "Facility/Test/1" ;
 	dct:title "Facility Title 1" ;
 	dct:description "Facility Description 1" ;
-	dct:type "https://orfeus-eu.org/ns/network"^^xsd:anyURI ;
+	dct:type <https://orfeus-eu.org/ns/network> ;
 	dcat:theme <category:facchild1> ;
 	vcard:hasAddress [ a vcard:Address ;
 		vcard:country-name "Country" ;

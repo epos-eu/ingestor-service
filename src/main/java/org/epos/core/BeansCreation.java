@@ -53,7 +53,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
 
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        //System.out.println("PRE DEBUG: " + classObject.getClass().getName() + " " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName);
+        System.out.println("PRE DEBUG: " + classObject.getClass().getName() + " " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName);
 
         Method method = null;
         LinkedEntity le = null;
@@ -149,7 +149,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
 
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        //System.out.println("PRE DEBUG: " + property.get("range") +" " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName + " "+ propertyValue);
+        System.out.println("PRE DEBUG: " + property.get("range") +" " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName + " "+ propertyValue);
 
         Method method = null;
         LinkedEntity le = null;
@@ -164,6 +164,10 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
 
         if(entity==null){
             entity = getEPOSDataModelClass(property.get("range"),propertyValue, selectedGroup);
+            if(property.get("range").equals("string")){
+                System.out.println("[** OMG **] EXCEPTIONALLY IS A STRING!!");
+                getEPOSDataModelPropertiesLiteral(classObject,classes,property,propertyValue);
+            }
         }
 
         if (entity != null) {

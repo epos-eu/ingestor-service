@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycle {
+public class IngestionComplexTsuFileMetadataTest extends TestcontainersLifecycle {
 
     static User user = null;
     static String metadataOntologyDCATAPIV1 = "https://raw.githubusercontent.com/epos-eu/EPOS-DCAT-AP/EPOS-DCAT-AP-shapes/epos-dcat-ap_shapes.ttl";
@@ -47,7 +47,7 @@ public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycl
     @Order(2)
     public void testIngestionComplex() throws IOException, URISyntaxException {
 
-        URL resource = getClass().getClassLoader().getResource("full-file.ttl");
+        URL resource = getClass().getClassLoader().getResource("tsutest.ttl");
         if (resource == null) {
             throw new IllegalArgumentException("file not found!");
         }
@@ -71,8 +71,8 @@ public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycl
 
 
         assertAll(
-                () -> assertEquals(5, categoryList.size()),
-                () -> assertEquals(2, categorySchemeList.size())
+                () -> assertEquals(1, categoryList.size()),
+                () -> assertEquals(0, categorySchemeList.size())
         );
 
         // Assert Datasets
@@ -84,14 +84,7 @@ public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycl
 
             System.out.println(dataProduct);
 
-            if(dataProduct.getTitle().get(0).equals("Dataset/Test/1")){
-                assertAll(
-                        () -> assertEquals(1, dataProduct.getTitle().size()),
-                        () -> assertEquals(1, dataProduct.getDescription().size()),
-                        () -> assertEquals(1, dataProduct.getCategory().size())
-                );
-            }
-            if(dataProduct.getTitle().get(0).equals("Dataset/Test/2")){
+            if(dataProduct.getTitle().get(0).equals("https://ls3gp.icm.csic.es/?page_id=553")){
                 assertAll(
                         () -> assertEquals(1, dataProduct.getTitle().size()),
                         () -> assertEquals(1, dataProduct.getDescription().size()),
@@ -139,16 +132,6 @@ public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycl
 
             System.out.println(dataProduct);
         }
-
-        AbstractAPI facilities = AbstractAPI.retrieveAPI(EntityNames.FACILITY.name());
-        List<org.epos.eposdatamodel.Facility> facilities1 = facilities.retrieveAll();
-
-        for (org.epos.eposdatamodel.Facility facility : facilities1) {
-
-            System.out.println(facility);
-        }
-
-
     }
 
 }
