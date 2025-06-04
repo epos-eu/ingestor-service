@@ -14,6 +14,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.Group;
+import org.epos.eposdatamodel.IriTemplate;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -190,6 +191,28 @@ public class MetadataPopulator {
 
         /** PREPARE PROPERTIES **/
         exploreGraphAndCreateBeans(modelmapping,beansCreation,graph, null,classes, uidDone, selectedGroup);
+
+        List<IriTemplate> templates = new ArrayList<>();
+        System.out.println(classes.size());
+        for(EPOSDataModelEntity eposDataModelEntity : classes){
+            if(eposDataModelEntity instanceof IriTemplate){
+                templates.add((IriTemplate) eposDataModelEntity);
+            }
+        }
+        classes.removeAll(templates);
+        System.out.println(classes.size());
+
+
+        for(EPOSDataModelEntity eposDataModelEntity : classes){
+            if(eposDataModelEntity instanceof org.epos.eposdatamodel.Operation){
+                for(IriTemplate template : templates){
+                    if(template.getUid().equals(((org.epos.eposdatamodel.Operation)eposDataModelEntity).getIriTemplate().getUid())){
+                        ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setMapping(template.getMappings());
+                        ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setTemplate(template.getTemplate());
+                    }
+                }
+            }
+        }
 
         /** DATABASE POPULATION **/
         for(EPOSDataModelEntity eposDataModelEntity : classes){

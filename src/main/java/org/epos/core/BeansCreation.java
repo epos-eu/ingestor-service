@@ -134,7 +134,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                 //System.out.println("Invoking: "+propertyName+" "+propertyValue);
                 method.invoke(classObject, propertyValue);
             } catch (IllegalArgumentException |IllegalAccessException | InvocationTargetException e) {
-               LOGGER.error("ERROR Invoking [\nProperty Name: " + propertyName +
+                LOGGER.error("ERROR Invoking [\nProperty Name: " + propertyName +
                         "\nPropertyValue: " + propertyValue +
                         "\nPropertyClass: " + propertyValueClass +
                         "\nClass Name:" + classObject.getClass().getName() +
