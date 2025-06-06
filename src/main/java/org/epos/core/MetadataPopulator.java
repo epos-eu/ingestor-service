@@ -191,6 +191,9 @@ public class MetadataPopulator {
 
         /** PREPARE PROPERTIES **/
         exploreGraphAndCreateBeans(modelmapping,beansCreation,graph, null,classes, uidDone, selectedGroup);
+        for(EPOSDataModelEntity eposDataModelEntity : classes){
+            System.out.println("PREVIEW "+eposDataModelEntity);
+        }
 
         List<IriTemplate> templates = new ArrayList<>();
         System.out.println(classes.size());
@@ -203,12 +206,14 @@ public class MetadataPopulator {
         System.out.println(classes.size());
 
 
-        for(EPOSDataModelEntity eposDataModelEntity : classes){
+        for(EPOSDataModelEntity eposDataModelEntity : classes){         
             if(eposDataModelEntity instanceof org.epos.eposdatamodel.Operation){
                 for(IriTemplate template : templates){
                     if(template.getUid().equals(((org.epos.eposdatamodel.Operation)eposDataModelEntity).getIriTemplate().getUid())){
                         ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setMapping(template.getMappings());
+                        System.out.println("MAPPINGS ["+eposDataModelEntity.getClass().getSimpleName()+"] "+template.getMappings());
                         ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setTemplate(template.getTemplate());
+                        System.out.println("TEMPLATES ["+eposDataModelEntity.getClass().getSimpleName()+"] "+template.getTemplate());
                     }
                 }
             }
