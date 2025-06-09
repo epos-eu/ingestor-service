@@ -243,3 +243,69 @@
 2025-06-09 12:15:44 [main] INFO  com.zaxxer.hikari.pool.HikariPool - metadata_catalogue - Added connection org.postgresql.jdbc.PgConnection@393d5b3f
 2025-06-09 12:15:44 [main] INFO  com.zaxxer.hikari.HikariDataSource - metadata_catalogue - Start completed.
 2025-06-09 12:15:44 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.null
+2025-06-09 13:03:44 [main] INFO  o.testcontainers.images.PullPolicy - Image pull policy will be performed by: DefaultPullPolicy()
+2025-06-09 13:03:44 [main] INFO  o.t.utility.ImageNameSubstitutor - Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2025-06-09 13:03:44 [main] INFO  o.testcontainers.DockerClientFactory - Testcontainers version: 1.21.0
+2025-06-09 13:03:44 [main] INFO  o.t.d.DockerClientProviderStrategy - Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2025-06-09 13:03:44 [main] INFO  o.t.d.DockerClientProviderStrategy - Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2025-06-09 13:03:44 [main] INFO  o.testcontainers.DockerClientFactory - Docker host IP address is localhost
+2025-06-09 13:03:44 [main] INFO  o.testcontainers.DockerClientFactory - Connected to docker: 
+  Server Version: 28.2.0
+  API Version: 1.50
+  Operating System: EndeavourOS
+  Total Memory: 63744 MB
+2025-06-09 13:03:44 [main] INFO  tc.testcontainers/ryuk:0.11.0 - Creating container for image: testcontainers/ryuk:0.11.0
+2025-06-09 13:03:45 [main] INFO  tc.testcontainers/ryuk:0.11.0 - Container testcontainers/ryuk:0.11.0 is starting: 4525284d0b16efd364352f9f7acbdc2f0cc4a9d10fbe281b965a48d314950bc0
+2025-06-09 13:03:45 [main] INFO  tc.testcontainers/ryuk:0.11.0 - Container testcontainers/ryuk:0.11.0 started in PT0.237909607S
+2025-06-09 13:03:45 [main] INFO  o.t.utility.RyukResourceReaper - Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2025-06-09 13:03:45 [main] INFO  o.testcontainers.DockerClientFactory - Checking the system...
+2025-06-09 13:03:45 [main] INFO  o.testcontainers.DockerClientFactory - ✔︎ Docker server version should be at least 1.6.0
+2025-06-09 13:03:45 [main] INFO  t.epos/metadata-database-deploy-test:latest - Creating container for image: epos/metadata-database-deploy-test:latest
+2025-06-09 13:03:45 [main] INFO  t.epos/metadata-database-deploy-test:latest - Container epos/metadata-database-deploy-test:latest is starting: 93a37719b4758e3cee061a7d4f3a48a698b5de6fa7dc91992dd54ac06c3aab8e
+2025-06-09 13:03:48 [main] INFO  t.epos/metadata-database-deploy-test:latest - Container epos/metadata-database-deploy-test:latest started in PT3.800887151S
+2025-06-09 13:03:48 [main] INFO  t.epos/metadata-database-deploy-test:latest - Container is started (JDBC URL: jdbc:postgresql://localhost:32781/metadata_catalogue?loggerLevel=OFF)
+2025-06-09 13:03:48 [main] INFO  com.zaxxer.hikari.HikariDataSource - metadata_catalogue - Starting...
+2025-06-09 13:03:49 [main] INFO  com.zaxxer.hikari.pool.HikariPool - metadata_catalogue - Added connection org.postgresql.jdbc.PgConnection@7ff35a3f
+2025-06-09 13:03:49 [main] INFO  com.zaxxer.hikari.HikariDataSource - metadata_catalogue - Start completed.
+2025-06-09 13:03:49 [main] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-06-09 13:03:51 [main] INFO  com.zaxxer.hikari.HikariDataSource - metadata_catalogue - Starting...
+2025-06-09 13:03:51 [main] INFO  com.zaxxer.hikari.pool.HikariPool - metadata_catalogue - Added connection org.postgresql.jdbc.PgConnection@2d4e99de
+2025-06-09 13:03:51 [main] INFO  com.zaxxer.hikari.HikariDataSource - metadata_catalogue - Start completed.
+2025-06-09 13:03:51 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.null
+2025-06-09 13:03:51 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.null
+2025-06-09 13:03:51 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.null
+2025-06-09 13:03:51 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.null
+2025-06-09 13:03:51 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.string
+2025-06-09 14:47:16 [main] INFO  o.testcontainers.images.PullPolicy - Image pull policy will be performed by: DefaultPullPolicy()
+2025-06-09 14:47:16 [main] INFO  o.t.utility.ImageNameSubstitutor - Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2025-06-09 14:47:16 [main] INFO  o.testcontainers.DockerClientFactory - Testcontainers version: 1.21.0
+2025-06-09 14:47:17 [main] INFO  o.t.d.DockerClientProviderStrategy - Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2025-06-09 14:47:17 [main] INFO  o.t.d.DockerClientProviderStrategy - Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2025-06-09 14:47:17 [main] INFO  o.testcontainers.DockerClientFactory - Docker host IP address is localhost
+2025-06-09 14:47:17 [main] INFO  o.testcontainers.DockerClientFactory - Connected to docker: 
+  Server Version: 28.2.0
+  API Version: 1.50
+  Operating System: EndeavourOS
+  Total Memory: 63744 MB
+2025-06-09 14:47:17 [main] INFO  tc.testcontainers/ryuk:0.11.0 - Creating container for image: testcontainers/ryuk:0.11.0
+2025-06-09 14:47:17 [main] INFO  tc.testcontainers/ryuk:0.11.0 - Container testcontainers/ryuk:0.11.0 is starting: 54fce7d692a4ba7f664149650ecb96b3e014cb44a3b4513173ba21b952f3a2b8
+2025-06-09 14:47:17 [main] INFO  tc.testcontainers/ryuk:0.11.0 - Container testcontainers/ryuk:0.11.0 started in PT0.34401043S
+2025-06-09 14:47:17 [main] INFO  o.t.utility.RyukResourceReaper - Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2025-06-09 14:47:17 [main] INFO  o.testcontainers.DockerClientFactory - Checking the system...
+2025-06-09 14:47:17 [main] INFO  o.testcontainers.DockerClientFactory - ✔︎ Docker server version should be at least 1.6.0
+2025-06-09 14:47:17 [main] INFO  t.epos/metadata-database-deploy-test:latest - Creating container for image: epos/metadata-database-deploy-test:latest
+2025-06-09 14:47:17 [main] INFO  t.epos/metadata-database-deploy-test:latest - Container epos/metadata-database-deploy-test:latest is starting: 5feb188c34b76348986f4be0c644b2b2fc8cd8600af1233702a6978625f196ca
+2025-06-09 14:47:22 [main] INFO  t.epos/metadata-database-deploy-test:latest - Container epos/metadata-database-deploy-test:latest started in PT4.799888778S
+2025-06-09 14:47:22 [main] INFO  t.epos/metadata-database-deploy-test:latest - Container is started (JDBC URL: jdbc:postgresql://localhost:32848/metadata_catalogue?loggerLevel=OFF)
+2025-06-09 14:47:22 [main] INFO  com.zaxxer.hikari.HikariDataSource - metadata_catalogue - Starting...
+2025-06-09 14:47:22 [main] INFO  com.zaxxer.hikari.pool.HikariPool - metadata_catalogue - Added connection org.postgresql.jdbc.PgConnection@23b8d9f3
+2025-06-09 14:47:22 [main] INFO  com.zaxxer.hikari.HikariDataSource - metadata_catalogue - Start completed.
+2025-06-09 14:47:23 [main] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-06-09 14:47:25 [main] INFO  com.zaxxer.hikari.HikariDataSource - metadata_catalogue - Starting...
+2025-06-09 14:47:25 [main] INFO  com.zaxxer.hikari.pool.HikariPool - metadata_catalogue - Added connection org.postgresql.jdbc.PgConnection@3e04abc5
+2025-06-09 14:47:25 [main] INFO  com.zaxxer.hikari.HikariDataSource - metadata_catalogue - Start completed.
+2025-06-09 14:47:25 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.null
+2025-06-09 14:47:25 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.null
+2025-06-09 14:47:25 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.null
+2025-06-09 14:47:25 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.null
+2025-06-09 14:47:25 [main] ERROR org.epos.core.BeansCreation - org.epos.eposdatamodel.string
