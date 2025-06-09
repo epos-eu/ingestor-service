@@ -161,7 +161,6 @@ public class MetadataPopulator {
             beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, itemValue, node.getLiteral().getValue());
         } else if (node.isVariable()
                 || node.isExt()
-                || node.isNodeTriple()
                 || node.isNodeGraph()) {
             /** NOT USED ATM **/
         }

@@ -1,0 +1,122 @@
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix epos: <https://www.epos-eu.org/epos-dcat-ap#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix cnt: <http://www.w3.org/2011/content#> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix http: <http://www.w3.org/2006/http#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix gsp: <http://www.opengis.net/ont/geosparql#> .
+@prefix dqv: <http://www.w3.org/ns/dqv#> .
+@prefix oa: <http://www.w3.org/ns/oa#> .
+@prefix foaf: <http://xmlns.com/foaf/spec/#term_> .
+
+#########
+# Facility
+#########
+
+<Facility_038>  a    epos:Facility ;
+
+dct:identifier   "Facility_038" ;
+dct:title        "CAMSIZER" ;
+dct:description  "CAMSIZER (Retsch) is a compact laboratory instrument for simultaneous measurement of particle size distribution in the range 30 micron-30 mm by digital image processing. The sample is fed in from a vibratory feed channel that controls particle falling through the measurement field. Two digital cameras record the particle flow and produce digital images. The projected particle shadows are recorded at a rate of more than 60 images per second and processed (by Retsch Technology software) to set measurements and evaluate several shape parameters." ;
+dct:type         <epos:Access_to_Volcano_Observatories_and_Volcano_Research_Institutions>;
+dcat:theme       <category:Volcanology_conc>;
+dcat:contactPoint  <https://orcid.org/0000-0002-8333-1547/ContactPoint> ;
+dct:spatial [ a dct:Location;
+		    locn:geometry "POINT(15.085 37.525)"^^gsp:wktLiteral; #INGV-OE
+	      ];
+dcat:keyword "Laboratory of sedimentology","Particle size measurement";
+#foaf:page "http://facilityURL.org"^^xsd:anyURI;
+
+.
+
+#########
+# Equipment
+#########
+
+<Equipment_038_1>    a    epos:Equipment ;
+
+schema:identifier   "Equipment_038_1";
+schema:name         "CAMSIZER (Retsch)";
+schema:description  " CAMSIZER (Retsch) is a compact laboratory instrument for simultaneous measurement of particle size distribution in the range 30 micron-30 mm by digital image processing. The sample is fed in from a vibratory feed channel that controls particle falling through the measurement field. Two digital cameras record the particle flow and produce digital images. The projected particle shadows are recorded at a rate of more than 60 images per second and processed (by Retsch Technology software) to set measurements and evaluate several shape parameters." ;
+dct:type            <epos:Particle_Size_Measuring_Software_definition> ;
+dct:isPartOf        <Facility_038>;
+dcat:keyword "Laboratory of sedimentology","Particle size measurement";
+dct:spatial [ a dct:Location;
+		locn:geometry "POINT(15.085 37.525)"^^gsp:wktLiteral; #INGV-OE
+	      ];
+
+#The following properties are optional
+
+dcat:contactPoint   <https://orcid.org/0000-0002-8333-1547/ContactPoint>;
+dcat:theme          <epos:Permanent>;
+#foaf:page  "not available"^^xsd:anyURI ;
+#epos:filter       "not available" ;
+#epos:orientation  "not available" ;
+schema:serialNumber "not available";
+#epos:resolution   "not available" ;
+#epos:dynamicRange [ a schema:QuantitativeValue ;
+# schema:unitCode   "not available";
+#schema:value       "0.0"^^xsd:double ;
+#];
+# This property contains the sample period (unit and value).
+# epos:samplePeriod [ a schema:QuantitativeValue ;
+# schema:unitCode   "unit code" ; # http://wiki.goodrelations-vocabulary.org/Documentation/UN/CEFACT_Common_Codes
+        # schema:value      "0"^^xsd:double ;
+        # ];
+
+#dct:temporal [ a dct:PeriodOfTime ;
+#schema:startDate "2020-01-01T00:00:00Z"^^xsd:dateTime ;
+#schema:endDate   "2020-12-31T00:00:00Z"^^xsd:dateTime ;
+#] ;
+.
+
+#########
+# Concept
+#########
+<epos:Particle_Size_Measuring_Software>
+        a                skos:ConceptScheme ;
+        dct:description  "Particle Size Measuring Software" ;
+        dct:title        "Particle Size Measuring Software"
+.
+
+<epos:Particle_Size_Measuring_Software_definition>
+        a                skos:Concept ;
+        skos:definition  "Particle Size Measuring Software definition" ;
+        skos:inScheme    <epos:Particle_Size_Measuring_Software>;
+        skos:prefLabel   "Particle Size Measuring Software"
+.
+
+<epos:Equipment_Category>
+        a                skos:ConceptScheme ;
+        dct:description  "Description equipment category" ;
+        dct:title        "Equipment category"
+.
+
+<epos:Permanent>
+        a                skos:Concept ;
+        skos:definition  "Description" ;
+        skos:inScheme    <epos:Equipment_Category>;
+        skos:prefLabel   "Permanent instrument"
+.
+
+<epos:Facility_Type>
+        a                skos:ConceptScheme ;
+        dct:description  "Facility type" ;
+        dct:title        "Facility type"
+.
+ <epos:Access_to_Volcano_Observatories_and_Volcano_Research_Institutions>
+         a                skos:Concept ;
+         skos:definition  "Access to Volcano Observatories and Volcano Research Institutions" ;
+         skos:inScheme    <epos:Facility_Type> ;
+         skos:prefLabel   "Access to Volcano Observatories and Volcano Research Institutions"
+.

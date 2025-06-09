@@ -7,6 +7,7 @@ import org.apache.jena.datatypes.BaseDatatype;
 import org.apache.jena.datatypes.xsd.XSDDateTime;
 import org.epos.api.MetadataPopulationApiController;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
+import org.epos.eposdatamodel.Facility;
 import org.epos.eposdatamodel.Group;
 import org.epos.eposdatamodel.LinkedEntity;
 import org.slf4j.Logger;
@@ -50,88 +51,67 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
     }
 
     public void getEPOSDataModelPropertiesLiteral(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, Map<String, String> property, Object propertyValue) {
-
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        System.out.println("PRE DEBUG: " + classObject.getClass().getName() + " " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName);
+        System.out.println("PRE DEBUG: " + classObject.getClass().getName() + " " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName+" "+propertyValue);
 
         Method method = null;
         LinkedEntity le = null;
         EPOSDataModelEntity entity = null;
 
-        for (EPOSDataModelEntity eposDataModelEntity : classes) {
-            if (eposDataModelEntity != null && eposDataModelEntity.getUid().equals(propertyValue)) {
-                entity = eposDataModelEntity;
-                break;
+        if (propertyValueClass.getName().equals("org.apache.jena.datatypes.xsd.XSDDateTime")) {
+            propertyValueClass = LocalDateTime.class;
+            try {
+                propertyValue = ParseLocalDateTime.parse((String) propertyValue);//LocalDateTime.parse((String)propertyValue,  DateTimeFormatter.ofPattern("yyyy-MM-dd['T'HH:mm:ss'Z']"));
+                //System.out.println("DATE: "+propertyValue);
+
+            } catch (DateTimeParseException ignored) {
+                //LOGGER.error(ignored.getLocalizedMessage());
             }
         }
-
-        if (entity != null) {
-            try {
-                le = new LinkedEntity();
-                le.setUid(entity.getUid());
-                le.setEntityType(entity.getClass().getSimpleName().toUpperCase());
-            } catch (Exception skip) {
-                //LOGGER.error(skip.getLocalizedMessage());
-            }
-            propertyValueClass = LinkedEntity.class;
-            propertyValue = le;
-        } else {
-            //System.out.println("Is not a linked entity class " + propertyValue);
-
-            if (propertyValueClass.getName().equals("org.apache.jena.datatypes.xsd.XSDDateTime")) {
-                propertyValueClass = LocalDateTime.class;
-                try {
-                    propertyValue = ParseLocalDateTime.parse((String) propertyValue);//LocalDateTime.parse((String)propertyValue,  DateTimeFormatter.ofPattern("yyyy-MM-dd['T'HH:mm:ss'Z']"));
-                    //System.out.println("DATE: "+propertyValue);
-
-                } catch (DateTimeParseException ignored) {
-                    //LOGGER.error(ignored.getLocalizedMessage());
-                }
-            }
-            if (propertyValueClass.getName().equals("java.lang.Boolean")) {
-                propertyValueClass = java.lang.String.class;
-                propertyValue = Boolean.toString((Boolean)propertyValue);
-            }
-            if (propertyValueClass.getName().equals("java.lang.Double")) {
-                propertyValueClass = java.lang.String.class;
-                propertyValue = Double.toString((Double) propertyValue);
-            }
-            if (propertyValueClass.getName().equals("java.lang.Integer")) {
-                propertyValueClass = java.lang.String.class;
-                propertyValue = Integer.toString((Integer) propertyValue);
-            }
-            if (propertyValueClass.getName().equals("java.lang.Float")) {
-                propertyValueClass = java.lang.String.class;
-                propertyValue = Float.toString((Float) propertyValue);
-            }
-            if (propertyValueClass.getName().equals("java.lang.Long")) {
-                propertyValueClass = java.lang.String.class;
-                propertyValue = Long.toString((Long) propertyValue);
-            }
-            if (propertyValue.getClass().getName().contains("org.apache.jena.datatypes.BaseDatatype")) {
-                propertyValueClass = java.lang.String.class;
-                propertyValue = ((BaseDatatype.TypedValue) propertyValue).lexicalValue;
-            }
-
+        if (propertyValueClass.getName().equals("java.lang.Boolean")) {
+            propertyValueClass = java.lang.String.class;
+            propertyValue = Boolean.toString((Boolean)propertyValue);
+        }
+        if (propertyValueClass.getName().equals("java.lang.Double")) {
+            propertyValueClass = java.lang.String.class;
+            propertyValue = Double.toString((Double) propertyValue);
+        }
+        if (propertyValueClass.getName().equals("java.lang.Integer")) {
+            propertyValueClass = java.lang.String.class;
+            propertyValue = Integer.toString((Integer) propertyValue);
+        }
+        if (propertyValueClass.getName().equals("java.lang.Float")) {
+            propertyValueClass = java.lang.String.class;
+            propertyValue = Float.toString((Float) propertyValue);
+        }
+        if (propertyValueClass.getName().equals("java.lang.Long")) {
+            propertyValueClass = java.lang.String.class;
+            propertyValue = Long.toString((Long) propertyValue);
+        }
+        if (propertyValue.getClass().getName().contains("org.apache.jena.datatypes.BaseDatatype")) {
+            propertyValueClass = java.lang.String.class;
+            propertyValue = ((BaseDatatype.TypedValue) propertyValue).lexicalValue;
         }
         try {
             method = classObject.getClass().getMethod("add" + propertyName, propertyValueClass);
         } catch (NoSuchMethodException e) {
-            //LOGGER.error(e.getLocalizedMessage());
+            LOGGER.error(e.getLocalizedMessage());
         }
 
         if (method == null) {
             try {
                 method = classObject.getClass().getMethod("set" + propertyName, propertyValueClass);
             } catch (NoSuchMethodException e) {
-                //LOGGER.error(e.getLocalizedMessage());
+                LOGGER.error(e.getLocalizedMessage());
             }
         }
 
+        System.out.println("METHOD: "+method);
+
         if(method != null && propertyValue != null){
             try {
-                //System.out.println("Invoking: "+propertyName+" "+propertyValue);
+                System.out.println("Invoking: "+propertyName+" "+propertyValue);
                 method.invoke(classObject, propertyValue);
             } catch (IllegalArgumentException |IllegalAccessException | InvocationTargetException e) {
                 LOGGER.error("ERROR Invoking [\nProperty Name: " + propertyName +
@@ -162,39 +142,43 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             }
         }
 
+        System.out.println("ENTITY: "+entity);
+
         if(entity==null){
             entity = getEPOSDataModelClass(property.get("range"),propertyValue, selectedGroup);
-            if(property.get("range").equals("string")){
-                System.out.println("[** OMG **] EXCEPTIONALLY IS A STRING!!");
-                getEPOSDataModelPropertiesLiteral(classObject,classes,property,propertyValue);
-            }
         }
 
         if (entity != null) {
             try {
-
                 le = new LinkedEntity();
                 le.setUid(entity.getUid());
                 le.setEntityType(entity.getClass().getSimpleName().toUpperCase());
             } catch (Exception skip) {
-                //LOGGER.error(skip.getLocalizedMessage());
+                LOGGER.error(skip.getLocalizedMessage());
             }
             propertyValueClass = LinkedEntity.class;
 
             try {
                 method = classObject.getClass().getMethod("add" + propertyName, propertyValueClass);
             } catch (NoSuchMethodException e) {
-                //LOGGER.error(e.getLocalizedMessage());
+                LOGGER.error(e.getLocalizedMessage());
             }
 
             if (method == null) {
                 try {
                     method = classObject.getClass().getMethod("set" + propertyName, propertyValueClass);
                 } catch (NoSuchMethodException e) {
-                    //LOGGER.error(e.getLocalizedMessage());
+                    LOGGER.error(e.getLocalizedMessage());
                 }
             }
 
+            System.out.println("METHOD: "+method);
+
+            if(method == null && le!=null && property.get("range").equals("string")){
+                    System.out.println("[** OMG **] EXCEPTIONALLY IS A STRING!!");
+                    propertyValue = le.getUid();
+                    getEPOSDataModelPropertiesLiteral(classObject,classes,property,propertyValue);
+            }
             if (method != null) {
                 try {
                     method.invoke(classObject, le);
