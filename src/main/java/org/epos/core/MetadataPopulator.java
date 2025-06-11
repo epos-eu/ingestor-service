@@ -195,14 +195,12 @@ public class MetadataPopulator {
         }
 
         List<IriTemplate> templates = new ArrayList<>();
-        System.out.println(classes.size());
         for(EPOSDataModelEntity eposDataModelEntity : classes){
             if(eposDataModelEntity instanceof IriTemplate){
                 templates.add((IriTemplate) eposDataModelEntity);
             }
         }
         classes.removeAll(templates);
-        System.out.println(classes.size());
 
 
         for(EPOSDataModelEntity eposDataModelEntity : classes){         
@@ -210,9 +208,7 @@ public class MetadataPopulator {
                 for(IriTemplate template : templates){
                     if(template.getUid().equals(((org.epos.eposdatamodel.Operation)eposDataModelEntity).getIriTemplate().getUid())){
                         ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setMapping(template.getMappings());
-                        System.out.println("MAPPINGS ["+eposDataModelEntity.getClass().getSimpleName()+"] "+template.getMappings());
                         ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setTemplate(template.getTemplate());
-                        System.out.println("TEMPLATES ["+eposDataModelEntity.getClass().getSimpleName()+"] "+template.getTemplate());
                     }
                 }
             }
@@ -223,7 +219,7 @@ public class MetadataPopulator {
             //System.out.println("[ADDING TO DATABASE] "+eposDataModelEntity);
             try {
                 AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
-                LOGGER.debug("Ingesting -> "+eposDataModelEntity);
+                LOGGER.debug("Ingesting -> "+eposDataModelEntity+ " \nEDITOR: "+eposDataModelEntity.getEditorId());
                 LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED, null, null);
                 returnMap.put(le.getUid(), le);
             }catch(Exception apiCreationException){
