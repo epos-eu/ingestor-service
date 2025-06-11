@@ -148,6 +148,14 @@ public class IngestionComplexFullFileMetadataTest extends TestcontainersLifecycl
             System.out.println(facility);
         }
 
+        AbstractAPI categories = AbstractAPI.retrieveAPI(EntityNames.CATEGORY.name());
+        List<org.epos.eposdatamodel.Category> categoriesList = categories.retrieveAll();
+
+        for (org.epos.eposdatamodel.Category category : categoriesList) {
+
+            System.out.println(category);
+        }
+
 
     }
 

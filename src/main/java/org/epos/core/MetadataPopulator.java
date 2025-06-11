@@ -28,6 +28,8 @@ public class MetadataPopulator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataPopulator.class);
 
+    private static BeansCreation beansCreation = new BeansCreation();
+
     public static Model retrieveModelMapping(String inputMappingModel){
         EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
 
@@ -144,7 +146,6 @@ public class MetadataPopulator {
     }
 
     private static void manageItemValue(EPOSDataModelEntity activeClass, List<EPOSDataModelEntity> classes, Map<String, String> itemValue, Node node, Group selectedGroup) {
-        BeansCreation beansCreation = new BeansCreation();
         System.out.println("["+activeClass.getClass().getSimpleName()+"] "+node.toString()+" "+itemValue);
         if (node.isURI()) {
             beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, itemValue, node.toString(), selectedGroup);
@@ -219,7 +220,7 @@ public class MetadataPopulator {
             //System.out.println("[ADDING TO DATABASE] "+eposDataModelEntity);
             try {
                 AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
-                LOGGER.debug("Ingesting -> "+eposDataModelEntity+ " \nEDITOR: "+eposDataModelEntity.getEditorId());
+                LOGGER.debug("Ingesting -> "+eposDataModelEntity);
                 LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED, null, null);
                 returnMap.put(le.getUid(), le);
             }catch(Exception apiCreationException){

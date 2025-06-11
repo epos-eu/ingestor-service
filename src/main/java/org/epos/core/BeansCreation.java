@@ -142,8 +142,6 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             }
         }
 
-        System.out.println("ENTITY: "+entity);
-
         if(entity==null){
             entity = getEPOSDataModelClass(property.get("range"),propertyValue, selectedGroup);
         }
@@ -154,28 +152,26 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
                 le.setUid(entity.getUid());
                 le.setEntityType(entity.getClass().getSimpleName().toUpperCase());
             } catch (Exception skip) {
-                LOGGER.error(skip.getLocalizedMessage());
+                //LOGGER.error(skip.getLocalizedMessage());
             }
             propertyValueClass = LinkedEntity.class;
 
             try {
                 method = classObject.getClass().getMethod("add" + propertyName, propertyValueClass);
             } catch (NoSuchMethodException e) {
-                LOGGER.error(e.getLocalizedMessage());
+                //LOGGER.error(e.getLocalizedMessage());
             }
 
             if (method == null) {
                 try {
                     method = classObject.getClass().getMethod("set" + propertyName, propertyValueClass);
                 } catch (NoSuchMethodException e) {
-                    LOGGER.error(e.getLocalizedMessage());
+                    //LOGGER.error(e.getLocalizedMessage());
                 }
             }
 
-            System.out.println("METHOD: "+method);
-
             if(method == null && le!=null && property.get("range").equals("string")){
-                    System.out.println("[** OMG **] EXCEPTIONALLY IS A STRING!!");
+                    //System.out.println("[** OMG **] EXCEPTIONALLY IS A STRING!!");
                     propertyValue = le.getUid();
                     getEPOSDataModelPropertiesLiteral(classObject,classes,property,propertyValue);
             }
