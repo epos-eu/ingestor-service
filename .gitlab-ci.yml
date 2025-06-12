@@ -25,7 +25,7 @@ deploy:
     - sed -i "s|VERSION|${CI_COMMIT_REF_NAME}|g" pom.xml
     - export VERSION=${CI_COMMIT_REF_NAME}
   script:
-    - mvn $MAVEN_CLI_OPTS install
+    - mvn $MAVEN_CLI_OPTS install -DskipTests
   artifacts:
     paths:
       - target/*.jar

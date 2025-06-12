@@ -157,6 +157,7 @@ public class MetadataPopulator {
                 s = node.toString();
                 s = StringUtils.substringBetween(s, "\"", "\"");
             }
+            System.out.println("[NODE IS LITERAL "+activeClass.getClass().getSimpleName()+"] "+node.toString()+" "+itemValue+" "+s);
             beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, itemValue, s==null? node.getLiteralValue() : s);
         } else if (node.isConcrete()) {
             beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, itemValue, node.getLiteral().getValue());
@@ -212,6 +213,7 @@ public class MetadataPopulator {
                         ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setTemplate(template.getTemplate());
                     }
                 }
+                System.out.println("OPERATION "+eposDataModelEntity);
             }
         }
 
