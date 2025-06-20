@@ -1,0 +1,621 @@
+@prefix edm: <http://www.epos-eu.org/epos-data-model#> .
+@prefix epos: <https://www.epos-eu.org/epos-dcat-ap#> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix cnt: <http://www.w3.org/2011/content#> .
+@prefix oa: <http://www.w3.org/ns/oa#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix spdx: <http://spdx.org/rdf/terms#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix http: <http://www.w3.org/2006/http#> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix gsp: <http://www.opengis.net/ont/geosparql#> .
+@prefix dqv: <http://www.w3.org/ns/dqv#> .
+@prefix foafterm: <http://xmlns.com/foaf/spec/#term_> .
+
+# FACETS
+
+<category:cat1> a skos:ConceptScheme;
+  skos:prefLabel "DOMAIN TEST" ;
+  dct:title "DOMAIN TEST 1" ;
+  dct:description "TCS Domain" ;
+  foaf:logo "assets/img/logo/NFO_logo.png" ;
+  foaf:homepage "https://www.epos-eu.org/tcs/near-fault-observatories" ;
+  schema:color "#5e3160";
+  schema:orderItemNumber "1";
+.
+<category:cat2> a skos:Concept;
+ skos:prefLabel "CATEGORY TEST 1";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:cat1>;
+ skos:narrower <category:cat3>,<category:cat4>;
+.
+<category:cat3> a skos:Concept;
+ skos:prefLabel "CATEGORY TEST 2";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:cat1>;
+ skos:broader <category:cat2>;
+.
+<category:cat4> a skos:Concept;
+ skos:prefLabel "CATEGORY TEST 3";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:cat1>;
+ skos:broader <category:cat2>;
+.
+
+# FACETS FACILITIES
+
+<category:fac1> a skos:ConceptScheme ;
+       skos:prefLabel "FACILITY TEST" ;
+       dct:title "FACILITY TEST" ;
+       dct:description "Facility Domain" ;
+       foaf:logo "assets/img/logo/LABS_logo.png" ;
+       #foaf:homepage "" ;
+       schema:color "#27A468";
+       schema:orderItemNumber "1";
+ .
+
+<category:facchild1> a skos:Concept ;
+        skos:inScheme    <category:fac1> ;
+        skos:definition  "FACILITY CATEGORY 1" ;
+        skos:prefLabel   "FACILITY CATEGORY 1"
+ .
+
+
+
+# SERVICE TYPE
+<servicetype1> a skos:Concept;
+ skos:prefLabel "SERVICE TYPE 1";
+ skos:definition "service type";
+.
+
+
+## ORGANIZATIONS
+
+#parent
+<ID:eposid> a schema:Organization;
+  schema:identifier [ a schema:PropertyValue;
+    schema:propertyID "ID";
+    schema:value "eposid";
+  ];
+  schema:legalName "EPOS ERIC"^^xsd:string;
+  schema:address [ a schema:PostalAddress;
+    schema:streetAddress "Via di Vigna Murata, 605";
+    schema:addressLocality "Roma";
+    schema:postalCode "00143";
+    schema:addressCountry "IT";
+  ];
+  schema:logo "https://www.ingv.it/images/news/news/news-epos-31102018.png"^^xsd:anyURI;
+  schema:url "https://www.epos-eu.org"^^xsd:anyURI;
+  schema:email "testemail1@email.it";
+  schema:owns <Facility/Test/1> ;
+.
+#child 1/1
+<ID:eposidchild> a schema:Organization;
+  schema:identifier [ a schema:PropertyValue;
+    schema:propertyID "ID";
+    schema:value "eposidchild";
+  ];
+  schema:legalName "EPOS ERIC Child"^^xsd:string;
+  schema:address [ a schema:PostalAddress;
+    schema:streetAddress "Via di Vigna Murata, 605";
+    schema:addressLocality "Roma";
+    schema:postalCode "00143";
+    schema:addressCountry "IT";
+  ];
+  schema:logo "https://www.ingv.it/images/news/news/news-epos-31102018.png"^^xsd:anyURI;
+  schema:url "https://www.epos-eu.org"^^xsd:anyURI;
+  schema:email "testemail1@email.it";
+  schema:memberOf <ID:eposid>;
+.
+
+# DOWNLOADABLE FILE
+
+<http://orcid.org/0000-0001-5805-9337> a schema:Person;
+	schema:identifier [ a schema:PropertyValue;
+		schema:propertyID "orcid";
+		schema:value "http://orcid.org/0000-0001-5805-9337";
+	];
+	schema:familyName "Vinciarelli";
+	schema:givenName "Valerio";
+	schema:address [ a schema:PostalAddress;
+		schema:streetAddress "via di Vigna Murata, 605";
+		schema:addressLocality "Roma";
+		schema:postalCode "00143";
+		schema:addressCountry "Italy";
+	];
+	schema:email "valerio.vinciarelli@epos-eric.eu";
+	schema:telephone "+3900000000";
+	schema:url "http://orcid.org/0000-0001-5805-9337"^^xsd:anyURI;
+	schema:qualifications "Senior Developer";
+	schema:affiliation <PIC:999472675>;
+	schema:contactPoint <http://orcid.org//0000-0001-5805-9337/scientificContact>;
+.
+
+<http://orcid.org//0000-0001-5805-9337/scientificContact> a schema:ContactPoint;
+		schema:email "valerio.vinciarelli@epos-eric.eu";
+		schema:availableLanguage "en" ;
+		schema:contactType "scientificContact" ;
+.
+
+# DOWNLOADABLE FILE SECTION
+
+<Dataset/Test/1> a dcat:Dataset ;
+        dct:identifier "Dataset/Test/1" ;
+        dct:title "Dataset Title 1" ;
+        dct:description "Dataset Description 1" ;
+        adms:identifier [ a adms:Identifier ;
+            adms:schemeAgency "DDSS-ID" ;
+            skos:notation "TEST-1" ;
+
+        ];
+        dct:created "2025-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:issued "2025-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:modified "2025-01-01T00:00:00Z"^^xsd:dateTime ;
+        owl:versionInfo "1.0.0" ;
+
+	    dct:type "http://purl.org/dc/dcmitype/Collection"^^xsd:anyURI ;
+
+        dct:accrualPeriodicity "http://purl.org/cld/freq/continuous"^^xsd:anyURI ;
+
+        dcat:theme <category:cat2> ;
+
+        dcat:keyword "keyword1","keyword2" ,"keyword3" ;
+
+        dcat:contactPoint <http://orcid.org//0000-0001-5805-9337/scientificContact> ;
+
+	    dct:publisher <ID:eposid> ;
+
+        dcat:distribution <Distribution/Test/1> ;
+
+        dct:spatial [ a dct:Location ;
+          locn:geometry "POLYGON((180.0 -90.0 , -180.0 -90.0, -180.0 90.0 , 180.0 90.0,180.0 -90.0))"^^gsp:wktLiteral ;
+        ];
+
+        dct:temporal [ a dct:PeriodOfTime ;
+                schema:startDate "1988-01-01T00:00:00Z"^^xsd:dateTime ;
+        ] ;
+
+        dqv:hasQualityAnnotation [ a oa:Annotation ;
+       		oa:hasBody "QualityAssuranceDocument"^^xsd:anyURI  ;
+        ];
+.
+
+<Distribution/Test/1> a dcat:Distribution ;
+
+        dct:identifier "Distribution/Test/1" ;
+
+        dct:title "Distribution Title 1" ;
+
+	    dct:description "Distribution Description 1" ;
+
+	    dct:issued "2025-01-01"^^xsd:date ;
+
+        dct:modified "2025-01-01"^^xsd:date ;
+
+	    dct:type "http://publications.europa.eu/resource/authority/distribution-type/DOWNLOADABLE_FILE"^^xsd:anyURI ;
+
+        dcat:accessURL "https://doron-prize.ch/wp-content/uploads/2020/07/1200px-Test-Logo.svg_.png"^^xsd:anyURI ;
+
+        dcat:downloadURL "https://doron-prize.ch/wp-content/uploads/2020/07/1200px-Test-Logo.svg_.png"^^xsd:anyURI ;
+
+        dct:format "http://publications.europa.eu/resource/authority/file-type/PNG"^^xsd:anyURI ;
+
+        dct:license "http://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI ;
+
+.
+
+# WEBSERVICE SECTION
+
+<Dataset/Test/2> a dcat:Dataset ;
+        dct:identifier "Dataset/Test/1" ;
+        dct:title "Dataset Title 2" ;
+        dct:description "Dataset Description 2" ;
+        adms:identifier [ a adms:Identifier ;
+            adms:schemeAgency "DDSS-ID" ;
+            skos:notation "TEST-2" ;
+
+        ];
+        dct:created "2025-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:issued "2025-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:modified "2025-01-01T00:00:00Z"^^xsd:dateTime ;
+        owl:versionInfo "1.0.0" ;
+
+	    dct:type "http://purl.org/dc/dcmitype/Collection"^^xsd:anyURI ;
+
+        dct:accrualPeriodicity "http://purl.org/cld/freq/irregular"^^xsd:anyURI ;
+
+        dcat:theme <category:cat3> ;
+
+        dcat:keyword "keyword4","keyword5" ,"keyword6" ;
+        dcat:contactPoint <http://orcid.org//0000-0001-5805-9337/scientificContact> ;
+
+	    dct:publisher <ID:eposid> ;
+
+        dcat:distribution <Distribution/Test/2> ;
+
+        dct:spatial [ a dct:Location ;
+          locn:geometry "POLYGON((180.0 -90.0 , -180.0 -90.0, -180.0 90.0 , 180.0 90.0,180.0 -90.0))"^^gsp:wktLiteral ;
+        ];
+
+        dct:temporal [ a dct:PeriodOfTime ;
+                schema:startDate "1988-01-01T00:00:00Z"^^xsd:dateTime ;
+                schema:endDate "2025-01-01T00:00:00Z"^^xsd:dateTime ;
+        ] ;
+
+        dqv:hasQualityAnnotation [ a oa:Annotation ;
+       		oa:hasBody "QualityAssuranceDocument"^^xsd:anyURI  ;
+        ];
+.
+
+<Distribution/Test/2> a dcat:Distribution ;
+
+        dct:identifier "Distribution/Test/2" ;
+
+        dct:title "Distribution Title 2" ;
+
+	    dct:description "Distribution Description 2" ;
+
+	    dct:issued "2025-01-01"^^xsd:date ;
+
+        dct:modified "2025-01-01"^^xsd:date ;
+
+	    dct:type "http://publications.europa.eu/resource/authority/distribution-type/WEB_SERVICE"^^xsd:anyURI ;
+
+	    dct:conformsTo <WebService/Test/2> ;
+
+        dcat:accessURL <Operation/Test/2> ;
+
+        dct:format "http://publications.europa.eu/resource/authority/file-type/XML"^^xsd:anyURI ;
+
+        dct:license "http://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI ;
+
+.
+
+<WebService/Test/2> a epos:WebService ;
+
+	schema:identifier "WebService/Test/2" ;
+
+	schema:description "WebService Description 2" ;
+
+	schema:name "WebService Title 2" ;
+
+	dcat:contactPoint <http://orcid.org//0000-0001-5805-9337/scientificContact> ;
+
+	schema:datePublished "2016-01-01T00:00:00Z"^^xsd:dateTime ;
+	schema:dateModified "2016-01-01T00:00:00Z"^^xsd:dateTime ;
+
+	schema:provider <ID:eposidchild> ;
+
+	hydra:entrypoint "http://www.orfeus-eu.org/fdsnws/dataselect/1/application.wadl"^^xsd:anyURI ;
+
+	dcat:theme  <servicetype1> ;
+
+	schema:keywords "keywordWebService1", "keywordWebService2", "keywordWebService3" ;
+
+	hydra:supportedOperation <Operation/Test/2> ;
+
+	dct:conformsTo <Documentation/Test/2> ;
+
+	dct:spatial [ a dct:Location ;
+		locn:geometry "POLYGON((180.0 -90.0, -180.0 -90.0, -180.0 90.0, 180.0 90.0, 180.0 -90.0))"^^gsp:wktLiteral ;
+	];
+
+	dct:temporal [ a dct:PeriodOfTime ;
+        schema:startDate "1988-01-01T00:00:00Z"^^xsd:dateTime ;
+        schema:endDate "2025-01-01T00:00:00Z"^^xsd:dateTime ;
+	] ;
+	dct:license "http://creativecommons.org/licenses/by/4.0/"^^xsd:anyURI ;
+
+	dct:relation <WebService/Test/2>
+.
+
+<Documentation/Test/2> a hydra:ApiDocumentation ;
+	hydra:title "Documentation Title 2" ;
+	hydra:description "Documentation Description 2" ;
+	hydra:entrypoint "API-Documentation-entrypoint"^^xsd:anyURI ;
+.
+
+<Operation/Test/2> a hydra:Operation;
+	    hydra:method "GET"^^xsd:string;
+    	hydra:returns "application/xml";
+	    hydra:expects <GlassFramework/webresources/stations/v2/station/bbox/payload>;
+
+    	hydra:property[ a hydra:IriTemplate;
+    		# INGV entrypoint:
+    		hydra:template "https://webservices.ingv.it/fdsnws/station/1/query{?starttime, endtime, network, station, location, channel, minlatitude, maxlatitude, minlongitude, maxlongitude, level, format}"^^xsd:string;
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "starttime"^^xsd:string;
+    				rdfs:range "xsd:dateTime";
+    				rdfs:label "Start of the timespan";
+    				hydra:property "schema:startDate";
+    				schema:valuePattern "YYYY-MM-DDThh:mm:ss";
+    				schema:defaultValue "2010-01-01T00:00:00";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "endtime"^^xsd:string;
+    				rdfs:range "xsd:dateTime";
+    				rdfs:label "End of the timespan";
+    				hydra:property "schema:endDate";
+    				schema:valuePattern "YYYY-MM-DDThh:mm:ss";
+    				schema:defaultValue "2019-03-01T00:00:00";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "network"^^xsd:string;
+    				rdfs:range "xsd:string";
+    				rdfs:label "Network code";
+    				schema:defaultValue "_NFOIRPINA";
+    				hydra:required "true"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "station"^^xsd:string;
+    				rdfs:range "xsd:string";
+    				rdfs:label "Station code";
+    				schema:multipleValues "true"^^xsd:boolean;
+    				schema:defaultValue "AND3";
+    				# IX
+    				#http:paramValue "AND3,AVG3,BEL3,BENI,BSC3,CGG3,CLT3,CMP3,COL3,CSG3,LGS3,LIO3,MNT3,MRN3,NSC3,PGN3,PST3,RDM3,RSF3,SALI,SCL3,SFL3,SNR3,SRN3,SSB3,STN3,TEGI,VDP3,VDS3,VGG3,CAFE,CAGG,CDRU,MCRV,MRB1,MRLC,MTMR,SLCN";
+    				http:paramValue "AND3";
+    				http:paramValue "AVG3";
+    				http:paramValue "BEL3";
+    				http:paramValue "BENI";
+    				http:paramValue "BSC3";
+    				http:paramValue "CGG3";
+    				http:paramValue "CLT3";
+    				http:paramValue "CMP3";
+    				http:paramValue "COL3";
+    				http:paramValue "CSG3";
+    				http:paramValue "LGS3";
+    				http:paramValue "LIO3";
+    				http:paramValue "MNT3";
+    				http:paramValue "MRN3";
+    				http:paramValue "NSC3";
+    				http:paramValue "PGN3";
+    				http:paramValue "PST3";
+    				http:paramValue "RDM3";
+    				http:paramValue "RSF3";
+    				http:paramValue "SALI";
+    				http:paramValue "SCL3";
+    				http:paramValue "SFL3";
+    				http:paramValue "SNR3";
+    				http:paramValue "SRN3";
+    				http:paramValue "SSB3";
+    				http:paramValue "STN3";
+    				http:paramValue "TEGI";
+    				http:paramValue "VDP3";
+    				http:paramValue "VDS3";
+    				http:paramValue "VGG3";
+    				# IV
+    				http:paramValue "CAFE";
+    				http:paramValue "CAGG";
+    				http:paramValue "CDRU";
+    				http:paramValue "MCRV";
+    				http:paramValue "MRB1";
+    				http:paramValue "MRLC";
+    				http:paramValue "MTMR";
+    				http:paramValue "SLCN";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "location"^^xsd:string;
+    				rdfs:range "xsd:string";
+    				rdfs:label "Location code";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "channel"^^xsd:string;
+    				rdfs:range "xsd:string";
+    				rdfs:label "Channel code";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "minlatitude"^^xsd:string;
+    				rdfs:range "xsd:float";
+    				rdfs:label "Minimum Latitude";
+    				schema:minValue "-90.0";
+    				schema:maxValue "90.0";
+    				schema:defaultValue "40.0";
+    				hydra:property "epos:southernmostLatitude";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "maxlatitude"^^xsd:string;
+    				rdfs:range "xsd:float";
+    				rdfs:label "Maximum Latitude";
+    				schema:minValue "-90.0";
+    				schema:maxValue "90.0";
+    				schema:defaultValue "41.5";
+    				hydra:property "epos:northernmostLatitude";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "minlongitude"^^xsd:string;
+    				rdfs:range "xsd:float";
+    				rdfs:label "Minimum Longitude";
+    				schema:minValue "-180.0";
+    				schema:maxValue "180.0";
+    				schema:defaultValue "14.0";
+    				hydra:property "epos:westernmostLongitude";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "maxlongitude"^^xsd:string;
+    				rdfs:range "xsd:float";
+    				rdfs:label "Maximum Longitude";
+    				schema:minValue "-180.0";
+    				schema:maxValue "180.0";
+    				schema:defaultValue "16.5";
+    				hydra:property "epos:easternmostLongitude";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "level"^^xsd:string;
+    				rdfs:range "xsd:string";
+    				rdfs:label "Level";
+    				http:paramValue "network";
+    				http:paramValue "station";
+    				http:paramValue "channel";
+    				http:paramValue "response";
+    				schema:defaultValue "station";
+    				hydra:required "false"^^xsd:boolean;
+    			];
+    			hydra:mapping[ a hydra:IriTemplateMapping;
+    				hydra:variable "format"^^xsd:string;
+    				rdfs:range "xsd:string";
+    				rdfs:label "Output Format";
+    				hydra:property "schema:encodingFormat";
+    				http:paramValue "xml";
+    				http:paramValue "text";
+    				schema:defaultValue "xml";
+    				schema:readonlyValue "true"^^xsd:boolean;
+    				hydra:required "true"^^xsd:boolean;
+    			];
+    	];
+.
+
+<GlassFramework/webresources/stations/v2/station/bbox/payload> a hydra:Class ;
+
+	hydra:title "Payload description" ;
+    hydra:description "Payload description" ;
+
+    hydra:supportedProperty [ a hydra:SupportedProperty;
+
+        hydra:variable "GNSS Station ID"^^xsd:string;       # key - e.g., "GNSS Station ID": "GERN00ESP"
+        hydra:property "epos:gnss_station_id" ;     # semantic tag
+        hydra:description "The ID of the station" ;
+        hydra:required "true"^^xsd:boolean;
+    ];
+
+    #hydra:supportedProperty [ a hydra:SupportedProperty;
+	#
+    #    hydra:variable "name"^^xsd:string;
+    #    hydra:property "schema:name" ; #semantic tag
+    #    hydra:description "The name of parmeter" ;
+    #    hydra:required "true"^^xsd:boolean;
+    #];
+.
+
+
+
+#PLUGIN
+
+<Plugin/SoftwareSourceCode/QuakeML> a schema:SoftwareSourceCode;
+
+  schema:identifier "Plugin/SoftwareSourceCode/QuakeML" ;
+  schema:name "Plugin for the conversion from QuakeML to GeoJSON payload" ;
+  schema:description "Plugin for the conversion from QuakeML to GeoJSON payload" ;
+  schema:softwareVersion "main";
+  schema:codeRepository "https://gitlab-ci-token:glpat-k4RsseLnMdVc5efsxtN4@epos-ci.brgm.fr/epos/converter-plugins/quakeml-plugin.git"^^xsd:anyURI ;
+  schema:license "https://epos-ci.brgm.fr/epos/converter-plugins/quakeml-plugin/-/blob/main/README.md"^^xsd:anyURI ;
+  schema:mainEntityOfPage "https://epos-ci.brgm.fr/epos/converter-plugins/quakeml-plugin/-/blob/main/README.md"^^xsd:anyURI ;
+  schema:programmingLanguage "Java" ;
+  schema:runtimePlatform "java-1.10" ;
+  schema:targetProduct <Plugin/SoftwareApplication/QuakeML> ;
+.
+
+<Plugin/SoftwareApplication/QuakeML> a schema:SoftwareApplication;
+
+  schema:identifier "Plugin/SoftwareApplication/QuakeML" ;
+  schema:potentialAction [ a schema:ControlAction ;
+      #Description of Payload schema and format
+      schema:object [ a schema:DataDownload ;
+        schema:encodingFormat "application/xml" ;
+        schema:schemaVersion "" ;
+      ] ;
+      schema:result [ a schema:TextObject ;
+        schema:encodingFormat "application/epos.geo+json" ;
+        schema:schemaVersion "" ;
+      ] ;
+  ];
+  schema:softwareRequirements "Java-Reflection;target/;QuakeML-main-jar-with-dependencies.jar;org.epos.quakeml.core.QuakeMLInvoker" ;
+  dct:relation <Operation/Test/2> ;
+.
+
+<Facility/Test/1> a epos:Facility ;
+
+	dct:identifier "Facility/Test/1" ;
+	dct:title "Facility Title 1" ;
+	dct:description "Facility Description 1" ;
+	dct:type <https://orfeus-eu.org/ns/network> ;
+	dcat:theme <category:facchild1> ;
+	vcard:hasAddress [ a vcard:Address ;
+		vcard:country-name "Country" ;
+		vcard:locality "locality" ;
+		vcard:postal-code "00000" ;
+		vcard:street-address "Street Address" ;
+	];
+	foaf:page "http://facilityURL.org"^^xsd:anyURI ;
+	dcat:contactPoint <http://orcid.org//0000-0001-5805-9337/scientificContact> ;
+	dct:spatial [ a dct:Location ;
+		locn:geometry "POINT(15.085 37.525)"^^gsp:wktLiteral;
+        ];
+	dct:relation <Dataset/Test/2> ;
+.
+
+<Equipment/Test/1> a epos:Equipment;
+
+	schema:identifier "Equipment/Test/1" ;
+	schema:name "Equipment Title 1" ;
+	schema:description "Equipment Description 1" ;
+	dct:type "https://orfeus-eu.org/ns/station"^^xsd:anyURI ;
+	schema:manufacturer <ID:eposidchild> ;
+	schema:serialNumber "serialNumber" ;
+	dct:isPartOf <Facility/Test/1> ;
+	dcat:contactPoint <http://orcid.org//0000-0001-5805-9337/scientificContact> ;
+	dct:spatial [ a dct:Location ;
+		locn:geometry "POINT(5.1767 52.1017 3)"^^gsp:wktLiteral ;
+	] ;
+	epos:filter "filter";
+	epos:dynamicRange [ a schema:QuantitativeValue ;
+		schema:unitCode "unit code" ;
+		schema:value "0.0"^^xsd:double ;
+	];
+	epos:samplePeriod [ a schema:QuantitativeValue ;
+		schema:unitCode "unit code" ;
+		schema:value "0"^^xsd:double ;
+	];
+	epos:resolution "resolution" ;
+	epos:orientation "90.0/0.0"^^xsd:string ;
+	dct:temporal [ a dct:PeriodOfTime ;
+		schema:startDate "1997-11-25T00:00:00Z"^^xsd:dateTime ;
+	] ;
+	dct:relation <Dataset/Test/2> ;
+	dcat:theme <category:facchild1> ;
+	foaf:page "http://equipmentURL.org"^^xsd:anyURI ;
+.
+
+# Service
+<Service/Test/1> a schema:Service ;
+    schema:identifier "Service/Test/1";
+	schema:name "Service Title 1" ;
+	schema:contactPoint <http://orcid.org//0000-0001-5805-9337/scientificContact> ;
+	schema:description "Service Description 1" ;
+	schema:provider <ID:eposid> ;
+	schema:serviceType "TNA Service" ;
+	schema:keywords "keywordService1, keywordService2, keywordService3" ;
+	dcat:theme <category:facchild1> ;
+        dct:temporal [ a dct:PeriodOfTime ;
+                schema:startDate "2020-01-01T00:00:00Z"^^xsd:dateTime ;
+                schema:endDate "2024-10-31T00:00:00Z"^^xsd:dateTime ;
+        ] ;
+	dct:spatial [ a dct:Location ;
+		locn:geometry  "POLYGON((14.7 37.6 , 14.7 38.1 , 15.7 38.1 , 15.7 37.6 , 14.7 37.6))"^^gsp:wktLiteral;
+	];
+    schema:url "http://serviceTest.org"^^xsd:anyURI ;
+ .
+

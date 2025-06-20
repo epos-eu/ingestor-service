@@ -1,0 +1,64 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix epos: <https://www.epos-eu.org/epos-dcat-ap#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix cnt: <http://www.w3.org/2011/content#> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix http: <http://www.w3.org/2006/http#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix gsp: <http://www.opengis.net/ont/geosparql#> .
+@prefix dqv: <http://www.w3.org/ns/dqv#> .
+@prefix oa: <http://www.w3.org/ns/oa#> .
+
+<PIC:000518944> a schema:Organization ;
+                schema:identifier [ a schema:PropertyValue ;
+                                    schema:propertyID "PIC" ;
+                                    schema:value "000518944" ;
+                  ];
+                schema:legalName "Institute test2" ;
+                schema:leiCode "Legal Entity Identifier Search" ;
+                schema:address [ a schema:PostalAddress ;
+                                 schema:streetAddress "address, 002" ;
+                                 schema:addressLocality "Rome" ;
+                                 schema:postalCode "00143" ;
+                                 schema:addressCountry "Italy" ;
+                  ];
+                schema:logo "http://www.test2.it/logo.png"^^xsd:anyURI ;
+                schema:url "http://www.test2.it"^^xsd:anyURI  ;
+                schema:email "test2_institute@email.it" ;
+                schema:telephone "+0302206911" ;
+                schema:contactPoint <http://orcid.org/0000-0001-7750-0000/legalContact> ;
+                schema:contactPoint <http://orcid.org/0000-0001-7750-0000/scientificContact> ;
+                schema:contactPoint <http://orcid.org/0000-0001-7750-0000/financialContact> ;
+                schema:memberOf <PIC:007012076> ;
+.
+
+<PIC:007012076> a schema:Organization ;
+                schema:identifier [ a schema:PropertyValue ;
+                                    schema:propertyID  "PIC" ;
+                                    schema:value   "007012076" ;
+                  ];
+                schema:legalName "Institute test1" ;
+                schema:leiCode "Legal Entity Identifier Search" ;
+                schema:address [ a schema:PostalAddress ;
+                                 schema:streetAddress "address, 001" ;
+                                 schema:addressLocality "Rome" ;
+                                 schema:postalCode "00143" ;
+                                 schema:addressCountry "Italy" ;
+                  ];
+                schema:url "http://www.test1.it/"^^xsd:anyURI ;
+                schema:email "test1_example@email.it" ;
+                schema:telephone "+0302206922" ;
+                schema:contactPoint <http://orcid.org/0000-0001-7750-0000/legalContact> ;
+                schema:contactPoint <http://orcid.org/0000-0001-7750-0000/scientificContact> ;
+                schema:contactPoint <http://orcid.org/0000-0001-7750-0000/financialContact> ;
+.
+

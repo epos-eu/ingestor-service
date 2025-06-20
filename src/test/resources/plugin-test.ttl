@@ -1,0 +1,64 @@
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix epos: <https://www.epos-eu.org/epos-dcat-ap#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix cnt: <http://www.w3.org/2011/content#> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix http: <http://www.w3.org/2006/http#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix gsp: <http://www.opengis.net/ont/geosparql#> .
+
+<Plugin/SoftwareSourceCode/AHEpisodes> a schema:SoftwareSourceCode;
+
+  schema:identifier "Plugin/SoftwareSourceCode/AHEpisodes" ;
+  schema:name "Plugin for the conversion from AHEpisodes to GeoJSON payload" ;
+  schema:description "Plugin for the conversion from AHEpisodes to GeoJSON payload" ;
+  schema:softwareVersion "file";
+  # Link to the repository where the code is located (gitlab, github).
+  schema:codeRepository "https://gitlab-ci-token:glpat-ZtejfLKuFNGjLSTYzCTL@epos-ci.brgm.fr/epos/converter-plugins/ah-episodes-plugin.git"^^xsd:anyURI ;
+  # This property refers to the license under which the software is made available.
+  schema:license "https://epos-ci.brgm.fr/epos/converter-plugins/ah-episodes-plugin/-/blob/main/README.md"^^xsd:anyURI ;
+  # This property refers to the web page URL which describes the software.
+  schema:mainEntityOfPage "https://epos-ci.brgm.fr/epos/converter-plugins/ah-episodes-plugin/-/blob/main/README.md"^^xsd:anyURI ;
+  schema:programmingLanguage "Java" ;
+
+
+  ################################################
+  #                    TO BE ADDED
+  ################################################
+
+  ## INVOKER-TYPE;LANGUAGE VERSION;CLASSPATH;JARNAME;CLASS
+  schema:runtimePlatform "java-1.10" ;
+
+  schema:targetProduct <Plugin/SoftwareApplication/AHEpisodes> ;
+.
+
+<Plugin/SoftwareApplication/AHEpisodes> a schema:SoftwareApplication;
+
+  schema:identifier "Plugin/SoftwareApplication/AHEpisodes" ;
+
+  schema:potentialAction [ a schema:ControlAction ;
+      #Description of Payload schema and format
+      schema:object [ a schema:DataDownload ;
+        schema:encodingFormat "application/json" ;
+        schema:schemaVersion "" ;
+      ] ;
+      schema:result [ a schema:TextObject ;
+        schema:encodingFormat "application/epos.geo+json" ;
+        schema:schemaVersion "" ;
+      ] ;
+  ];
+
+  schema:softwareRequirements "Java-Reflection;target/;WP14_Episodes-file-jar-with-dependencies.jar;org.epos.ahepisodes.core.AHEpisodesInvoker" ;
+
+  dct:relation <anthropogenic_hazards/webservice/is-epos_platform/episodes> ;
+
+.

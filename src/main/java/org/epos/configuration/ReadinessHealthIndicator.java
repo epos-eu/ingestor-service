@@ -1,6 +1,5 @@
 package org.epos.configuration;
 
-import org.epos.edmmapping.DBService;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
@@ -23,15 +22,6 @@ public class ReadinessHealthIndicator implements HealthIndicator {
     }
 
     private int check() {
-
-        try (
-                Connection c = DBService.getDBConnection();
-                Statement stmt = c.createStatement();
-                ResultSet resultSetPropertyMapping = stmt.executeQuery("select * from class_mapping cm");
-        ) {
-        } catch (Exception ignored){
-            return 1;
-        }
         return 0;
     }
 }

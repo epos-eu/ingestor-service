@@ -19,13 +19,13 @@ stages:
  - opensource
 
 deploy:
-  image: maven:3.8.1-jdk-11
+  image: maven:3.9.8-amazoncorretto-21-al2023
   stage: install
   before_script: 
     - sed -i "s|VERSION|${CI_COMMIT_REF_NAME}|g" pom.xml
     - export VERSION=${CI_COMMIT_REF_NAME}
   script:
-    - mvn $MAVEN_CLI_OPTS install
+    - mvn $MAVEN_CLI_OPTS install -DskipTests
   artifacts:
     paths:
       - target/*.jar

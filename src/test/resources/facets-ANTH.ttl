@@ -1,0 +1,128 @@
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix epos: <https://www.epos-eu.org/epos-dcat-ap#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix cnt: <http://www.w3.org/2011/content#> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix http: <http://www.w3.org/2006/http#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix gsp: <http://www.opengis.net/ont/geosparql#> .
+@prefix dqv: <http://www.w3.org/ns/dqv#> .
+@prefix oa: <http://www.w3.org/ns/oa#> .
+@prefix foaf: <http://xmlns.com/foaf/spec/#term_> .
+
+
+<category:anthropogenichazards> a skos:ConceptScheme;
+  skos:prefLabel "ANT" ;
+  dct:title "Anthropogenic Hazards" ;
+  dct:description "TCS Domain" ;
+  foaf:logo "assets/img/logo/ANTHROPO_logo.png" ;
+  foaf:homepage "https://www.epos-eu.org/tcs/anthropogenic-hazards" ;
+  schema:color "#06a8e2";
+  schema:orderItemNumber "7";
+  skos:hasTopConcept <category:facets/dataset-theme>;
+.
+<category:processgols> a skos:Concept;
+ skos:prefLabel "Processing tools";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:anthropogenichazards>;
+ skos:notation "WP14-DDSS-001-A";
+.
+<category:multidisciplaryahdata> a skos:Concept;
+ skos:prefLabel "Multidisciplinary AH data";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:anthropogenichazards>;
+ skos:narrower <category:reservoirimpoundment>,<category:geothermalenergyproducti>,<category:undergroundmg>,<category:cventialhydrocarbextracti>,<category:undergroundgasstage>,<category:wastewaterjecti>,<category:uncventialhydrocarbextracti>;
+ skos:notation "WP14-DDSS-001";
+.
+<category:reservoirimpoundment> a skos:Concept;
+ skos:prefLabel "Reservoir impoundment";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:anthropogenichazards>;
+ skos:broader <category:multidisciplaryahdata>;
+ skos:notation "WP14-DDSS-002";
+ skos:notation "WP14-DDSS-005";
+ skos:notation "WP14-DDSS-011";
+ skos:notation "WP14-DDSS-020";
+ skos:notation "WP14-DDSS-043";
+ skos:notation "WP14-DDSS-033";
+.
+<category:geothermalenergyproducti> a skos:Concept;
+ skos:prefLabel "Geothermal energy production";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:anthropogenichazards>;
+ skos:broader <category:multidisciplaryahdata>;
+ skos:notation "WP14-DDSS-003";
+ skos:notation "WP14-DDSS-012";
+ skos:notation "WP14-DDSS-013";
+ skos:notation "WP14-DDSS-014";
+ skos:notation "WP14-DDSS-017";
+ skos:notation "WP14-DDSS-018";
+ skos:notation "WP14-DDSS-040";
+ skos:notation "WP14-DDSS-039";
+ skos:notation "WP14-DDSS-046";
+ skos:notation "WP14-DDSS-047";
+ skos:notation "WP14-DDSS-048";
+.
+<category:undergroundmg> a skos:Concept;
+ skos:prefLabel "Underground mining";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:anthropogenichazards>;
+ skos:broader <category:multidisciplaryahdata>;
+ skos:notation "WP14-DDSS-004";
+ skos:notation "WP14-DDSS-006";
+ skos:notation "WP14-DDSS-007";
+ skos:notation "WP14-DDSS-009";
+ skos:notation "WP14-DDSS-015";
+ skos:notation "WP14-DDSS-023";
+ skos:notation "WP14-DDSS-024";
+ skos:notation "WP14-DDSS-025";
+ skos:notation "WP14-DDSS-028";
+ skos:notation "WP14-DDSS-045";
+.
+<category:cventialhydrocarbextracti> a skos:Concept;
+ skos:prefLabel "Conventional hydrocarbon extraction";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:anthropogenichazards>;
+ skos:broader <category:multidisciplaryahdata>;
+ skos:notation "WP14-DDSS-010";
+ skos:notation "WP14-DDSS-019";
+ skos:notation "WP14-DDSS-021";
+ skos:notation "WP14-DDSS-027";
+ skos:notation "WP14-DDSS-029";
+ skos:notation "WP14-DDSS-044";
+.
+<category:undergroundgasstage> a skos:Concept;
+ skos:prefLabel "Underground gas storage";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:anthropogenichazards>;
+ skos:broader <category:multidisciplaryahdata>;
+ skos:notation "WP14-DDSS-016";
+.
+<category:wastewaterjecti> a skos:Concept;
+ skos:prefLabel "Wastewater injection";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:anthropogenichazards>;
+ skos:broader <category:multidisciplaryahdata>;
+ skos:notation "WP14-DDSS-019";
+ skos:notation "WP14-DDSS-027";
+.
+<category:uncventialhydrocarbextracti> a skos:Concept;
+ skos:prefLabel "Unconventional hydrocarbon extraction";
+ skos:definition "TCS Subdomain";
+ skos:inScheme <category:anthropogenichazards>;
+ skos:broader <category:multidisciplaryahdata>;
+ skos:notation "WP14-DDSS-022";
+ skos:notation "WP14-DDSS-027";
+ skos:notation "WP14-DDSS-036";
+ skos:notation "WP14-DDSS-037";
+ skos:notation "WP14-DDSS-042";
+.
