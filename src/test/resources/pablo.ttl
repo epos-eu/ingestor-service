@@ -1,0 +1,108 @@
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix epos: <https://www.epos-eu.org/epos-dcat-ap#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix cnt: <http://www.w3.org/2011/content#> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix http: <http://www.w3.org/2006/http#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix gsp: <http://www.opengis.net/ont/geosparql#> .
+@prefix dqv: <http://www.w3.org/ns/dqv#> .
+@prefix oa: <http://www.w3.org/ns/oa#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+<DT5101> a dcat:Dataset ;
+    dcat:distribution <DT5101/Distribution> ;
+    # Unique ID
+    dct:identifier "DT5101" ;
+    adms:identifier [ a adms:Identifier ; adms:schemeAgency "DT-GEO" ; skos:notation "DT5101" ] ;
+    # Name
+    dct:title "GALES realizations" ;
+    # Type
+    dct:type "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#Dataset"^^xsd:anyURI ;
+    # Keywords
+    dcat:keyword "MAGMA SPEED FLOW" ;
+    # Description
+    dct:description "Scenarios are GALES model realizations grouped together in an archive. Each of them includes simulations of static ground displacement and the causative distribution of forces" ;
+    # Version
+    dcat:version "" ;
+    # Spatial relevance - global coverage
+    dct:spatial [ a dct:Location ; locn:geometry "POLYGON((14.750 37.500, 15.300 37.500, 15.300 37.930,14.750 37.930, 14.750 37.500))"^^gsp:wktLiteral ] ;
+    # Temporal relevance dct:temporal [ a dct:PeriodOfTime; schema:startDate "2017-10-27T00:00:00Z"^^xsd:dateTime; schema:endDate "YYYY-MM-DDThh:mm:ssZ"^^xsd:dateTime; ];
+    # Organisation
+    dct:publisher <PIC:999472675> ;
+    # Person role dcat:contactPoint <http://orcid.org/0000-0000/contactPoint>; Security constraints -Security of data storage -Security of data transfer- Privacy constraints - Contribution policies dct:accessRights ""; Curation and provenance obligations
+    dct:provenance "from SS5101" ;
+    # Related DA TODO
+    dct:source <DT5103> , <DT5106> , <DT5107> ;
+    # Related publications dct:isReferencedBy "", "";
+    # Additional metadata dcat:landingPage
+    # Quality assurance dqv:hasQualityAnnotation [ a oa:Annotation ; oa:hasBody "url"^^xsd:anyURI ; ];
+    #Project ID dct:isReferencedBy "";
+    dcat:theme <category:DTGEO_conc> ;
+    prov:qualifiedAttribution <PIC:999472675/owner> .
+
+# Organisation role
+<PIC:999472675/owner> a prov:Attribution ;
+    dcat:hadRole "owner" ; # role
+    prov:agent <PIC:999472675> . # Organization
+
+<DT5101/Distribution> a dcat:Distribution ;
+    dct:identifier "DT5101/Distribution" ; # URL dcat:downloadURL  ""^^xsd:anyURI; #for downloadable file Name
+    dct:description "Scenarios are GALES model realizations grouped together in an archive. Each of them includes simulations of static ground displacement and the causative distribution of forces" ;
+    # Version
+    # Title
+    dct:title "Scenarios" ;
+    # File format (data_format) https://fairsharing.org/search?page=1&recordType=model_and_format
+    dct:format "https://fairsharing.org/FAIRsharing.9fN9gy"^^xsd:anyURI ;
+    # (file_format) https://www.iana.org/assignments/media-types/media-types.xhtml
+    dcat:mediaType "https://www.iana.org/assignments/media-types/application/vnd.debian.binary-package" ;
+    # Maturity level adms:status "";
+    # Licensing URL - #Licensing constraints (to be renamed to #“Licensing ID”) https://spdx.org/licenses
+    dct:license "https://spdx.org/licenses/CC-BY-4.0.html"^^xsd:anyURI . # minSTORMB dcat:byteSize "";
+
+# ## Organization
+
+<PIC:999472675> a schema:Organization ;
+    schema:identifier [ a schema:PropertyValue ; schema:propertyID "ROR" ; schema:value "00qps9a02" ] ;
+    schema:identifier [ a schema:PropertyValue ; schema:propertyID "PIC" ; schema:value "999472675" ] ;
+    # Organisation name
+    schema:legalName "Istituto Nazionale di Geofisica e Vulcanologia - sezione di Pisa" . # schema:contactPoint <http://orcid.org/0000-000/legalContact>; Facility/equipment role schema:owns <Facility>;
+
+# ## Person
+
+<http://orcid.org/0000-0003-2463-5185> a schema:Person ;
+    schema:identifier [ a schema:PropertyValue ; schema:propertyID "orcid" ; schema:value "0000-0003-2463-5185" ] ;
+    schema:familyName "Garg" ;
+    schema:givenName "Deepak" ;
+    # schema:address [ a schema:PostalAddress; schema:streetAddress "Markstrasse 39"; schema:addressLocality "Bad Bergzabern"; schema:postalCode "76887"; schema:addressCountry "Germany"; ];
+    schema:email "baisch@q-con.de" .
+    # schema:affiliation <PIC:916003593>; schema:contactPoint <https://orcid.org/0000-0002-1831-8960/custodian>; schema:contactPoint <https://orcid.org/0000-0002-1831-8960/user>;
+
+<http://orcid.org/0000-0002-9775-1542> a schema:Person ;
+    schema:identifier [ a schema:PropertyValue ; schema:propertyID "orcid" ; schema:value "0000-0002-9775-1542" ] ;
+    schema:familyName "Bruni" ;
+    schema:givenName "Rebeca" ; # schema:address [ a schema:PostalAddress; schema:streetAddress "Markstrasse 39"; schema:addressLocality "Bad Bergzabern"; schema:postalCode "76887"; schema:addressCountry "Germany"; ];
+    schema:email "baisch@q-con.de" .
+    # schema:affiliation <PIC:916003593>; schema:contactPoint <https://orcid.org/0000-0002-1831-8960/custodian>; schema:contactPoint <https://orcid.org/0000-0002-1831-8960/user>;
+
+<http://orcid.org/0000-0001-6884-8401> a schema:Person ;
+    schema:identifier [ a schema:PropertyValue ; schema:propertyID "orcid" ; schema:value "0000-0001-6884-8401" ] ;
+    schema:familyName "Montagna" ;
+    schema:givenName "Chiara" ;
+    # schema:address [ a schema:PostalAddress; schema:streetAddress "Markstrasse 39"; schema:addressLocality "Bad Bergzabern"; schema:postalCode "76887"; schema:addressCountry "Germany"; ];
+    schema:email "baisch@q-con.de" .
+    # schema:affiliation <PIC:916003593>; schema:contactPoint <https://orcid.org/0000-0002-1831-8960/custodian>; schema:contactPoint <https://orcid.org/0000-0002-1831-8960/user>;
+
+<HPC-facilities-within-the-project> a epos:Facility ;
+    dct:description "HPC facilities within the project" ; # Facility ID
+    dct:identifier "HPC-facilities-within-the-project" ; # Facility/equipment name
+    dct:title "HPC facilities within the project" . # Facility role dct:contactPoint <>;

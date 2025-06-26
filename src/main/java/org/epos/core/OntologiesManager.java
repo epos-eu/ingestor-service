@@ -20,11 +20,7 @@ public class OntologiesManager {
 
     public static void createOntology(String name, String type, String ontologyURL) throws IOException {
 
-        EposDataModelDAO eposDataModelDAO = new EposDataModelDAO();
-
-        List<Ontology> ontologiesList = eposDataModelDAO.getAllFromDB(Ontology.class);
-
-
+        List<Ontology> ontologiesList = EposDataModelDAO.getInstance().getAllFromDB(Ontology.class);
         Ontology existingOntology = null;
 
         for(Ontology ontologies : ontologiesList){
@@ -47,7 +43,7 @@ public class OntologiesManager {
         ont.setType(type);
         ont.setContent(encoded);
 
-        eposDataModelDAO.updateObject(ont);
+        EposDataModelDAO.getInstance().updateObject(ont);
     }
 
     public static List retrieveOntologies() {
