@@ -60,9 +60,6 @@ public class SPARQLManager {
 
         queryString +=
                 "SELECT ?mapped WHERE { ?mapped owl:equivalentClass "+value+" . }";
-
-        System.out.println("QUERY: "+queryString);
-
         Query query = QueryFactory.create(queryString);
 
         QueryExecution qexec = QueryExecutionFactory.create(query, modelmapping);

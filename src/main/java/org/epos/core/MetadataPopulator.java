@@ -184,13 +184,9 @@ public class MetadataPopulator {
         /** PREPARE CLASSES **/
         Map<String,Map<String,String>> classesMap = SPARQLManager.retrieveMainEntities(model);
         for(String uid : classesMap.keySet()){
-            try {
-                String className = SPARQLManager.retrieveEDMMappedClass(classesMap.get(uid).get("class").toString(), modelmapping);
-                EPOSDataModelEntity entity = beansCreation.getEPOSDataModelClass(className, uid, selectedGroup);
-                classes.add(entity);
-            }catch(Exception e){
-                LOGGER.warn("CLASSES PARSE ERROR: "+e.getLocalizedMessage());
-            }
+            String className = SPARQLManager.retrieveEDMMappedClass(classesMap.get(uid).get("class").toString(), modelmapping);
+            EPOSDataModelEntity entity = beansCreation.getEPOSDataModelClass(className,uid, selectedGroup);
+            classes.add(entity);
         }
         classes.removeIf(Objects::isNull);
 
