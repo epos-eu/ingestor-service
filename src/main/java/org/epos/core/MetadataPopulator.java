@@ -146,7 +146,7 @@ public class MetadataPopulator {
     }
 
     private static void manageItemValue(EPOSDataModelEntity activeClass, List<EPOSDataModelEntity> classes, Map<String, String> itemValue, Node node, Group selectedGroup) {
-        System.out.println("["+activeClass.getClass().getSimpleName()+"] "+node.toString()+" "+itemValue);
+        //System.out.println("["+activeClass.getClass().getSimpleName()+"] "+node.toString()+" "+itemValue);
         if (node.isURI()) {
             beansCreation.getEPOSDataModelPropertiesNode(activeClass, classes, itemValue, node.toString(), selectedGroup);
         } else if (node.isBlank()) {
@@ -157,7 +157,7 @@ public class MetadataPopulator {
                 s = node.toString();
                 s = StringUtils.substringBetween(s, "\"", "\"");
             }
-            System.out.println("[NODE IS LITERAL "+activeClass.getClass().getSimpleName()+"] "+node.toString()+" "+itemValue+" "+s);
+            //System.out.println("[NODE IS LITERAL "+activeClass.getClass().getSimpleName()+"] "+node.toString()+" "+itemValue+" "+s);
             beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, itemValue, s==null? node.getLiteralValue() : s);
         } else if (node.isConcrete()) {
             beansCreation.getEPOSDataModelPropertiesLiteral(activeClass, classes, itemValue, node.getLiteral().getValue());
@@ -192,9 +192,9 @@ public class MetadataPopulator {
 
         /** PREPARE PROPERTIES **/
         exploreGraphAndCreateBeans(modelmapping,beansCreation,graph, null,classes, uidDone, selectedGroup);
-        for(EPOSDataModelEntity eposDataModelEntity : classes){
-            System.out.println("PREVIEW "+eposDataModelEntity);
-        }
+//        for(EPOSDataModelEntity eposDataModelEntity : classes){
+//            System.out.println("PREVIEW "+eposDataModelEntity);
+//        }
 
         List<IriTemplate> templates = new ArrayList<>();
         for(EPOSDataModelEntity eposDataModelEntity : classes){
@@ -213,7 +213,7 @@ public class MetadataPopulator {
                         ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setTemplate(template.getTemplate());
                     }
                 }
-                System.out.println("OPERATION "+eposDataModelEntity);
+                //System.out.println("OPERATION "+eposDataModelEntity);
             }
         }
 
@@ -222,7 +222,7 @@ public class MetadataPopulator {
             //System.out.println("[ADDING TO DATABASE] "+eposDataModelEntity);
             try {
                 AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
-                LOGGER.debug("Ingesting -> "+eposDataModelEntity);
+                //LOGGER.debug("Ingesting -> "+eposDataModelEntity);
                 LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED, null, null);
                 returnMap.put(le.getUid(), le);
             }catch(Exception apiCreationException){

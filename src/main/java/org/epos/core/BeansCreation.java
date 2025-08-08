@@ -53,7 +53,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
     public void getEPOSDataModelPropertiesLiteral(EPOSDataModelEntity classObject, List<EPOSDataModelEntity> classes, Map<String, String> property, Object propertyValue) {
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        System.out.println("PRE DEBUG: " + classObject.getClass().getName() + " " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName+" "+propertyValue);
+        //System.out.println("PRE DEBUG: " + classObject.getClass().getName() + " " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName+" "+propertyValue);
 
         Method method = null;
         LinkedEntity le = null;
@@ -107,11 +107,11 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
             }
         }
 
-        System.out.println("METHOD: "+method);
+        //System.out.println("METHOD: "+method);
 
         if(method != null && propertyValue != null){
             try {
-                System.out.println("Invoking: "+propertyName+" "+propertyValue);
+                //System.out.println("Invoking: "+propertyName+" "+propertyValue);
                 method.invoke(classObject, propertyValue);
             } catch (IllegalArgumentException |IllegalAccessException | InvocationTargetException e) {
                 LOGGER.error("ERROR Invoking [\nProperty Name: " + propertyName +
@@ -129,7 +129,7 @@ public class BeansCreation <T extends EPOSDataModelEntity> {
 
         Class<?> propertyValueClass = propertyValue.getClass();
         String propertyName = property.get("property").substring(0, 1).toUpperCase() + property.get("property").substring(1);
-        System.out.println("PRE DEBUG: " + property.get("range") +" " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName + " "+ propertyValue);
+        //System.out.println("PRE DEBUG: " + property.get("range") +" " + propertyValueClass + " " + propertyValue.getClass() + " " + propertyName + " "+ propertyValue);
 
         Method method = null;
         LinkedEntity le = null;
