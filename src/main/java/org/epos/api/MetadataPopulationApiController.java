@@ -86,7 +86,7 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 				while (s.hasNextLine()) {
 					String urlsingle = s.nextLine();
 					LOGGER.info("[Ingestion initialized] Ingesting file {} using mapping {} in the group {}", urlsingle, mapping, selectedGroup.getName());
-					if (isBodyValid(body)) {
+					if ((path == null || path.isBlank()) && isBodyValid(body)) {
 						MetadataPopulator.startMetadataPopulationFromContent(body, mapping, selectedGroup);
 					} else {
 						MetadataPopulator.startMetadataPopulation(urlsingle, mapping, selectedGroup);
@@ -100,7 +100,7 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 
 		} else {
 			LOGGER.info("[Ingestion initialized] Ingesting file {} using mapping {} in the group {}", path, mapping, selectedGroup.getName());
-			if (isBodyValid(body)) {
+			if ((path == null || path.isBlank()) && isBodyValid(body)) {
 				MetadataPopulator.startMetadataPopulationFromContent(body, mapping, selectedGroup);
 			} else {
 				MetadataPopulator.startMetadataPopulation(path, mapping, selectedGroup);
