@@ -11,6 +11,8 @@ import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.epos.eposdatamodel.EPOSDataModelEntity;
 import org.epos.eposdatamodel.Group;
@@ -20,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import usermanagementapis.UserGroupManagementAPI;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -59,6 +63,14 @@ public class MetadataPopulator {
 
         return model;
     }
+
+	public static Model retrieveMetadataModelFromString(String ttl) {
+		final Model model = ModelFactory.createDefaultModel();
+		InputStream inputStream = new ByteArrayInputStream(ttl.getBytes(StandardCharsets.UTF_8));
+		model.read(inputStream, null, "TURTLE");
+		return model;
+	}
+
     public static void retrievePlainValueFromInnerMethods(Model modelmapping,BeansCreation beansCreation, List<EPOSDataModelEntity> classes, Graph graph, String subject, EPOSDataModelEntity activeClass, Group selectedGroup){
         Map<String, String> prefixes = modelmapping.getNsPrefixMap();
 
@@ -168,75 +180,86 @@ public class MetadataPopulator {
         }
     }
 
+	private static Map<String, LinkedEntity> populateMetadata(Model model, String inputMappingModel,
+			Group selectedGroup) {
+		/** RETRIEVE MAPPING MODEL AND MODEL FROM TTL **/
+		Map<String, LinkedEntity> returnMap = new HashMap<>();
+		Model modelmapping = retrieveModelMapping(inputMappingModel);
+		Graph graph = model.getGraph();
+
+		/** DEFINE VARIABLES **/
+		List<EPOSDataModelEntity> classes = new ArrayList<>();
+		List<String> uidDone = new ArrayList<>();
+		BeansCreation beansCreation = new BeansCreation();
+
+		/** PREPARE CLASSES **/
+		Map<String, Map<String, String>> classesMap = SPARQLManager.retrieveMainEntities(model);
+		for (String uid : classesMap.keySet()) {
+			String className = SPARQLManager.retrieveEDMMappedClass(classesMap.get(uid).get("class").toString(),
+					modelmapping);
+			EPOSDataModelEntity entity = beansCreation.getEPOSDataModelClass(className, uid, selectedGroup);
+			classes.add(entity);
+		}
+		classes.removeIf(Objects::isNull);
+
+		/** PREPARE PROPERTIES **/
+		exploreGraphAndCreateBeans(modelmapping, beansCreation, graph, null, classes, uidDone, selectedGroup);
+		// for(EPOSDataModelEntity eposDataModelEntity : classes){
+		// System.out.println("PREVIEW "+eposDataModelEntity);
+		// }
+
+		List<IriTemplate> templates = new ArrayList<>();
+		for (EPOSDataModelEntity eposDataModelEntity : classes) {
+			if (eposDataModelEntity instanceof IriTemplate) {
+				templates.add((IriTemplate) eposDataModelEntity);
+			}
+		}
+		classes.removeAll(templates);
+
+		for (EPOSDataModelEntity eposDataModelEntity : classes) {
+			if (eposDataModelEntity instanceof org.epos.eposdatamodel.Operation) {
+				for (IriTemplate template : templates) {
+					if (template.getUid().equals(
+							((org.epos.eposdatamodel.Operation) eposDataModelEntity).getIriTemplate().getUid())) {
+						((org.epos.eposdatamodel.Operation) eposDataModelEntity).setMapping(template.getMappings());
+						((org.epos.eposdatamodel.Operation) eposDataModelEntity).setTemplate(template.getTemplate());
+					}
+				}
+				// System.out.println("OPERATION "+eposDataModelEntity);
+			}
+		}
+
+		/** DATABASE POPULATION **/
+		for (EPOSDataModelEntity eposDataModelEntity : classes) {
+			// System.out.println("[ADDING TO DATABASE] "+eposDataModelEntity);
+			try {
+				AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
+				// LOGGER.debug("Ingesting -> "+eposDataModelEntity);
+				LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED, null, null);
+				returnMap.put(le.getUid(), le);
+			} catch (Exception apiCreationException) {
+				apiCreationException.printStackTrace();
+				LOGGER.error("[ERROR] ON: " + eposDataModelEntity.toString() + "\n[EXCEPTION]: "
+						+ apiCreationException.getLocalizedMessage());
+			}
+		}
+
+		for (Map.Entry<String, LinkedEntity> uid : returnMap.entrySet()) {
+			if (selectedGroup != null) {
+				UserGroupManagementAPI.addMetadataElementToGroup(uid.getValue().getMetaId(), selectedGroup.getId());
+			}
+		}
+
+		return returnMap;
+	}
+
     public static Map<String,LinkedEntity> startMetadataPopulation(String url, String inputMappingModel, Group selectedGroup){
-
-        /** RETRIEVE MAPPING MODEL AND MODEL FROM TTL **/
-        Map<String, LinkedEntity> returnMap = new HashMap<>();
-        Model modelmapping = retrieveModelMapping(inputMappingModel);
-        Model model = retrieveMetadataModelFromTTL(url);
-        Graph graph = model.getGraph();
-
-        /** DEFINE VARIABLES **/
-        List<EPOSDataModelEntity> classes = new ArrayList<>();
-        List<String> uidDone = new ArrayList<>();
-        BeansCreation beansCreation = new BeansCreation();
-
-        /** PREPARE CLASSES **/
-        Map<String,Map<String,String>> classesMap = SPARQLManager.retrieveMainEntities(model);
-        for(String uid : classesMap.keySet()){
-            String className = SPARQLManager.retrieveEDMMappedClass(classesMap.get(uid).get("class").toString(), modelmapping);
-            EPOSDataModelEntity entity = beansCreation.getEPOSDataModelClass(className,uid, selectedGroup);
-            classes.add(entity);
-        }
-        classes.removeIf(Objects::isNull);
-
-        /** PREPARE PROPERTIES **/
-        exploreGraphAndCreateBeans(modelmapping,beansCreation,graph, null,classes, uidDone, selectedGroup);
-//        for(EPOSDataModelEntity eposDataModelEntity : classes){
-//            System.out.println("PREVIEW "+eposDataModelEntity);
-//        }
-
-        List<IriTemplate> templates = new ArrayList<>();
-        for(EPOSDataModelEntity eposDataModelEntity : classes){
-            if(eposDataModelEntity instanceof IriTemplate){
-                templates.add((IriTemplate) eposDataModelEntity);
-            }
-        }
-        classes.removeAll(templates);
-
-
-        for(EPOSDataModelEntity eposDataModelEntity : classes){         
-            if(eposDataModelEntity instanceof org.epos.eposdatamodel.Operation){
-                for(IriTemplate template : templates){
-                    if(template.getUid().equals(((org.epos.eposdatamodel.Operation)eposDataModelEntity).getIriTemplate().getUid())){
-                        ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setMapping(template.getMappings());
-                        ((org.epos.eposdatamodel.Operation)eposDataModelEntity).setTemplate(template.getTemplate());
-                    }
-                }
-                //System.out.println("OPERATION "+eposDataModelEntity);
-            }
-        }
-
-        /** DATABASE POPULATION **/
-        for(EPOSDataModelEntity eposDataModelEntity : classes){
-            //System.out.println("[ADDING TO DATABASE] "+eposDataModelEntity);
-            try {
-                AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
-                //LOGGER.debug("Ingesting -> "+eposDataModelEntity);
-                LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED, null, null);
-                returnMap.put(le.getUid(), le);
-            }catch(Exception apiCreationException){
-                apiCreationException.printStackTrace();
-                LOGGER.error("[ERROR] ON: "+ eposDataModelEntity.toString()+"\n[EXCEPTION]: "+apiCreationException.getLocalizedMessage());
-            }
-        }
-
-        for(Map.Entry<String, LinkedEntity> uid : returnMap.entrySet()){
-            if(selectedGroup!=null){
-                UserGroupManagementAPI.addMetadataElementToGroup(uid.getValue().getMetaId(), selectedGroup.getId());
-            }
-        }
-
-        return returnMap;
+		Model model = retrieveMetadataModelFromTTL(url);
+		return populateMetadata(model, inputMappingModel, selectedGroup);
     }
+
+	public static Map<String, LinkedEntity> startMetadataPopulationFromContent(String ttlContent, String inputMappingModel, Group selectedGroup) {
+		Model model = retrieveMetadataModelFromString(ttlContent);
+		return populateMetadata(model, inputMappingModel, selectedGroup);
+	}
 }
