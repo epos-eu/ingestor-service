@@ -31,7 +31,7 @@ public interface MetadataPopulationApi {
 			@ApiResponse(responseCode = "403", description = "Forbidden"),
 			@ApiResponse(responseCode = "404", description = "Not Found")
 	})
-	@RequestMapping(value = "/populate", produces = { "*/*" }, consumes = { "text/turtle" }, method = RequestMethod.POST)
+	@RequestMapping(value = "/populate", produces = { "*/*" }, consumes = { "text/turtle", "*/*" }, method = RequestMethod.POST)
 	ResponseEntity<ApiResponseMessage> metadataPopulate(
 			@Parameter(in = ParameterIn.QUERY, description = "population type (single file or multiple lines file)", required = true, schema = @Schema(allowableValues = { "single", "multiple" })) @RequestParam(value = "type", required = true) String type,
 			@Parameter(in = ParameterIn.QUERY, description = "path of the file to use", required = false, schema = @Schema()) @RequestParam(value = "path", required = false) String path,
