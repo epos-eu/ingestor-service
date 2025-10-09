@@ -181,7 +181,7 @@ public class MetadataPopulator {
     }
 
 	private static Map<String, LinkedEntity> populateMetadata(Model model, String inputMappingModel,
-			Group selectedGroup) {
+			Group selectedGroup, StatusType status) {
 		/** RETRIEVE MAPPING MODEL AND MODEL FROM TTL **/
 		Map<String, LinkedEntity> returnMap = new HashMap<>();
 		Model modelmapping = retrieveModelMapping(inputMappingModel);
@@ -235,7 +235,7 @@ public class MetadataPopulator {
 			try {
 				AbstractAPI api = AbstractAPI.retrieveAPI(eposDataModelEntity.getClass().getSimpleName().toUpperCase());
 				// LOGGER.debug("Ingesting -> "+eposDataModelEntity);
-				LinkedEntity le = api.create(eposDataModelEntity, StatusType.PUBLISHED, null, null);
+				LinkedEntity le = api.create(eposDataModelEntity, status, null, null);
 				returnMap.put(le.getUid(), le);
 			} catch (Exception apiCreationException) {
 				apiCreationException.printStackTrace();
@@ -253,13 +253,13 @@ public class MetadataPopulator {
 		return returnMap;
 	}
 
-    public static Map<String,LinkedEntity> startMetadataPopulation(String url, String inputMappingModel, Group selectedGroup){
+    public static Map<String,LinkedEntity> startMetadataPopulation(String url, String inputMappingModel, Group selectedGroup, StatusType status){
 		Model model = retrieveMetadataModelFromTTL(url);
-		return populateMetadata(model, inputMappingModel, selectedGroup);
+		return populateMetadata(model, inputMappingModel, selectedGroup, status);
     }
 
-	public static Map<String, LinkedEntity> startMetadataPopulationFromContent(String ttlContent, String inputMappingModel, Group selectedGroup) {
+	public static Map<String, LinkedEntity> startMetadataPopulationFromContent(String ttlContent, String inputMappingModel, Group selectedGroup, StatusType status) {
 		Model model = retrieveMetadataModelFromString(ttlContent);
-		return populateMetadata(model, inputMappingModel, selectedGroup);
+		return populateMetadata(model, inputMappingModel, selectedGroup, status);
 	}
 }

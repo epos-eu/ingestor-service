@@ -11,7 +11,6 @@ import org.epos.core.MetadataPopulator;
 import org.epos.eposdatamodel.Group;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
+import model.StatusType;
 import usermanagementapis.UserGroupManagementAPI;
 
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-10-12T08:15:11.660Z[GMT]")
@@ -47,6 +45,7 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 			@Parameter(in = ParameterIn.QUERY, description = "metadata mapping model" ,required=true,schema=@Schema()) @RequestParam(value="mapping", required=true) String mapping,
 			@Parameter(in = ParameterIn.QUERY, description = "security code for internal things" ,required=true,schema=@Schema()) @RequestParam(value="securityCode", required=true) String securityCode,
 			@Parameter(in = ParameterIn.QUERY, description = "metadata group where the resource should be placed" ,required=false,schema=@Schema()) @RequestParam(value="metadataGroup", required=false) String metadataGroup,
+			@Parameter(in = ParameterIn.QUERY, description = "status to ingest the file as", required = false, schema = @Schema()) @RequestParam(value = "status", required = false, defaultValue = "PUBLISHED") StatusType status,
 			@RequestBody(required = false) String body) {
 
 		if (!isBodyValid(body) && (path == null || path.isBlank())) {
@@ -87,9 +86,9 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 					String urlsingle = s.nextLine();
 					LOGGER.info("[Ingestion initialized] Ingesting file {} using mapping {} in the group {}", urlsingle, mapping, selectedGroup.getName());
 					if ((path == null || path.isBlank()) && isBodyValid(body)) {
-						MetadataPopulator.startMetadataPopulationFromContent(body, mapping, selectedGroup);
+						MetadataPopulator.startMetadataPopulationFromContent(body, mapping, selectedGroup, status);
 					} else {
-						MetadataPopulator.startMetadataPopulation(urlsingle, mapping, selectedGroup);
+						MetadataPopulator.startMetadataPopulation(urlsingle, mapping, selectedGroup, status);
 					}
 					LOGGER.info("[Ingestion finished] Ingested file {}", urlsingle);
 				}
@@ -101,9 +100,9 @@ public class MetadataPopulationApiController implements MetadataPopulationApi {
 		} else {
 			LOGGER.info("[Ingestion initialized] Ingesting file {} using mapping {} in the group {}", path, mapping, selectedGroup.getName());
 			if ((path == null || path.isBlank()) && isBodyValid(body)) {
-				MetadataPopulator.startMetadataPopulationFromContent(body, mapping, selectedGroup);
+				MetadataPopulator.startMetadataPopulationFromContent(body, mapping, selectedGroup, status);
 			} else {
-				MetadataPopulator.startMetadataPopulation(path, mapping, selectedGroup);
+				MetadataPopulator.startMetadataPopulation(path, mapping, selectedGroup, status);
 			}
 			LOGGER.info("[Ingestion finished] Ingested file {}", path);
 		}
